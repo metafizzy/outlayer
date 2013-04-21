@@ -12,7 +12,6 @@ var _Outlayer = window.Outlayer;
 var Item = _Outlayer.Item;
 
 // dependencies
-// var classie = window.classie;
 var docReady = window.docReady;
 var EventEmitter = window.EventEmitter;
 var eventie = window.eventie;
@@ -99,7 +98,7 @@ function Outlayer( element, options ) {
 
   // add id for Outlayer.getFromElement
   var id = ++GUID;
-  this.element.packeryGUID = id; // expando
+  this.element[ this.settings.namespace + 'GUID' ] = id; // expando
   instances[ id ] = this; // associate via id
 
   // kick it off
@@ -110,8 +109,10 @@ function Outlayer( element, options ) {
   }
 }
 
-// inherit EventEmitter
-extend( Outlayer.prototype, EventEmitter.prototype );
+// settings are for internal use only
+Outlayer.prototype.settings = {
+  namespace: 'outlayer'
+};
 
 // default options
 Outlayer.prototype.options = {
@@ -121,6 +122,9 @@ Outlayer.prototype.options = {
     transitionDuration: '0.4s'
   }
 };
+
+// inherit EventEmitter
+extend( Outlayer.prototype, EventEmitter.prototype );
 
 Outlayer.prototype._create = function() {
   // get items from children
@@ -484,57 +488,74 @@ Outlayer.prototype.destroy = function() {
   this.unbindResize();
 };
 
-// -------------------------- data -------------------------- //
+// -------------------------- create Outlayer class -------------------------- //
 
-/**
- * get Outlayer instance from element
- * @param {Element} elem
- * @returns {Outlayer}
- */
-Outlayer.data = function( elem ) {
-  var id = elem.packeryGUID;
-  return id && instances[ id ];
-};
-
-// -------------------------- declarative -------------------------- //
-
-/**
- * allow user to initialize Outlayer via .js-packery class
- * options are parsed from data-packery-option attribute
- */
-docReady( function() {
-  var elems = document.querySelectorAll('.js-packery');
-
-  for ( var i=0, len = elems.length; i < len; i++ ) {
-    var elem = elems[i];
-    var attr = elem.getAttribute('data-packery-options');
-    var options;
-    try {
-      options = attr && JSON.parse( attr );
-    } catch ( error ) {
-      // log error, do not initialize
-      if ( console ) {
-        console.error( 'Error parsing data-packery-options on ' +
-          elem.nodeName.toLowerCase() + ( elem.id ? '#' + elem.id : '' ) + ': ' +
-          error );
-      }
-      continue;
-    }
-    // initialize
-    var pckry = new Outlayer( elem, options );
-    // make available via $().data('packery')
-    if ( jQuery ) {
-      jQuery.data( elem, 'packery', pckry );
-    }
+// Layout = Outlayer.create('layoutname')
+Outlayer.create = function( namespace ) {
+  // sub-class Outlayer
+  function Layout() {
+    Outlayer.call( this, arguments );
   }
-});
 
-// -------------------------- jQuery bridge -------------------------- //
+  extend( Layout.prototype, Outlayer.prototype );
 
-// make into jQuery plugin
-if ( jQuery && jQuery.bridget ) {
-  jQuery.bridget( 'packery', Outlayer );
-}
+  Layout.prototype.settings.namespace = namespace;
+
+  // -------------------------- data -------------------------- //
+
+  /**
+   * get Outlayer instance from element
+   * @param {Element} elem
+   * @returns {Outlayer}
+   */
+  Layout.data = function( elem ) {
+    var id = elem[ this.settings.namespace + 'GUID' ];
+    return id && instances[ id ];
+  };
+
+  // -------------------------- declarative -------------------------- //
+
+  /**
+   * allow user to initialize Outlayer via .js-packery class
+   * options are parsed from data-packery-option attribute
+   */
+  docReady( function() {
+    var elems = document.querySelectorAll( '.js-' + namespace );
+    var dataAttr = 'data-' + namespace + '-options';
+
+    for ( var i=0, len = elems.length; i < len; i++ ) {
+      var elem = elems[i];
+      var attr = elem.getAttribute( dataAttr );
+      var options;
+      try {
+        options = attr && JSON.parse( attr );
+      } catch ( error ) {
+        // log error, do not initialize
+        if ( console ) {
+          console.error( 'Error parsing ' + dataAttr + ' on ' +
+            elem.nodeName.toLowerCase() + ( elem.id ? '#' + elem.id : '' ) + ': ' +
+            error );
+        }
+        continue;
+      }
+      // initialize
+      var instance = new Layout( elem, options );
+      // make available via $().data('layoutname')
+      if ( jQuery ) {
+        jQuery.data( elem, namespace, instance );
+      }
+    }
+  });
+
+  // -------------------------- jQuery bridge -------------------------- //
+
+  // make into jQuery plugin
+  if ( jQuery && jQuery.bridget ) {
+    jQuery.bridget( namespace, Layout );
+  }
+
+  return Layout;
+};
 
 // -------------------------- transport -------------------------- //
 
