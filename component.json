@@ -1,7 +1,10 @@
 {
   "name": "outlayer",
   "version": "0.0.0",
-  "main": "outlayer.js",
+  "main": [
+    "item.js",
+    "outlayer.js"
+  ],
   "dependencies": {
     "classie": "desandro/classie",
     "doc-ready": "desandro/doc-ready#>=0.0.3",

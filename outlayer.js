@@ -98,7 +98,7 @@ function Outlayer( element, options ) {
 
   // add id for Outlayer.getFromElement
   var id = ++GUID;
-  this.element[ this.settings.namespace + 'GUID' ] = id; // expando
+  this.element.outlayerGUID = id; // expando
   instances[ id ] = this; // associate via id
 
   // kick it off
@@ -111,16 +111,15 @@ function Outlayer( element, options ) {
 
 // settings are for internal use only
 Outlayer.prototype.settings = {
-  namespace: 'outlayer'
+  namespace: 'outlayer',
+  item: _Outlayer.Item
 };
 
 // default options
 Outlayer.prototype.options = {
   isInitLayout: true,
   isResizeBound: true,
-  itemOptions: {
-    transitionDuration: '0.4s'
-  }
+  itemOptions: {}
 };
 
 // inherit EventEmitter
@@ -151,6 +150,7 @@ Outlayer.prototype.reloadItems = function() {
 Outlayer.prototype._getItems = function( elems ) {
 
   var itemElems = this._filterFindItemElements( elems );
+  var Item = this.settings.item;
 
   // create new Outlayer Items for collection
   var items = [];
@@ -232,7 +232,14 @@ Outlayer.prototype._init = Outlayer.prototype.layout;
 /**
  * logic before any new layout
  */
-Outlayer.prototype._prelayout = noop;
+Outlayer.prototype._prelayout = function() {
+  this.getSize();
+};
+
+
+Outlayer.prototype.getSize = function() {
+  this.size = getSize( this.element );
+};
 
 /**
  * get measurement from option, for columnWidth, rowHeight, gutter
@@ -264,14 +271,35 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
 /**
  * layout a collection of item elements
  */
-Outlayer.prototype.layoutItems = noop;
+Outlayer.prototype.layoutItems = function( items, isInstant ) {
+  // emit layoutComplete when done
+  this._itemsOn( items, 'layout', function onItemsLayout() {
+    this.emitEvent( 'layoutComplete', [ this, items ] );
+  });
+
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    var x = i;
+    var y = i;
+    this._layoutItem( item, x, y, isInstant );
+  }
+};
 
 /**
  * Sets position of item in DOM
  * @param {Outlayer.Item} item
+ * @param {Number} x - horizontal position
+ * @param {Number} y - vertical position
  * @param {Boolean} isInstant - disables transitions
  */
-Outlayer.prototype._layoutItem = noop;
+Outlayer.prototype._layoutItem = function( item, x, y, isInstant ) {
+  if ( isInstant ) {
+    // if not transition, just set CSS
+    item.goTo( x, y );
+  } else {
+    item.moveTo( x, y );
+  }
+};
 
 /**
  * trigger a callback for a collection of items events
@@ -477,7 +505,7 @@ Outlayer.prototype.remove = function( elems ) {
 
 // remove and disable Outlayer instance
 Outlayer.prototype.destroy = function() {
-  delete this.element.packeryGUID;
+  delete this.element.outlayerGUID;
 
   // destroy items
   for ( var i=0, len = this.items.length; i < len; i++ ) {
@@ -499,7 +527,15 @@ Outlayer.create = function( namespace ) {
 
   extend( Layout.prototype, Outlayer.prototype );
 
+  // sub-class Item
+  Layout.Item = function LayoutItem() {
+    Item.call( this, arguments );
+  };
+
+  extend( Layout.Item.prototype, Outlayer.Item.prototype );
+
   Layout.prototype.settings.namespace = namespace;
+  Layout.prototype.settings.item = Layout.Item;
 
   // -------------------------- data -------------------------- //
 
@@ -509,15 +545,15 @@ Outlayer.create = function( namespace ) {
    * @returns {Outlayer}
    */
   Layout.data = function( elem ) {
-    var id = elem[ this.settings.namespace + 'GUID' ];
+    var id = elem.outlayerGUID;
     return id && instances[ id ];
   };
 
   // -------------------------- declarative -------------------------- //
 
   /**
-   * allow user to initialize Outlayer via .js-packery class
-   * options are parsed from data-packery-option attribute
+   * allow user to initialize Outlayer via .js-namespace class
+   * options are parsed from data-namespace-option attribute
    */
   docReady( function() {
     var elems = document.querySelectorAll( '.js-' + namespace );
