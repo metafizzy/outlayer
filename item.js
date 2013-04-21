@@ -124,7 +124,7 @@ Item.prototype.getPosition = function() {
   x = isNaN( x ) ? 0 : x;
   y = isNaN( y ) ? 0 : y;
   // remove padding from measurement
-  var layoutSize = this.layout.elementSize;
+  var layoutSize = this.layout.size;
   x -= layoutSize.paddingLeft;
   y -= layoutSize.paddingTop;
 
@@ -185,7 +185,7 @@ Item.prototype.setPosition = function( x, y ) {
 };
 
 Item.prototype.layoutPosition = function() {
-  var layoutSize = this.layout.elementSize;
+  var layoutSize = this.layout.size;
   this.css({
     // set settled position, apply padding
     left: ( this.position.x + layoutSize.paddingLeft ) + 'px',
