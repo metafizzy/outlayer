@@ -24,7 +24,7 @@ var document = window.document;
 var console = window.console;
 var jQuery = window.jQuery;
 
-var noop = function() {};
+// var noop = function() {};
 
 // -------------------------- helpers -------------------------- //
 
@@ -36,10 +36,19 @@ function extend( a, b ) {
   return a;
 }
 
+
+var objToString = Object.prototype.toString;
+function isArray( obj ) {
+  return objToString.call( obj ) === '[object Array]';
+}
+
 // turn element or nodeList into an array
 function makeArray( obj ) {
   var ary = [];
-  if ( typeof obj.length === 'number' ) {
+  if ( isArray( obj ) ) {
+    // use object if already an array
+    ary = obj;
+  } else if ( typeof obj.length === 'number' ) {
     // convert nodeList to array
     for ( var i=0, len = obj.length; i < len; i++ ) {
       ary.push( obj[i] );
@@ -85,7 +94,7 @@ function Outlayer( element, options ) {
   // bail out if not proper element
   if ( !element || !isElement( element ) ) {
     if ( console ) {
-      console.error( 'Cannot create instance with element: ' + element );
+      console.error( 'Bad ' + this.settings.namespace + ' element: ' + element );
     }
     return;
   }
@@ -375,7 +384,17 @@ Outlayer.prototype.onresize = function() {
 };
 
 // debounced, layout on resize
-Outlayer.prototype.resize = noop;
+Outlayer.prototype.resize = function() {
+  // don't trigger if size did not change
+  var size = getSize( this.element );
+  if ( size.innerWidth === this.size.innerWidth ) {
+    return;
+  }
+
+  this.layout();
+
+  delete this.resizeTimeout;
+};
 
 
 // -------------------------- methods -------------------------- //
@@ -522,14 +541,14 @@ Outlayer.prototype.destroy = function() {
 Outlayer.create = function( namespace ) {
   // sub-class Outlayer
   function Layout() {
-    Outlayer.call( this, arguments );
+    Outlayer.apply( this, arguments );
   }
 
   extend( Layout.prototype, Outlayer.prototype );
 
   // sub-class Item
   Layout.Item = function LayoutItem() {
-    Item.call( this, arguments );
+    Item.apply( this, arguments );
   };
 
   extend( Layout.Item.prototype, Outlayer.Item.prototype );
