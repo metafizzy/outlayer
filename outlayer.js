@@ -85,7 +85,7 @@ function Outlayer( element, options ) {
   // bail out if not proper element
   if ( !element || !isElement( element ) ) {
     if ( console ) {
-      console.error( 'bad Outlayer element: ' + element );
+      console.error( 'Cannot create instance with element: ' + element );
     }
     return;
   }
