@@ -126,6 +126,9 @@ Outlayer.prototype.settings = {
 
 // default options
 Outlayer.prototype.options = {
+  containerStyle: {
+    position: 'relative'
+  },
   isInitLayout: true,
   isResizeBound: true,
   itemOptions: {}
@@ -137,6 +140,8 @@ extend( Outlayer.prototype, EventEmitter.prototype );
 Outlayer.prototype._create = function() {
   // get items from children
   this.reloadItems();
+  // set container style
+  extend( this.element.style, this.options.containerStyle );
 
   // bind resize method
   if ( this.options.isResizeBound ) {

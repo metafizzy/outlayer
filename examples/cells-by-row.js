@@ -15,13 +15,7 @@ var defaultOptions = Outlayer.prototype.options;
 defaultOptions.columnWidth = 100;
 defaultOptions.rowHeight = 100;
 
-CellsByRow.prototype._create = function() {
-  Outlayer.prototype._create.call( this );
-
-  this.element.style.position = 'relative';
-};
-
-CellsByRow.prototype._prelayout = function() {
+CellsByRow.prototype._resetLayout = function() {
   this.getSize();
 
   this._getMeasurement( 'columnWidth', 'width' );
@@ -63,16 +57,6 @@ CellsByRow.prototype.layoutItems = function( items, isInstant ) {
   }
   this.element.style.height = elemH + 'px';
 
-};
-
-// ----- Item ----- //
-
-var Item = CellsByRow.Item;
-
-Item.prototype._create = function() {
-  this.css({
-    position: 'absolute'
-  });
 };
 
 })( window );

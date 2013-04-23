@@ -99,7 +99,11 @@ Item.prototype.options = {
 // inherit EventEmitter
 extend( Item.prototype, EventEmitter.prototype );
 
-Item.prototype._create = function() {};
+Item.prototype._create = function() {
+  this.css({
+    position: 'absolute'
+  });
+};
 
 // trigger specified handler for event type
 Item.prototype.handleEvent = function( event ) {
