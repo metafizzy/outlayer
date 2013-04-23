@@ -229,7 +229,7 @@ Outlayer.prototype.getItemElements = function() {
  * lays out all items
  */
 Outlayer.prototype.layout = function() {
-  this._prelayout();
+  this._resetLayout();
 
   // don't animate first layout
   var isInstant = this.options.isLayoutInstant !== undefined ?
@@ -246,7 +246,7 @@ Outlayer.prototype._init = Outlayer.prototype.layout;
 /**
  * logic before any new layout
  */
-Outlayer.prototype._prelayout = function() {
+Outlayer.prototype._resetLayout = function() {
   this.getSize();
 };
 
@@ -446,7 +446,7 @@ Outlayer.prototype.prepended = function( elems ) {
   var previousItems = this.items.slice(0);
   this.items = items.concat( previousItems );
   // start new layout
-  this._prelayout();
+  this._resetLayout();
   // layout new stuff without transition
   this.layoutItems( items, true );
   this.reveal( items );
