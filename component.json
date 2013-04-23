@@ -14,5 +14,9 @@
     "get-style-property": "desandro/get-style-property",
     "jquery-bridget": "desandro/jquery-bridget",
     "matches-selector": "desandro/matches-selector#>=0.2.0"
+  },
+  "devDependencies": {
+    "jquery": ">=1.4.3",
+    "qunit": "~1"
   }
 }
