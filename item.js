@@ -46,12 +46,26 @@ var transitionEndEvent = {
   transition: 'transitionend'
 }[ transitionProperty ];
 
-var transformCSSProperty = {
-  WebkitTransform: '-webkit-transform',
-  MozTransform: '-moz-transform',
-  OTransform: '-o-transform',
-  transform: 'transform'
-}[ transformProperty ];
+// properties that could have vendor prefix
+var prefixableProperties = [
+  'transform',
+  'transition',
+  'transitionDuration',
+  'transitionProperty'
+];
+
+// cache all vendor properties
+var vendorProperties = ( function() {
+  var cache = {};
+  for ( var i=0, len = prefixableProperties.length; i < len; i++ ) {
+    var prop = prefixableProperties[i];
+    var supportedProp = getStyleProperty( prop );
+    if ( supportedProp && supportedProp !== prop ) {
+      cache[ prop ] = supportedProp;
+    }
+  }
+  return cache;
+})();
 
 // -------------------------- Item -------------------------- //
 
@@ -73,20 +87,17 @@ function Item( element, layout, options ) {
 Item.prototype.options = {
   transitionDuration: '0.4s',
   hiddenStyle: {
-    opacity: 0
+    opacity: 0,
+    transform: 'scale(0.001)'
   },
   visibleStyle: {
-    opacity: 1
+    opacity: 1,
+    transform: 'scale(1)'
   }
 };
 
-Item.prototype.options.hiddenStyle[ transformCSSProperty ] = 'scale(0.001)';
-Item.prototype.options.hiddenStyle[ transformCSSProperty ] = 'scale(1)';
-
 // inherit EventEmitter
 extend( Item.prototype, EventEmitter.prototype );
-
-
 
 Item.prototype._create = function() {};
 
@@ -108,8 +119,11 @@ Item.prototype.getSize = function() {
  */
 Item.prototype.css = function( style ) {
   var elemStyle = this.element.style;
+
   for ( var prop in style ) {
-    elemStyle[ prop ] = style[ prop ];
+    // use vendor property if available
+    var supportedProp = vendorProperties[ prop ] || prop;
+    elemStyle[ supportedProp ] = style[ prop ];
   }
 };
 
@@ -164,7 +178,7 @@ Item.prototype._transitionTo = function( x, y ) {
   var transX = x - curX;
   var transY = y - curY;
   var transitionStyle = {};
-  transitionStyle[ transformCSSProperty ] = translate( transX, transY );
+  transitionStyle.transform = translate( transX, transY );
 
   this.transition( transitionStyle, this.layoutPosition );
 };
@@ -218,8 +232,8 @@ Item.prototype._transition = function( style, onTransitionEnd ) {
 
   // enable transition
   var transitionStyle = {};
-  transitionStyle[ transitionProperty + 'Property' ] = transitionValue.join(',');
-  transitionStyle[ transitionProperty + 'Duration' ] = this.options.transitionDuration;
+  transitionStyle.transitionProperty = transitionValue.join(',');
+  transitionStyle.transitionDuration = this.options.transitionDuration;
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
@@ -281,21 +295,16 @@ Item.prototype.ontransitionend = function( event ) {
 };
 
 Item.prototype.removeTransitionStyles = function() {
-  var noTransStyle = {};
   // remove transition
-  noTransStyle[ transitionProperty + 'Property' ] = '';
-  noTransStyle[ transitionProperty + 'Duration' ] = '';
-  this.css( noTransStyle );
+  this.css({
+    transitionProperty: '',
+    transitionDuration: ''
+  });
 };
 
 Item.prototype.remove = function() {
   // start transition
-  var hiddenStyle = {
-    opacity: 0
-  };
-  hiddenStyle[ transformCSSProperty ] = 'scale(0.001)';
-
-  this.transition( hiddenStyle, this.removeElem );
+  this.transition( this.options.hiddenStyle, this.removeElem );
 };
 
 
@@ -307,19 +316,11 @@ Item.prototype.removeElem = function() {
 
 Item.prototype.reveal = !transitionProperty ? function() {} : function() {
   // hide item
-  var hiddenStyle = {
-    opacity: 0
-  };
-  hiddenStyle[ transformCSSProperty ] = 'scale(0.001)';
-  this.css( hiddenStyle );
+  this.css( this.options.hiddenStyle );
   // force redraw. http://blog.alexmaccaw.com/css-transitions
   var h = this.element.offsetHeight;
   // transition to revealed
-  var visibleStyle = {
-    opacity: 1
-  };
-  visibleStyle[ transformCSSProperty ] = 'scale(1)';
-  this.transition( visibleStyle );
+  this.transition( this.options.visibleStyle );
   // hack for JSHint to hush about unused var
   h = null;
 };
@@ -328,7 +329,9 @@ Item.prototype.destroy = function() {
   this.css({
     position: '',
     left: '',
-    top: ''
+    top: '',
+    transition: '',
+    transform: ''
   });
 };
 
