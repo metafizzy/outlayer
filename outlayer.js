@@ -540,6 +540,18 @@ Outlayer.prototype.destroy = function() {
   this.unbindResize();
 };
 
+// -------------------------- data -------------------------- //
+
+/**
+ * get Outlayer instance from element
+ * @param {Element} elem
+ * @returns {Outlayer}
+ */
+Outlayer.data = function( elem ) {
+  var id = elem && elem.outlayerGUID;
+  return id && instances[ id ];
+};
+
 // -------------------------- create Outlayer class -------------------------- //
 
 // Layout = Outlayer.create('layoutname')
@@ -549,29 +561,20 @@ Outlayer.create = function( namespace ) {
     Outlayer.apply( this, arguments );
   }
 
-  extend( Layout.prototype, Outlayer.prototype );
+  Layout.prototype = Outlayer.prototype;
+
+  Layout.prototype.settings.namespace = namespace;
+
+  Layout.data = Outlayer.data;
 
   // sub-class Item
   Layout.Item = function LayoutItem() {
     Item.apply( this, arguments );
   };
 
-  extend( Layout.Item.prototype, Outlayer.Item.prototype );
+  Layout.Item.prototype = Outlayer.Item.prototype;
 
-  Layout.prototype.settings.namespace = namespace;
   Layout.prototype.settings.item = Layout.Item;
-
-  // -------------------------- data -------------------------- //
-
-  /**
-   * get Outlayer instance from element
-   * @param {Element} elem
-   * @returns {Outlayer}
-   */
-  Layout.data = function( elem ) {
-    var id = elem.outlayerGUID;
-    return id && instances[ id ];
-  };
 
   // -------------------------- declarative -------------------------- //
 
