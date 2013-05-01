@@ -6,17 +6,68 @@
   <title>Outlayer tests</title>
 
   <link rel="stylesheet" href="../components/qunit/qunit.css" />
-  <link rel="stylesheet" href="test.css" />
+  <!-- <link rel="stylesheet" href="test.css" /> -->
 
+  <script src="../components/classie/classie.js"></script>
+  <script src="../components/eventEmitter/EventEmitter.js"></script>
+  <script src="../components/eventie/eventie.js"></script>
+  <script src="../components/doc-ready/doc-ready.js"></script>
+  <script src="../components/get-style-property/get-style-property.js"></script>
+  <script src="../components/get-size/get-size.js"></script>
+  <script src="../components/jquery-bridget/jquery.bridget.js"></script>
+  <script src="../components/matches-selector/matches-selector.js"></script>
   <script src="../components/qunit/qunit.js"></script>
+
+  <script src="../item.js"></script>
+  <script src="../outlayer.js"></script>
+
+  <script src="basics.js"></script>
+  <script src="defaults-empty.js"></script>
+  <script src="filter-find.js"></script>
 
 </head>
 <body>
 
   <h1>Outlayer tests</h1>
 
-  <div id="qunit"></div>
+  <div id="empty"></div>
 
+  <h2>filter find</h2>
+
+  <div id="children">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <div id="filtered" class="container">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="foobar"></div>
+  </div>
+
+  <div id="found" class="container">
+    <div><div class="item w2"></div></div>
+    <div><div class="item h2"></div></div>
+    <div><div class="item w2"></div></div>
+    <div><div class="item"></div></div>
+  </div>
+
+  <div id="filter-found" class="container">
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="foobar"></div>
+    <div><div class="item w2"></div></div>
+    <div><div class="item"></div></div>
+  </div>
+
+  <div id="qunit"></div>
 
 </body>
 </html>
