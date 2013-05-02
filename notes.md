@@ -1,6 +1,6 @@
-Layout itemOptions overwrite item's options
-doc ready is there
-Layout.data is there and works
+<!-- Layout itemOptions overwrite item's options -->
+declarative is there
+<!-- Layout.data is there and works -->
 Item.hide
 Item.reveal
 
