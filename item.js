@@ -229,8 +229,7 @@ Item.prototype._nonTransition = function( style, onTransitionEnd ) {
 
 // proper transition
 Item.prototype._transition = function( style, onTransitionEnd ) {
-  this.transitionStyle = style;
-
+  // make transition: foo, bar, baz from style object
   var transitionValue = [];
   for ( var prop in style ) {
     transitionValue.push( prop );
@@ -243,15 +242,16 @@ Item.prototype._transition = function( style, onTransitionEnd ) {
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
-  // bind callback to transition end
-  if ( onTransitionEnd ) {
-    this.on( 'transitionEnd', function( _this ) {
+  this.on( 'transitionEnd', function( _this ) {
+    _this._removeStyles( style );
+    // bind callback to transition end
+    if ( onTransitionEnd ) {
       onTransitionEnd.call( _this );
-      return true; // bind once
-    });
-  }
+    }
+    return true; // bind once
+  });
 
-  // set transition styles
+  // set transition styles, to enable transition
   this.css( transitionStyle );
   // set styles that are transitioning
   this.css( style );
@@ -301,29 +301,35 @@ Item.prototype.ontransitionend = function( event ) {
   }
 
   this.removeTransitionStyles();
-  // clean up transition styles
-  var cleanStyle = {};
-  for ( var prop in this.transitionStyle ) {
-    cleanStyle[ prop ] = '';
-  }
-
-  this.css( cleanStyle );
 
   this.element.removeEventListener( transitionEndEvent, this, false );
-
-  delete this.transitionStyle;
 
   this.isTransitioning = false;
 
   this.emitEvent( 'transitionEnd', [ this ] );
 };
 
+/**
+ * removes style property from element
+ * @param {Object} style
+**/
+Item.prototype._removeStyles = function( style ) {
+  // clean up transition styles
+  var cleanStyle = {};
+  for ( var prop in style ) {
+    cleanStyle[ prop ] = '';
+  }
+  this.css( cleanStyle );
+};
+
+var cleanTransitionStyle = {
+  transitionProperty: '',
+  transitionDuration: ''
+};
+
 Item.prototype.removeTransitionStyles = function() {
   // remove transition
-  this.css({
-    transitionProperty: '',
-    transitionDuration: ''
-  });
+  this.css( cleanTransitionStyle );
 };
 
 // ----- show/hide/remove ----- //
