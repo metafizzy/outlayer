@@ -375,12 +375,10 @@ Item.prototype.hide = function() {
     to: this.options.hiddenStyle,
     // keep hidden stuff hidden
     isCleaning: true,
-    onTransitionEnd: this._displayNone
+    onTransitionEnd: function() {
+      this.css({ display: 'none' });
+    }
   });
-};
-
-Item.prototype._displayNone = function() {
-  this.css({ display: 'none' });
 };
 
 Item.prototype.destroy = function() {
