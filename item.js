@@ -294,12 +294,6 @@ Item.prototype.ontransitionend = function( event ) {
     return;
   }
 
-  // trigger callback
-  if ( this.onTransitionEnd ) {
-    this.onTransitionEnd();
-    delete this.onTransitionEnd;
-  }
-
   this.removeTransitionStyles();
 
   this.element.removeEventListener( transitionEndEvent, this, false );
