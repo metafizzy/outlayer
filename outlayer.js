@@ -286,6 +286,7 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
  * layout a collection of item elements
  */
 Outlayer.prototype.layoutItems = function( items, isInstant ) {
+  /*
   // emit layoutComplete when done
   this._itemsOn( items, 'layout', function onItemsLayout() {
     this.emitEvent( 'layoutComplete', [ this, items ] );
@@ -297,6 +298,7 @@ Outlayer.prototype.layoutItems = function( items, isInstant ) {
     var y = i;
     this._layoutItem( item, x, y, isInstant );
   }
+  */
 };
 
 /**

@@ -6,7 +6,7 @@
   <title>Outlayer tests</title>
 
   <link rel="stylesheet" href="../components/qunit/qunit.css" />
-  <!-- <link rel="stylesheet" href="test.css" /> -->
+  <link rel="stylesheet" href="tests.css" />
 
   <script src="../components/classie/classie.js"></script>
   <script src="../components/eventEmitter/EventEmitter.js"></script>
@@ -24,11 +24,15 @@
   <script src="basics.js"></script>
   <script src="defaults-empty.js"></script>
   <script src="filter-find.js"></script>
+  <script src="remove.js"></script>
+  <script src="add-items.js"></script>
 
 </head>
 <body>
 
   <h1>Outlayer tests</h1>
+
+  <div id="qunit"></div>
 
   <div id="empty"></div>
 
@@ -67,7 +71,25 @@
     <div><div class="item"></div></div>
   </div>
 
-  <div id="qunit"></div>
+  <h2>remove</h2>
+
+  <div id="remove" class="container">
+    <div class="item"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item w2"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <h2>Adding</h2>
+
+  <div id="add-items" class="container">
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
 
 </body>
 </html>
