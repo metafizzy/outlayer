@@ -326,6 +326,8 @@ Item.prototype.removeTransitionStyles = function() {
   });
 };
 
+// ----- show/hide/remove ----- //
+
 Item.prototype.remove = transitionProperty ? function() {
   // start transition
   var _this = this;
