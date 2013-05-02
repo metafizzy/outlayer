@@ -212,6 +212,8 @@ Item.prototype.layoutPosition = function() {
   this.emitEvent( 'layout', [ this ] );
 };
 
+// ----- transition ----- //
+
 /**
  * @param {Object} style - CSS
  * @param {Function} onTransitionEnd
@@ -258,6 +260,24 @@ Item.prototype._transition = function( style, onTransitionEnd ) {
 };
 
 Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
+
+/**
+ * sets start style, then transitions to end style
+ * @param {Object} fromStyle
+ * @param {Object} toStyle
+ */
+Item.prototype.transitionFromTo = function( fromStyle, toStyle ) {
+  // show item
+  this.css( fromStyle );
+  // force redraw. http://blog.alexmaccaw.com/css-transitions
+  var h = this.element.offsetHeight;
+  // transition to appear
+  this.transition( toStyle );
+  // hack for JSHint to hush about unused var
+  h = null;
+};
+
+// ----- events ----- //
 
 Item.prototype.onwebkitTransitionEnd = function( event ) {
   this.ontransitionend( event );
@@ -306,11 +326,16 @@ Item.prototype.removeTransitionStyles = function() {
   });
 };
 
-Item.prototype.remove = function() {
+Item.prototype.remove = transitionProperty ? function() {
   // start transition
-  this.transition( this.options.hiddenStyle, this.removeElem );
-};
-
+  var _this = this;
+  this.on( 'transitionEnd', function() {
+    _this.removeElem();
+    return true; // bind once
+  });
+  this.hide();
+// if no transition just remove element
+} : Item.prototype.removeElem;
 
 // remove element from DOM
 Item.prototype.removeElem = function() {
@@ -318,15 +343,12 @@ Item.prototype.removeElem = function() {
   this.emitEvent( 'remove', [ this ] );
 };
 
-Item.prototype.reveal = !transitionProperty ? function() {} : function() {
-  // hide item
-  this.css( this.options.hiddenStyle );
-  // force redraw. http://blog.alexmaccaw.com/css-transitions
-  var h = this.element.offsetHeight;
-  // transition to revealed
-  this.transition( this.options.visibleStyle );
-  // hack for JSHint to hush about unused var
-  h = null;
+Item.prototype.reveal = function() {
+  this.transitionFromTo( this.options.hiddenStyle, this.options.visibleStyle );
+};
+
+Item.prototype.hide = function() {
+  this.transitionFromTo( this.options.visibleStyle, this.options.hiddenStyle );
 };
 
 Item.prototype.destroy = function() {
