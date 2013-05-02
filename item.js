@@ -359,6 +359,9 @@ Item.prototype.removeElem = function() {
 };
 
 Item.prototype.reveal = function() {
+  // remove display: none
+  this.css({ display: '' });
+
   this.transition({
     from: this.options.hiddenStyle,
     to: this.options.visibleStyle,
@@ -371,8 +374,13 @@ Item.prototype.hide = function() {
     from: this.options.visibleStyle,
     to: this.options.hiddenStyle,
     // keep hidden stuff hidden
-    isCleaning: false
+    isCleaning: true,
+    onTransitionEnd: this._displayNone
   });
+};
+
+Item.prototype._displayNone = function() {
+  this.css({ display: 'none' });
 };
 
 Item.prototype.destroy = function() {
