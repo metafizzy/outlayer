@@ -70,6 +70,10 @@ var vendorProperties = ( function() {
 // -------------------------- Item -------------------------- //
 
 function Item( element, layout, options ) {
+  if ( !element ) {
+    return;
+  }
+
   this.element = element;
   // parent layout class, i.e. Masonry, Isotope, or Packery
   this.layout = layout;

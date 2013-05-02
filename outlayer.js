@@ -563,7 +563,7 @@ Outlayer.create = function( namespace ) {
     Outlayer.apply( this, arguments );
   }
 
-  Layout.prototype = Outlayer.prototype;
+  extend( Layout.prototype, Outlayer.prototype )
 
   Layout.prototype.settings.namespace = namespace;
 
@@ -574,7 +574,7 @@ Outlayer.create = function( namespace ) {
     Item.apply( this, arguments );
   };
 
-  Layout.Item.prototype = Outlayer.Item.prototype;
+  Layout.Item.prototype = new Outlayer.Item();
 
   Layout.prototype.settings.item = Layout.Item;
 
