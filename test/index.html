@@ -17,11 +17,14 @@
   <script src="../components/jquery-bridget/jquery.bridget.js"></script>
   <script src="../components/matches-selector/matches-selector.js"></script>
   <script src="../components/qunit/qunit.js"></script>
+  <script src="../components/jquery/jquery.min.js"></script>
 
   <script src="../item.js"></script>
   <script src="../outlayer.js"></script>
 
   <script src="helpers.js"></script>
+  <script src="../examples/cells-by-row.js"></script>
+
   <script src="basics.js"></script>
   <script src="defaults.js"></script>
   <script src="options.js"></script>
@@ -29,6 +32,10 @@
   <script src="remove.js"></script>
   <script src="add-items.js"></script>
   <script src="prepend.js"></script>
+  <!-- with CellsByRow -->
+  <script src="create.js"></script>
+  <script src="layout.js"></script>
+  <script src="declarative.js"></script>
 
 </head>
 <body>
@@ -109,6 +116,47 @@
   <h2>Prepend</h2>
 
   <div id="prepend" class="container">
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <h2>layout</h2>
+
+  <div id="layout" class="container">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <h2>Declarative</h2>
+
+  <div id="declarative" class="container js-cells-by-row">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <!-- wrong quote marks for JSON -->
+  <div id="declarative-bad-json" class="container js-cells-by-row" data-cells-by-row-options="{ 'columnWidth': 30 }">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <div id="declarative-good-json" class="container js-cells-by-row" data-cells-by-row-options='{ "columnWidth": 25, "rowHeight": 30, "isResizable": false, "foo": "bar" }'>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
     <div class="item"></div>
     <div class="item"></div>
   </div>
