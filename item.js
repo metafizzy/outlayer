@@ -153,10 +153,10 @@ Item.prototype.getPosition = function() {
 // transform translate function
 var translate = is3d ?
   function( x, y ) {
-    return 'translate3d( ' + x + 'px, ' + y + 'px, 0)';
+    return 'translate3d(' + x + 'px, ' + y + 'px, 0)';
   } :
   function( x, y ) {
-    return 'translate( ' + x + 'px, ' + y + 'px)';
+    return 'translate(' + x + 'px, ' + y + 'px)';
   };
 
 
