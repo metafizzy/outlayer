@@ -1,10 +1,10 @@
 <!-- Layout itemOptions overwrite item's options -->
 <!-- declarative is there -->
 <!-- Layout.data is there and works -->
-move item
+<!-- move item -->
 item emits layout
-Item.hide
-Item.reveal
+<!-- Item.hide -->
+<!-- Item.reveal -->
 
 ## docs
 
