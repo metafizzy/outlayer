@@ -226,6 +226,9 @@ Item.prototype.layoutPosition = function() {
 // non transition, just trigger callback
 Item.prototype._nonTransition = function( args ) {
   this.css( args.to );
+  if ( args.isCleaning ) {
+    this._removeStyles( args.to );
+  }
   if ( args.onTransitionEnd ) {
     args.onTransitionEnd.call( this );
   }
