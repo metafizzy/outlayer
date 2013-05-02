@@ -370,6 +370,9 @@ Item.prototype.reveal = function() {
 };
 
 Item.prototype.hide = function() {
+  // remove display: none
+  this.css({ display: '' });
+
   this.transition({
     from: this.options.visibleStyle,
     to: this.options.hiddenStyle,
