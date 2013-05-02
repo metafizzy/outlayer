@@ -184,7 +184,11 @@ Item.prototype._transitionTo = function( x, y ) {
   var transitionStyle = {};
   transitionStyle.transform = translate( transX, transY );
 
-  this.transition( transitionStyle, this.layoutPosition );
+  this.transition({
+    to: transitionStyle,
+    onTransitionEnd: this.layoutPosition,
+    isCleaning: true
+  });
 };
 
 // non transition + transform support
@@ -220,15 +224,24 @@ Item.prototype.layoutPosition = function() {
  */
 
 // non transition, just trigger callback
-Item.prototype._nonTransition = function( style, onTransitionEnd ) {
-  this.css( style );
-  if ( onTransitionEnd ) {
-    onTransitionEnd.call( this );
+Item.prototype._nonTransition = function( args ) {
+  this.css( args.to );
+  if ( args.onTransitionEnd ) {
+    args.onTransitionEnd.call( this );
   }
 };
 
-// proper transition
-Item.prototype._transition = function( style, onTransitionEnd ) {
+/**
+ * proper transition
+ * @param {Object} args - arguments
+ *   @param {Object} to - style to transition to
+ *   @param {Object} from - style to start transition from
+ *   @param {Boolean} isCleaning - removes transition styles after transition
+ *   @param {Function} onTransitionEnd - callback
+ */
+Item.prototype._transition = function( args ) {
+
+  var style = args.to;
   // make transition: foo, bar, baz from style object
   var transitionValue = [];
   for ( var prop in style ) {
@@ -242,15 +255,28 @@ Item.prototype._transition = function( style, onTransitionEnd ) {
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
-  this.on( 'transitionEnd', function( _this ) {
-    _this._removeStyles( style );
-    // bind callback to transition end
-    if ( onTransitionEnd ) {
-      onTransitionEnd.call( _this );
-    }
-    return true; // bind once
-  });
+  if ( args.isCleaning || args.onTransitionEnd ) {
+    this.on( 'transitionEnd', function( _this ) {
+      // remove transition styles after transition
+      if ( args.isCleaning ) {
+        _this._removeStyles( style );
+      }
+      // bind callback to transition end
+      if ( args.onTransitionEnd ) {
+        args.onTransitionEnd.call( _this );
+      }
+      return true; // bind once
+    });
+  }
 
+  // set from styles
+  if ( args.from ) {
+    this.css( args.from );
+    // force redraw. http://blog.alexmaccaw.com/css-transitions
+    var h = this.element.offsetHeight;
+    // hack for JSHint to hush about unused var
+    h = null;
+  }
   // set transition styles, to enable transition
   this.css( transitionStyle );
   // set styles that are transitioning
@@ -260,22 +286,6 @@ Item.prototype._transition = function( style, onTransitionEnd ) {
 };
 
 Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
-
-/**
- * sets start style, then transitions to end style
- * @param {Object} fromStyle
- * @param {Object} toStyle
- */
-Item.prototype.transitionFromTo = function( fromStyle, toStyle ) {
-  // show item
-  this.css( fromStyle );
-  // force redraw. http://blog.alexmaccaw.com/css-transitions
-  var h = this.element.offsetHeight;
-  // transition to appear
-  this.transition( toStyle );
-  // hack for JSHint to hush about unused var
-  h = null;
-};
 
 // ----- events ----- //
 
@@ -346,11 +356,20 @@ Item.prototype.removeElem = function() {
 };
 
 Item.prototype.reveal = function() {
-  this.transitionFromTo( this.options.hiddenStyle, this.options.visibleStyle );
+  this.transition({
+    from: this.options.hiddenStyle,
+    to: this.options.visibleStyle,
+    isCleaning: true
+  });
 };
 
 Item.prototype.hide = function() {
-  this.transitionFromTo( this.options.visibleStyle, this.options.hiddenStyle );
+  this.transition({
+    from: this.options.visibleStyle,
+    to: this.options.hiddenStyle,
+    // keep hidden stuff hidden
+    isCleaning: false
+  });
 };
 
 Item.prototype.destroy = function() {
