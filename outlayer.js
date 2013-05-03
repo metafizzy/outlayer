@@ -556,7 +556,10 @@ Outlayer.data = function( elem ) {
 
 // -------------------------- create Outlayer class -------------------------- //
 
-// Layout = Outlayer.create('layoutname')
+/**
+ * create a layout class
+ * @param {String} namespace
+ */
 Outlayer.create = function( namespace ) {
   // sub-class Outlayer
   function Layout() {

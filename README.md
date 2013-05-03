@@ -4,7 +4,7 @@ _Layout class_
 
 Outlayer is a base layout class for layout libraries like [Packery](http://packery.metafizzy.co) and [Masonry](http://masonry.desandro.com)
 
-Outlayer libraries work with a container element and children item elements.
+Outlayer layouts work with a container element and children item elements.
 
 ``` html
 <div class="container">
@@ -17,8 +17,10 @@ Outlayer libraries work with a container element and children item elements.
 
 ## Outlayer.create()
 
+Create a layout class with `Outlayer.create()`
+
 ``` js
-var LayoutClass = Outlayer.create( namespace );
+var Layout = Outlayer.create( namespace );
 // for example
 var Masonry = Outlayer.create('masonry');
 ```
@@ -26,43 +28,21 @@ var Masonry = Outlayer.create('masonry');
 + `namespace` _{String}_
 + returns `LayoutClass` _{Function}_
 
-Create a new layout class. `namespace` is used for jQuery plugin, and for declarative initialization
+Create a new layout class. `namespace` is used for jQuery plugin, and for declarative initialization.
 
-## Layout methods
+The `Layout` inherits from [`Outlayer.prototype`](docs/outlayer.md).
 
-### addItems
+```
+var elem = document.querySelector('#selector');
+var msnry = new Masonry( elem, {
+  // set options...
+  columnWidth: 200
+});
+```
 
-### reloadItems
+## Item
 
-### getItemElements
-
-### layout
-
-### getSize
-
-### _getMeasurement
-
-### layoutItems
-
-### _itemsOn
-
-### bindResize
-
-### unbindResize
-
-### resize
-
-### addItems
-
-### appended
-
-### prepended
-
-### getItem
-
-### remove
-
-### destroy
+Layouts work with Items, accessible as `Layout.Item`. See [Item API](docs/item.md).
 
 ## Declarative
 
@@ -70,11 +50,33 @@ An Outlayer layout class can be initialized via HTML, by setting a class of `.js
 
 ``` html
 <!-- var Masonry = Outlayer.create('masonry') -->
-<div class="js-masonry" data-masonry-options='{ "itemSelector": ".item", "columnWidth": 200 }'>
+<div id="container" class="js-masonry" data-masonry-options='{ "itemSelector": ".item", "columnWidth": 200 }'>
   ...
 </div>
 ```
 
-## Layout.data()
+## .data()
+
+Get a layout instance from an element.
+
+```
+var myMasonry = Masonry.data( document.querySelector('#container') );
+```
 
 ## jQuery plugin
+
+The layout class also works as jQuery plugin.
+
+``` js
+// create Masonry layout class, namespace will be the jQuery method
+var Masonry = Outlayer.create('masonry');
+// rock some jQuery
+$( function() {
+  // .masonry() to initialize
+  var $container = $('#container').masonry({
+    // options...
+  });
+  // methods are available by passing a string as first parameter
+  $container.masonry( 'reveal', elems );
+});
+```

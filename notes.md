@@ -2,9 +2,11 @@
 <!-- declarative is there -->
 <!-- Layout.data is there and works -->
 <!-- move item -->
-item emits layout
+<!-- item emits layout -->
 <!-- Item.hide -->
 <!-- Item.reveal -->
+
+jQuery plugin
 
 ## docs
 
