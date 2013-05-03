@@ -82,6 +82,13 @@ var indexOf = Array.prototype.indexOf ? function( ary, obj ) {
     return -1;
   };
 
+// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+function toDashed( str ) {
+  return str.replace( /(.)([A-Z])/g, function( match, $1, $2 ) {
+    return $1 + '-' + $2;
+  }).toLowerCase();
+}
+
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -588,8 +595,9 @@ Outlayer.create = function( namespace ) {
    * options are parsed from data-namespace-option attribute
    */
   docReady( function() {
-    var elems = document.querySelectorAll( '.js-' + namespace );
-    var dataAttr = 'data-' + namespace + '-options';
+    var dashedNamespace = toDashed( namespace );
+    var elems = document.querySelectorAll( '.js-' + dashedNamespace );
+    var dataAttr = 'data-' + dashedNamespace + '-options';
 
     for ( var i=0, len = elems.length; i < len; i++ ) {
       var elem = elems[i];

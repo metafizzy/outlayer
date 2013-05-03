@@ -8,7 +8,7 @@
 
 var Outlayer = window.Outlayer;
 
-var CellsByRow = window.CellsByRow = Outlayer.create('cells-by-row');
+var CellsByRow = window.CellsByRow = Outlayer.create('cellsByRow');
 
 var defaultOptions = Outlayer.prototype.options;
 

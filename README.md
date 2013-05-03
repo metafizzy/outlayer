@@ -25,7 +25,7 @@ var Layout = Outlayer.create( namespace );
 var Masonry = Outlayer.create('masonry');
 ```
 
-+ `namespace` _{String}_
++ `namespace` _{String}_ should be camelCased
 + returns `LayoutClass` _{Function}_
 
 Create a new layout class. `namespace` is used for jQuery plugin, and for declarative initialization.
@@ -54,6 +54,8 @@ An Outlayer layout class can be initialized via HTML, by setting a class of `.js
   ...
 </div>
 ```
+
+The declarative attributes and class will be dashed. i.e. `Outlayer.create('myNiceLayout')` will use `js-my-nice-layout` the class and `data-my-nice-layout-options` as the options attribute.
 
 ## .data()
 

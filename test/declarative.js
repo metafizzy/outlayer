@@ -30,13 +30,13 @@ test( 'declarative', function() {
   ( function() {
     var container = document.querySelector('#declarative-good-json');
     var cellsLayout = CellsByRow.data( container );
-    ok( cellsLayout instanceof CellsByRow, '.data() got CellByRow instance retrieved from element, with good JSON in data-packery-options' );
+    ok( cellsLayout instanceof CellsByRow, '.data() got CellByRow instance retrieved from element, with good JSON in data-cells-by-row-options' );
     strictEqual( cellsLayout.options.columnWidth, 25, 'columnWidth option was set' );
     strictEqual( cellsLayout.options.rowHeight, 30, 'rowHeight option was set' );
     strictEqual( cellsLayout.options.isResizable, false, 'isResizable option was set' );
     strictEqual( cellsLayout.options.foo, 'bar', 'foo option was set' );
   
-    equal( $.data( container, 'cells-by-row' ), cellsLayout, 'jQuery.data( elem, "cells-by-row") returns CellsByRow instance' );
+    equal( $.data( container, 'cellsByRow' ), cellsLayout, 'jQuery.data( elem, "cellsByRow") returns CellsByRow instance' );
   })();
 
 });
