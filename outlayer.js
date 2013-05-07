@@ -291,21 +291,62 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
 
 /**
  * layout a collection of item elements
+ * @api public
  */
 Outlayer.prototype.layoutItems = function( items, isInstant ) {
-  /*
+  items = this._getItemsForLayout( items );
+
+  this._layoutItems( items, isInstant );
+
+  this._postLayout();
+};
+
+/**
+ * get the items to be laid out
+ * you may want to skip over some items
+ */
+Outlayer.prototype._getItemsForLayout = function( items ) {
+  return items;
+};
+
+
+Outlayer.prototype._layoutItems = function( items, isInstant ) {
+  if ( !items || !items.length ) {
+    // no items, emit event with empty array
+    this.emitEvent( 'layoutComplete', [ this, [] ] );
+    return;
+  }
+
   // emit layoutComplete when done
   this._itemsOn( items, 'layout', function onItemsLayout() {
     this.emitEvent( 'layoutComplete', [ this, items ] );
   });
 
+  var queue = [];
+
   for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
-    var x = i;
-    var y = i;
-    this._layoutItem( item, x, y, isInstant );
+    var itemLayout = this._layoutItem( item, isInstant );
+    queue.push( itemLayout );
   }
-  */
+
+  this._processLayoutQueue( queue );
+};
+
+Outlayer.prototype._layoutItem = function( item, isInstant ) {
+  return {
+    item: item,
+    x: 0,
+    y: 0,
+    isInstant: isInstant
+  };
+};
+
+Outlayer.prototype._processLayoutQueue = function( queue ) {
+  for ( var i=0, len = queue.length; i < len; i++ ) {
+    var obj = queue[i];
+    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant );
+  }
 };
 
 /**
@@ -315,7 +356,7 @@ Outlayer.prototype.layoutItems = function( items, isInstant ) {
  * @param {Number} y - vertical position
  * @param {Boolean} isInstant - disables transitions
  */
-Outlayer.prototype._layoutItem = function( item, x, y, isInstant ) {
+Outlayer.prototype._positionItem = function( item, x, y, isInstant ) {
   if ( isInstant ) {
     // if not transition, just set CSS
     item.goTo( x, y );
@@ -323,6 +364,8 @@ Outlayer.prototype._layoutItem = function( item, x, y, isInstant ) {
     item.moveTo( x, y );
   }
 };
+
+Outlayer.prototype._postLayout = function() {};
 
 /**
  * trigger a callback for a collection of items events
@@ -573,7 +616,7 @@ Outlayer.create = function( namespace ) {
     Outlayer.apply( this, arguments );
   }
 
-  extend( Layout.prototype, Outlayer.prototype )
+  extend( Layout.prototype, Outlayer.prototype );
 
   Layout.prototype.settings.namespace = namespace;
 
