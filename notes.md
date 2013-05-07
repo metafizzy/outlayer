@@ -5,8 +5,9 @@
 <!-- item emits layout -->
 <!-- Item.hide -->
 <!-- Item.reveal -->
+getMeasurements
 
-jQuery plugin
+<!-- jQuery plugin -->
 
 ## docs
 
