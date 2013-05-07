@@ -24,7 +24,7 @@ var document = window.document;
 var console = window.console;
 var jQuery = window.jQuery;
 
-// var noop = function() {};
+var noop = function() {};
 
 // -------------------------- helpers -------------------------- //
 
@@ -304,12 +304,18 @@ Outlayer.prototype.layoutItems = function( items, isInstant ) {
 /**
  * get the items to be laid out
  * you may want to skip over some items
+ * @param {Array} items
+ * @returns {Array} items
  */
 Outlayer.prototype._getItemsForLayout = function( items ) {
   return items;
 };
 
-
+/**
+ * layout items
+ * @param {Array} items
+ * @param {Boolean} isInstant
+ */
 Outlayer.prototype._layoutItems = function( items, isInstant ) {
   if ( !items || !items.length ) {
     // no items, emit event with empty array
@@ -326,22 +332,35 @@ Outlayer.prototype._layoutItems = function( items, isInstant ) {
 
   for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
-    var itemLayout = this._layoutItem( item, isInstant );
-    queue.push( itemLayout );
+    // get x/y object from method
+    var position = this._getItemLayoutPosition( item );
+    // enqueue
+    position.item = item;
+    position.isInstant = isInstant;
+    queue.push( position );
   }
 
   this._processLayoutQueue( queue );
 };
 
-Outlayer.prototype._layoutItem = function( item, isInstant ) {
+/**
+ * get item layout position
+ * @param {Outlayer.Item} item
+ * @returns {Object} x and y position
+ */
+Outlayer.prototype._getItemLayoutPosition = function( /* item */ ) {
   return {
-    item: item,
     x: 0,
-    y: 0,
-    isInstant: isInstant
+    y: 0
   };
 };
 
+/**
+ * iterate over array and position each item
+ * Reason being - separating this logic prevents 'layout invalidation'
+ * thx @paul_irish
+ * @param {Array} queue
+ */
 Outlayer.prototype._processLayoutQueue = function( queue ) {
   for ( var i=0, len = queue.length; i < len; i++ ) {
     var obj = queue[i];
@@ -365,7 +384,11 @@ Outlayer.prototype._positionItem = function( item, x, y, isInstant ) {
   }
 };
 
-Outlayer.prototype._postLayout = function() {};
+/**
+ * Any logic you want to do after each layout,
+ * i.e. size the container
+ */
+Outlayer.prototype._postLayout = noop;
 
 /**
  * trigger a callback for a collection of items events

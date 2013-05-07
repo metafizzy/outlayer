@@ -27,7 +27,7 @@ CellsByRow.prototype._resetLayout = function() {
   this.itemIndex = 0;
 };
 
-CellsByRow.prototype._layoutItem = function( item, isInstant ) {
+CellsByRow.prototype._getItemLayoutPosition = function( item ) {
   item.getSize();
   var column = this.itemIndex % this.cols;
   var row = Math.floor( this.itemIndex / this.cols );
@@ -35,10 +35,8 @@ CellsByRow.prototype._layoutItem = function( item, isInstant ) {
   var y = row * this.rowHeight;
   this.itemIndex++;
   return {
-    item: item,
     x: x,
-    y: y,
-    isInstant: isInstant
+    y: y
   };
 };
 
