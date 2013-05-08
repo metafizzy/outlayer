@@ -3,6 +3,7 @@
   test( 'getMeasurements', function() {
     var container = document.querySelector('#get-measurements')
     var layout = new CellsByRow( container, {
+      itemSelector: '.item',
       columnWidth: 80,
       rowHeight: 65
     });
