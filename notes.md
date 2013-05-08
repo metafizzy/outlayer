@@ -1,13 +1,10 @@
-<!-- Layout itemOptions overwrite item's options -->
-<!-- declarative is there -->
-<!-- Layout.data is there and works -->
-<!-- move item -->
-<!-- item emits layout -->
-<!-- Item.hide -->
-<!-- Item.reveal -->
-<!-- getMeasurements -->
+## need test for
 
-<!-- jQuery plugin -->
+stamp
+unstamp
+stamp option
+_getElementOffset
+
 
 ## docs
 

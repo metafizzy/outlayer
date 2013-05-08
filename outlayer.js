@@ -149,6 +149,7 @@ Outlayer.prototype._create = function() {
   this.reloadItems();
   // elements that affect layout, but are not laid out
   this.stamps = [];
+  this.stamp( this.options.stamp );
   // set container style
   extend( this.element.style, this.options.containerStyle );
 
