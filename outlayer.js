@@ -308,7 +308,14 @@ Outlayer.prototype.layoutItems = function( items, isInstant ) {
  * @returns {Array} items
  */
 Outlayer.prototype._getItemsForLayout = function( items ) {
-  return items;
+  var layoutItems = [];
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    if ( !item.isIgnored ) {
+      layoutItems.push( item );
+    }
+  }
+  return layoutItems;
 };
 
 /**
@@ -597,6 +604,29 @@ Outlayer.prototype.remove = function( elems ) {
     // remove item from collection
     var index = indexOf( this.items, item );
     this.items.splice( index, 1 );
+  }
+};
+
+/**
+ * keep item in collection, but do not lay it out
+ * ignored items do not get skipped in layout
+ * @param {Element} elem
+ */
+Outlayer.prototype.ignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.isIgnored = true;
+  }
+};
+
+/**
+ * return item to layout collection
+ * @param {Element} elem
+ */
+Outlayer.prototype.unignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    delete item.isIgnored;
   }
 };
 
