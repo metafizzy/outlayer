@@ -18,8 +18,8 @@ defaultOptions.rowHeight = 100;
 CellsByRow.prototype._resetLayout = function() {
   this.getSize();
 
-  this._getMeasurement( 'columnWidth', 'width' );
-  this._getMeasurement( 'rowHeight', 'height' );
+  this._getMeasurement( 'columnWidth', 'outerWidth' );
+  this._getMeasurement( 'rowHeight', 'outerHeight' );
 
   this.cols = Math.floor( this.size.innerWidth / this.columnWidth );
   this.cols = Math.max( this.cols, 1 );
