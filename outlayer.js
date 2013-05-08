@@ -624,7 +624,7 @@ Outlayer.prototype.addItems = function( elems ) {
     return;
   }
   // add items to collection
-  this.items.push.apply( this.items, items );
+  this.items = this.items.concat( items );
   return items;
 };
 
