@@ -5,7 +5,7 @@
 <!-- item emits layout -->
 <!-- Item.hide -->
 <!-- Item.reveal -->
-getMeasurements
+<!-- getMeasurements -->
 
 <!-- jQuery plugin -->
 
@@ -13,7 +13,7 @@ getMeasurements
 
 ### methods you can overwrite
 
-Outlayer.layoutItems( items, isStill )
+Outlayer._layoutItem( item )
 
 Outlayer._resetLayout()
 
