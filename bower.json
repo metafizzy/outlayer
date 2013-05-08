@@ -17,5 +17,8 @@
   "devDependencies": {
     "jquery": ">=1.4.3",
     "qunit": "~1"
-  }
+  },
+  "ignore": [
+    "test/"
+  ]
 }
