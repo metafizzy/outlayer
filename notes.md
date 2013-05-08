@@ -23,4 +23,4 @@ Outlayer.resize()
 
 Outlayer.destroy()
 
-Outlayer._getItemsForLayout( items )
+Outlayer._manageStamp( stamp )

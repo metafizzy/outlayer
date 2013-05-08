@@ -147,6 +147,8 @@ extend( Outlayer.prototype, EventEmitter.prototype );
 Outlayer.prototype._create = function() {
   // get items from children
   this.reloadItems();
+  // elements that affect layout, but are not laid out
+  this.stamps = [];
   // set container style
   extend( this.element.style, this.options.containerStyle );
 
@@ -237,6 +239,7 @@ Outlayer.prototype.getItemElements = function() {
  */
 Outlayer.prototype.layout = function() {
   this._resetLayout();
+  this._manageStamps();
 
   // don't animate first layout
   var isInstant = this.options.isLayoutInstant !== undefined ?
@@ -422,6 +425,130 @@ Outlayer.prototype._itemsOn = function( items, eventName, callback ) {
   }
 };
 
+// -------------------------- ignore & stamps -------------------------- //
+
+
+/**
+ * keep item in collection, but do not lay it out
+ * ignored items do not get skipped in layout
+ * @param {Element} elem
+ */
+Outlayer.prototype.ignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.isIgnored = true;
+  }
+};
+
+/**
+ * return item to layout collection
+ * @param {Element} elem
+ */
+Outlayer.prototype.unignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    delete item.isIgnored;
+  }
+};
+
+/**
+ * adds elements to stamps
+ * @param {NodeList, Array, Element, or String} elems
+ */
+Outlayer.prototype.stamp = function( elems ) {
+  elems = this._find( elems );
+  if ( !elems ) {
+    return;
+  }
+
+  this.stamps = this.stamps.concat( elems );
+  // ignore
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    this.ignore( elem );
+  }
+};
+
+/**
+ * removes elements to stamps
+ * @param {NodeList, Array, or Element} elems
+ */
+Outlayer.prototype.unstamp = function( elems ) {
+  elems = this._find( elems );
+  if ( !elems ){
+    return;
+  }
+
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    // filter out removed stamp elements
+    var index = indexOf( this.stamps, elem );
+    if ( index !== -1 ) {
+      this.stamps.splice( index, 1 );
+    }
+    this.unignore( elem );
+  }
+
+};
+
+/**
+ * finds child elements
+ * @param {NodeList, Array, or Element} elems
+ * @returns {Array} elems
+ */
+Outlayer.prototype._find = function( elems ) {
+  if ( !elems ) {
+    return;
+  }
+  // if string, use argument as selector string
+  if ( typeof elems === 'string' ) {
+    elems = this.element.querySelectorAll( elems );
+  }
+  elems = makeArray( elems );
+};
+
+Outlayer.prototype._manageStamps = function() {
+  if ( !this.stamps || !this.stamps.length ) {
+    return;
+  }
+
+  this._getBounds();
+
+  for ( var i=0, len = this.stamps.length; i < len; i++ ) {
+    var stamp = this.stamps[i];
+    this._manageStamp( stamp );
+  }
+};
+
+// update boundingLeft / Top
+Outlayer.prototype._getBounds = function() {
+  // get bounding rect for container element
+  var elementBoundingRect = this.element.getBoundingClientRect();
+  this._boundingLeft = elementBoundingRect.left + this.size.paddingLeft +
+    this.size.borderLeftWidth;
+  this._boundingTop = elementBoundingRect.top + this.size.paddingTop +
+    this.size.borderTopWidth;
+};
+
+/**
+ * @param {Element} stamp
+**/
+Outlayer.prototype._manageStamp = noop;
+
+/**
+ * get x/y position of element relative to container element
+ * @param {Element} elem
+ * @returns {Object} offset
+ */
+Outlayer.prototype._getElementOffset = function( elem ) {
+  var boundingRect = elem.getBoundingClientRect();
+  var offset = {
+    x: boundingRect.left - this._boundingLeft,
+    y: boundingRect.top - this._boundingTop
+  };
+  return offset;
+};
+
 // -------------------------- resize -------------------------- //
 
 // enable event handlers for listeners
@@ -604,29 +731,6 @@ Outlayer.prototype.remove = function( elems ) {
     // remove item from collection
     var index = indexOf( this.items, item );
     this.items.splice( index, 1 );
-  }
-};
-
-/**
- * keep item in collection, but do not lay it out
- * ignored items do not get skipped in layout
- * @param {Element} elem
- */
-Outlayer.prototype.ignore = function( elem ) {
-  var item = this.getItem( elem );
-  if ( item ) {
-    item.isIgnored = true;
-  }
-};
-
-/**
- * return item to layout collection
- * @param {Element} elem
- */
-Outlayer.prototype.unignore = function( elem ) {
-  var item = this.getItem( elem );
-  if ( item ) {
-    delete item.isIgnored;
   }
 };
 
