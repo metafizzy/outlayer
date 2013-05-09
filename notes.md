@@ -1,9 +1,12 @@
 ## need test for
 
+ignore
+unignore
 stamp
 unstamp
 stamp option
 _getElementOffset
+_find
 
 
 ## docs
@@ -13,6 +16,8 @@ _getElementOffset
 Outlayer._layoutItem( item )
 
 Outlayer._resetLayout()
+
+Outlayer._postLayout()
 
 Outlayer._create()
 

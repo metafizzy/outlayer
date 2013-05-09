@@ -506,6 +506,7 @@ Outlayer.prototype._find = function( elems ) {
     elems = this.element.querySelectorAll( elems );
   }
   elems = makeArray( elems );
+  return elems;
 };
 
 Outlayer.prototype._manageStamps = function() {
