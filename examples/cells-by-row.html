@@ -39,6 +39,18 @@
   <div class="item"></div>
 </div>
 
+<div id="bottom-right" class="container">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+
 <script src="../components/get-style-property/get-style-property.js"></script>
 <script src="../components/get-size/get-size.js"></script>
 <script src="../components/matches-selector/matches-selector.js"></script>
@@ -53,8 +65,17 @@
 
 <script>
 docReady( function() {
-  var basic = document.querySelector('#basic');
-  var layout = new CellsByRow( basic );
+  ( function() {
+    var container = document.querySelector('#basic');
+    var layout = new CellsByRow( container );
+  })();
+  ( function() {
+    var container = document.querySelector('#bottom-right');
+    var layout = new CellsByRow( container, {
+      isOriginLeft: false,
+      isOriginTop: false
+    });
+  })();
 });
 </script>
 

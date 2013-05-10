@@ -145,6 +145,9 @@ Outlayer.prototype.options = {
 extend( Outlayer.prototype, EventEmitter.prototype );
 
 Outlayer.prototype._create = function() {
+  // flags for origin position of items
+  this.isOriginLeft = true;
+  this.isOriginTop = true;
   // get items from children
   this.reloadItems();
   // elements that affect layout, but are not laid out

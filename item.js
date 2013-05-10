@@ -138,17 +138,18 @@ Item.prototype.css = function( style ) {
  // measure position, and sets it
 Item.prototype.getPosition = function() {
   var style = getStyle( this.element );
-
-  var x = parseInt( style.left, 10 );
-  var y = parseInt( style.top, 10 );
+  var isOriginLeft = this.layout.isOriginLeft;
+  var isOriginTop = this.layout.isOriginTop;
+  var x = parseInt( style[ isOriginLeft ? 'left' : 'right' ], 10 );
+  var y = parseInt( style[ isOriginTop ? 'top' : 'bottom' ], 10 );
 
   // clean up 'auto' or other non-integer values
   x = isNaN( x ) ? 0 : x;
   y = isNaN( y ) ? 0 : y;
   // remove padding from measurement
   var layoutSize = this.layout.size;
-  x -= layoutSize.paddingLeft;
-  y -= layoutSize.paddingTop;
+  x -= isOriginLeft ? layoutSize.paddingLeft : layoutSize.paddingRight;
+  y -= isOriginTop ? layoutSize.paddingTop : layoutSize.paddingBottom;
 
   this.position.x = x;
   this.position.y = y;
@@ -186,6 +187,9 @@ Item.prototype._transitionTo = function( x, y ) {
   var transX = x - curX;
   var transY = y - curY;
   var transitionStyle = {};
+  // flip cooridinates if origin on right or bottom
+  transX = this.layout.isOriginLeft ? transX : -transX;
+  transY = this.layout.isOriginTop ? transY : -transY;
   transitionStyle.transform = translate( transX, transY );
 
   this.transition({
@@ -210,13 +214,24 @@ Item.prototype.setPosition = function( x, y ) {
   this.position.y = parseInt( y, 10 );
 };
 
+
+// set settled position, apply padding
 Item.prototype.layoutPosition = function() {
   var layoutSize = this.layout.size;
-  this.css({
-    // set settled position, apply padding
-    left: ( this.position.x + layoutSize.paddingLeft ) + 'px',
-    top : ( this.position.y + layoutSize.paddingTop ) + 'px'
-  });
+  var style = {};
+  if ( this.layout.isOriginLeft ) {
+    style.left = ( this.position.x + layoutSize.paddingLeft ) + 'px';
+  } else {
+    style.right = ( this.position.x + layoutSize.paddingRight ) + 'px';
+  }
+
+  if ( this.layout.isOriginTop ) {
+    style.top = ( this.position.y + layoutSize.paddingTop ) + 'px';
+  } else {
+    style.bottom = ( this.position.y + layoutSize.paddingBottom ) + 'px';
+  }
+
+  this.css( style );
   this.emitEvent( 'layout', [ this ] );
 };
 
@@ -392,7 +407,9 @@ Item.prototype.destroy = function() {
   this.css({
     position: '',
     left: '',
+    right: '',
     top: '',
+    bottom: '',
     transition: '',
     transform: ''
   });

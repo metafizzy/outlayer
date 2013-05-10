@@ -14,12 +14,17 @@ var defaultOptions = Outlayer.prototype.options;
 
 defaultOptions.columnWidth = 100;
 defaultOptions.rowHeight = 100;
+defaultOptions.isOriginLeft = true;
+defaultOptions.isOriginTop = true;
 
 CellsByRow.prototype._resetLayout = function() {
   this.getSize();
 
   this._getMeasurement( 'columnWidth', 'outerWidth' );
   this._getMeasurement( 'rowHeight', 'outerHeight' );
+
+  this.isOriginLeft = this.options.isOriginLeft;
+  this.isOriginTop = this.options.isOriginTop;
 
   this.cols = Math.floor( this.size.innerWidth / this.columnWidth );
   this.cols = Math.max( this.cols, 1 );
