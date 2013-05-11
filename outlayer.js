@@ -555,8 +555,8 @@ Outlayer.prototype._getElementOffset = function( elem ) {
     left: boundingRect.left - thisRect.left,
     top: boundingRect.top - thisRect.top,
     right: thisRect.right - boundingRect.right,
-    bottom: thisRect - boundingRect.bottom
-  };a
+    bottom: thisRect.bottom - boundingRect.bottom
+  };
   return offset;
 };
 
