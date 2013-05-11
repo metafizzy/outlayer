@@ -517,7 +517,7 @@ Outlayer.prototype._manageStamps = function() {
     return;
   }
 
-  this._getBounds();
+  this._getBoundingRect();
 
   for ( var i=0, len = this.stamps.length; i < len; i++ ) {
     var stamp = this.stamps[i];
@@ -526,13 +526,16 @@ Outlayer.prototype._manageStamps = function() {
 };
 
 // update boundingLeft / Top
-Outlayer.prototype._getBounds = function() {
+Outlayer.prototype._getBoundingRect = function() {
   // get bounding rect for container element
-  var elementBoundingRect = this.element.getBoundingClientRect();
-  this._boundingLeft = elementBoundingRect.left + this.size.paddingLeft +
-    this.size.borderLeftWidth;
-  this._boundingTop = elementBoundingRect.top + this.size.paddingTop +
-    this.size.borderTopWidth;
+  var boundingRect = this.element.getBoundingClientRect();
+  var size = this.size;
+  this._boundingRect = {
+    left: boundingRect.left + size.paddingLeft + size.borderLeftWidth,
+    top: boundingRect.top + size.paddingTop + size.borderTopWidth,
+    right: boundingRect.right + size.paddingRight + size.borderRightWidth,
+    bottom: boundingRect.bottom + size.paddingBottom + size.borderBottomWidth
+  };
 };
 
 /**
@@ -543,14 +546,17 @@ Outlayer.prototype._manageStamp = noop;
 /**
  * get x/y position of element relative to container element
  * @param {Element} elem
- * @returns {Object} offset
+ * @returns {Object} offset - has left, top, right, bottom
  */
 Outlayer.prototype._getElementOffset = function( elem ) {
   var boundingRect = elem.getBoundingClientRect();
+  var thisRect = this._boundingRect;
   var offset = {
-    x: boundingRect.left - this._boundingLeft,
-    y: boundingRect.top - this._boundingTop
-  };
+    left: boundingRect.left - thisRect.left,
+    top: boundingRect.top - thisRect.top,
+    right: thisRect.right - boundingRect.right,
+    bottom: thisRect - boundingRect.bottom
+  };a
   return offset;
 };
 

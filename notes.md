@@ -7,6 +7,8 @@ unstamp
 stamp option
 _getElementOffset
 _find
+isOriginLeft
+isOriginTop
 
 
 ## docs
