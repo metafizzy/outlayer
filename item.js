@@ -138,8 +138,9 @@ Item.prototype.css = function( style ) {
  // measure position, and sets it
 Item.prototype.getPosition = function() {
   var style = getStyle( this.element );
-  var isOriginLeft = this.layout.isOriginLeft;
-  var isOriginTop = this.layout.isOriginTop;
+  var layoutOptions = this.layout.options;
+  var isOriginLeft = layoutOptions.isOriginLeft;
+  var isOriginTop = layoutOptions.isOriginTop;
   var x = parseInt( style[ isOriginLeft ? 'left' : 'right' ], 10 );
   var y = parseInt( style[ isOriginTop ? 'top' : 'bottom' ], 10 );
 
@@ -188,8 +189,9 @@ Item.prototype._transitionTo = function( x, y ) {
   var transY = y - curY;
   var transitionStyle = {};
   // flip cooridinates if origin on right or bottom
-  transX = this.layout.isOriginLeft ? transX : -transX;
-  transY = this.layout.isOriginTop ? transY : -transY;
+  var layoutOptions = this.layout.options;
+  transX = layoutOptions.isOriginLeft ? transX : -transX;
+  transY = layoutOptions.isOriginTop ? transY : -transY;
   transitionStyle.transform = translate( transX, transY );
 
   this.transition({

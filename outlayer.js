@@ -137,6 +137,8 @@ Outlayer.prototype.options = {
     position: 'relative'
   },
   isInitLayout: true,
+  isOriginLeft: true,
+  isOriginTop: true,
   isResizeBound: true,
   itemOptions: {}
 };
@@ -145,9 +147,6 @@ Outlayer.prototype.options = {
 extend( Outlayer.prototype, EventEmitter.prototype );
 
 Outlayer.prototype._create = function() {
-  // flags for origin position of items
-  this.isOriginLeft = true;
-  this.isOriginTop = true;
   // get items from children
   this.reloadItems();
   // elements that affect layout, but are not laid out
@@ -497,7 +496,7 @@ Outlayer.prototype.unstamp = function( elems ) {
 
 /**
  * finds child elements
- * @param {NodeList, Array, or Element} elems
+ * @param {NodeList, Array, Element, or String} elems
  * @returns {Array} elems
  */
 Outlayer.prototype._find = function( elems ) {
