@@ -2,13 +2,17 @@
 
 ignore
 unignore
-stamp
-unstamp
-stamp option
+<!-- stamp -->
+<!-- unstamp -->
+<!-- stamp option -->
 _getElementOffset
 _find
 isOriginLeft
 isOriginTop
+
+## To do
+
+AMD
 
 
 ## docs
