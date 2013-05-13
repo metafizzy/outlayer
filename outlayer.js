@@ -532,8 +532,8 @@ Outlayer.prototype._getBoundingRect = function() {
   this._boundingRect = {
     left: boundingRect.left + size.paddingLeft + size.borderLeftWidth,
     top: boundingRect.top + size.paddingTop + size.borderTopWidth,
-    right: boundingRect.right + size.paddingRight + size.borderRightWidth,
-    bottom: boundingRect.bottom + size.paddingBottom + size.borderBottomWidth
+    right: boundingRect.right - ( size.paddingRight + size.borderRightWidth ),
+    bottom: boundingRect.bottom - ( size.paddingBottom + size.borderBottomWidth )
   };
 };
 

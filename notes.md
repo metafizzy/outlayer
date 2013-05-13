@@ -5,8 +5,8 @@ unignore
 <!-- stamp -->
 <!-- unstamp -->
 <!-- stamp option -->
-_getElementOffset
-_find
+<!-- _getElementOffset -->
+<!-- _find -->
 isOriginLeft
 isOriginTop
 
