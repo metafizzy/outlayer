@@ -611,7 +611,10 @@ Outlayer.prototype.onresize = function() {
 Outlayer.prototype.resize = function() {
   // don't trigger if size did not change
   var size = getSize( this.element );
-  if ( size.innerWidth === this.size.innerWidth ) {
+  // check that elementSize and size are there
+  // IE8 triggers resize on body size change, so they might not be
+  var hasSizes = this.elementSize && size;
+  if ( hasSizes && size.innerWidth === this.elementSize.innerWidth ) {
     return;
   }
 
