@@ -332,7 +332,7 @@ Outlayer.prototype._getItemsForLayout = function( items ) {
 Outlayer.prototype._layoutItems = function( items, isInstant ) {
   if ( !items || !items.length ) {
     // no items, emit event with empty array
-    this.emitEvent( 'layoutComplete', [ this, [] ] );
+    this.emitEvent( 'layoutComplete', [ this, items ] );
     return;
   }
 
