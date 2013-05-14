@@ -158,3 +158,14 @@ Outlayer.data = function( elem ) {}
  */
 Outlayer.create = function( namespace ) {}
 ```
+
+
+## Options
+
++ isInitLayout
++ stamp
++ containerStyle
++ isResizeBound
++ itemOptions
++ itemSelector
++ isLayoutInstant

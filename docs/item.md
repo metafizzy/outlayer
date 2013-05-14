@@ -50,3 +50,9 @@ Item.prototype.hide = function() {}
 
 Item.prototype.destroy = function() {}
 ```
+
+## Options
+
++ transitionDuration
++ hiddenStyle
++ visibleStyle

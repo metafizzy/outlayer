@@ -2,6 +2,7 @@
 
 ignore
 unignore
+layoutItems does not layout ignored items
 <!-- stamp -->
 <!-- unstamp -->
 <!-- stamp option -->
@@ -13,7 +14,6 @@ isOriginTop
 ## To do
 
 AMD
-
 
 ## docs
 
