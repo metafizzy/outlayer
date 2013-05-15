@@ -810,13 +810,15 @@ Outlayer.data = function( elem ) {
  * create a layout class
  * @param {String} namespace
  */
-Outlayer.create = function( namespace ) {
+Outlayer.create = function( namespace, options ) {
   // sub-class Outlayer
   function Layout() {
     Outlayer.apply( this, arguments );
   }
 
   extend( Layout.prototype, Outlayer.prototype );
+
+  extend( Layout.prototype.options, options );
 
   Layout.prototype.settings.namespace = namespace;
 

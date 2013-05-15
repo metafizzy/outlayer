@@ -8,14 +8,10 @@
 
 var Outlayer = window.Outlayer;
 
-var CellsByRow = window.CellsByRow = Outlayer.create('cellsByRow');
-
-var defaultOptions = Outlayer.prototype.options;
-
-defaultOptions.columnWidth = 100;
-defaultOptions.rowHeight = 100;
-defaultOptions.isOriginLeft = true;
-defaultOptions.isOriginTop = true;
+var CellsByRow = window.CellsByRow = Outlayer.create( 'cellsByRow', {
+  columnWidth: 100,
+  rowHeight: 100
+});
 
 CellsByRow.prototype._resetLayout = function() {
   this.getSize();
