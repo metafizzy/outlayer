@@ -45,16 +45,10 @@ CellsByRow.prototype._getItemLayoutPosition = function( item ) {
   };
 };
 
-CellsByRow.prototype._postLayout = function() {
-  // set container size
-  var elemH = Math.ceil( this.itemIndex / this.cols ) * this.rowHeight;
-  // add padding and border width if border box
-  var elemSize = this.size;
-  if ( elemSize.isBorderBox ) {
-    elemH += elemSize.paddingBottom + elemSize.paddingTop +
-      elemSize.borderTopWidth + elemSize.borderBottomWidth;
-  }
-  this.element.style.height = elemH + 'px';
+CellsByRow.prototype._sizeContainerPostLayout = function() {
+  return {
+    height: Math.ceil( this.itemIndex / this.cols ) * this.rowHeight
+  };
 };
 
 })( window );
