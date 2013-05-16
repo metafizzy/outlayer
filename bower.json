@@ -12,7 +12,7 @@
     "eventie": "desandro/eventie",
     "get-size": "desandro/get-size#>=1.0.0",
     "get-style-property": "desandro/get-style-property",
-    "jquery-bridget": "desandro/jquery-bridget",
+    "jquery-bridget": "~1.0",
     "matches-selector": "desandro/matches-selector#>=0.2.0"
   },
   "devDependencies": {
