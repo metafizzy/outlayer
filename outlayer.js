@@ -409,6 +409,11 @@ Outlayer.prototype._postLayout = function() {
   }
 };
 
+/**
+ * @returns {Object} size
+ *   @param {Number} width
+ *   @param {Number} height
+ */
 Outlayer.prototype._sizeContainerPostLayout = noop;
 
 /**
