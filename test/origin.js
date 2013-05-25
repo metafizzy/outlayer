@@ -5,28 +5,63 @@ test( 'origin', function() {
   var CellsByRow = window.CellsByRow;
 
   var elem = document.querySelector('#origin');
-  var layout = new CellsByRow( elem );
+  var layout = new CellsByRow( elem, {
+    itemOptions: {
+      transitionDuration: '0.1s'
+    }
+  });
 
   function checkItemPosition( itemIndex, x, y ) {
     var itemElem = layout.items[ itemIndex ].element;
     var message = 'item ' + itemIndex + ' ';
-    equal( itemElem.style.left, x + 'px', message + 'left = ' + x );
-    equal( itemElem.style.top, y + 'px', message + 'top = ' + y );
+    var xProperty = layout.options.isOriginLeft ? 'left' : 'right';
+    var yProperty = layout.options.isOriginTop ? 'top' : 'bottom';
+    equal( itemElem.style[ xProperty ], x + 'px', message + xProperty + ' = ' + x );
+    equal( itemElem.style[ yProperty ], y + 'px', message + yProperty + ' = ' + y );
   }
 
+  // top left
   checkItemPosition( 0,   0,   0 );
   checkItemPosition( 1, 100,   0 );
   checkItemPosition( 2,   0, 100 );
 
+  // top right
   layout.options.isOriginLeft = false;
   layout.on( 'layoutComplete', function() {
-    checkItemPosition( 0, 100,   0 );
-    checkItemPosition( 1,   0,   0 );
-    checkItemPosition( 2, 100, 100 );
-    start();
+    checkItemPosition( 0,   0,   0 );
+    checkItemPosition( 1, 100,   0 );
+    checkItemPosition( 2,   0, 100 );
+    testBottomRight();
+    // start();
     return true; // bind once
   });
   stop();
   layout.layout();
+
+  // bottom right
+  function testBottomRight() {
+    layout.options.isOriginTop = false;
+    layout.on( 'layoutComplete', function() {
+      checkItemPosition( 0,   0,   0 );
+      checkItemPosition( 1, 100,   0 );
+      checkItemPosition( 2,   0, 100 );
+      testBottomLeft();
+      return true; // bind once
+    });
+    layout.layout();
+  }
+
+  // bottom right
+  function testBottomLeft() {
+    layout.options.isOriginLeft = true;
+    layout.on( 'layoutComplete', function() {
+      checkItemPosition( 0,   0,   0 );
+      checkItemPosition( 1, 100,   0 );
+      checkItemPosition( 2,   0, 100 );
+      start();
+      return true; // bind once
+    });
+    layout.layout();
+  }
 
 });

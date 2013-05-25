@@ -221,16 +221,22 @@ Item.prototype.setPosition = function( x, y ) {
 Item.prototype.layoutPosition = function() {
   var layoutSize = this.layout.size;
   var style = {};
+
   if ( this.layout.isOriginLeft ) {
     style.left = ( this.position.x + layoutSize.paddingLeft ) + 'px';
+    // reset other property
+    style.right = '';
   } else {
     style.right = ( this.position.x + layoutSize.paddingRight ) + 'px';
+    style.left = '';
   }
 
   if ( this.layout.isOriginTop ) {
     style.top = ( this.position.y + layoutSize.paddingTop ) + 'px';
+    style.bottom = '';
   } else {
     style.bottom = ( this.position.y + layoutSize.paddingBottom ) + 'px';
+    style.top = '';
   }
 
   this.css( style );
