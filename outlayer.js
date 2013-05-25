@@ -809,6 +809,14 @@ Outlayer.data = function( elem ) {
   return id && instances[ id ];
 };
 
+// --------------------------  -------------------------- //
+
+// copy an object on the Outlayer prototype
+// used in options and settings
+function copyOutlayerProto( obj, property ) {
+  obj.prototype[ property ] = extend( {}, Outlayer.prototype[ property ] );
+}
+
 // -------------------------- create Outlayer class -------------------------- //
 
 /**
@@ -822,6 +830,9 @@ Outlayer.create = function( namespace, options ) {
   }
 
   extend( Layout.prototype, Outlayer.prototype );
+
+  copyOutlayerProto( Layout, 'options' );
+  copyOutlayerProto( Layout, 'settings' );
 
   extend( Layout.prototype.options, options );
 
