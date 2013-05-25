@@ -270,6 +270,11 @@ Item.prototype._nonTransition = function( args ) {
  *   @param {Function} onTransitionEnd - callback
  */
 Item.prototype._transition = function( args ) {
+  // redirect to nonTransition if no transition duration
+  if ( !parseFloat( this.options.transitionDuration ) ) {
+    this._nonTransition( args );
+    return;
+  }
 
   var style = args.to;
   // make transition: foo, bar, baz from style object
@@ -285,13 +290,14 @@ Item.prototype._transition = function( args ) {
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
+  // if there's stuff to do after the transition
   if ( args.isCleaning || args.onTransitionEnd ) {
     this.on( 'transitionEnd', function( _this ) {
       // remove transition styles after transition
       if ( args.isCleaning ) {
         _this._removeStyles( style );
       }
-      // bind callback to transition end
+      // trigger callback now that transition has ended
       if ( args.onTransitionEnd ) {
         args.onTransitionEnd.call( _this );
       }

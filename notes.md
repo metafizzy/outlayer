@@ -8,8 +8,8 @@ layoutItems does not layout ignored items
 <!-- stamp option -->
 <!-- _getElementOffset -->
 <!-- _find -->
-isOriginLeft
-isOriginTop
+<!-- isOriginLeft -->
+<!-- isOriginTop -->
 _sizeContainerPostLayout
 
 ## To do
