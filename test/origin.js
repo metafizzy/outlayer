@@ -3,6 +3,16 @@ test( 'origin', function() {
   'use strict';
 
   var CellsByRow = window.CellsByRow;
+  var supportsTransition = !!window.getStyleProperty('transition');
+  // triggering a layout call within a layout callback triggers
+  // infinite loop
+  function doNext( fn ) {
+    if ( supportsTransition ) {
+      fn();
+    } else {
+      setTimeout( fn );
+    }
+  }
 
   var elem = document.querySelector('#origin');
   var layout = new CellsByRow( elem, {
@@ -31,7 +41,7 @@ test( 'origin', function() {
     checkItemPosition( 0,   0,   0 );
     checkItemPosition( 1, 100,   0 );
     checkItemPosition( 2,   0, 100 );
-    testBottomRight();
+    doNext( testBottomRight );
     // start();
     return true; // bind once
   });
@@ -45,7 +55,7 @@ test( 'origin', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
       checkItemPosition( 2,   0, 100 );
-      testBottomLeft();
+      doNext( testBottomLeft );
       return true; // bind once
     });
     layout.layout();
