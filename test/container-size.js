@@ -1,5 +1,7 @@
 test( 'container size', function() {
 
+  var getSize = window.getSize;
+
   // test layout that just sets size
   var Sizer = Outlayer.create( 'sizer', {
     width: 220,
@@ -23,5 +25,18 @@ test( 'container size', function() {
   }
 
   checkSize( 220, 120 );
+
+
+  if ( layout.size.isBorderBox ) {
+    elem.style.padding = '10px 20px 30px 40px';
+    layout.layout();
+    checkSize( 280, 160 );
+
+    elem.style.borderStyle = 'solid';
+    elem.style.borderWidth = '4px 3px 2px 1px';
+
+    layout.layout();
+    checkSize( 284, 166 );
+  }
 
 });
