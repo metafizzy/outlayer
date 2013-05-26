@@ -1,6 +1,6 @@
 /*!
- * Outlayer
- * layout class
+ * Outlayer v0.4.2
+ * the brains and guts of a layout library
  */
 
 ( function( window ) {
