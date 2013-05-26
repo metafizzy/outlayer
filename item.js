@@ -156,6 +156,33 @@ Item.prototype.getPosition = function() {
   this.position.y = y;
 };
 
+// set settled position, apply padding
+Item.prototype.layoutPosition = function() {
+  var layoutSize = this.layout.size;
+  var style = {};
+
+  if ( this.layout.isOriginLeft ) {
+    style.left = ( this.position.x + layoutSize.paddingLeft ) + 'px';
+    // reset other property
+    style.right = '';
+  } else {
+    style.right = ( this.position.x + layoutSize.paddingRight ) + 'px';
+    style.left = '';
+  }
+
+  if ( this.layout.isOriginTop ) {
+    style.top = ( this.position.y + layoutSize.paddingTop ) + 'px';
+    style.bottom = '';
+  } else {
+    style.bottom = ( this.position.y + layoutSize.paddingBottom ) + 'px';
+    style.top = '';
+  }
+
+  this.css( style );
+  this.emitEvent( 'layout', [ this ] );
+};
+
+
 // transform translate function
 var translate = is3d ?
   function( x, y ) {
@@ -214,33 +241,6 @@ Item.prototype.moveTo = supportsCSS3 ?
 Item.prototype.setPosition = function( x, y ) {
   this.position.x = parseInt( x, 10 );
   this.position.y = parseInt( y, 10 );
-};
-
-
-// set settled position, apply padding
-Item.prototype.layoutPosition = function() {
-  var layoutSize = this.layout.size;
-  var style = {};
-
-  if ( this.layout.isOriginLeft ) {
-    style.left = ( this.position.x + layoutSize.paddingLeft ) + 'px';
-    // reset other property
-    style.right = '';
-  } else {
-    style.right = ( this.position.x + layoutSize.paddingRight ) + 'px';
-    style.left = '';
-  }
-
-  if ( this.layout.isOriginTop ) {
-    style.top = ( this.position.y + layoutSize.paddingTop ) + 'px';
-    style.bottom = '';
-  } else {
-    style.bottom = ( this.position.y + layoutSize.paddingBottom ) + 'px';
-    style.top = '';
-  }
-
-  this.css( style );
-  this.emitEvent( 'layout', [ this ] );
 };
 
 // ----- transition ----- //
@@ -374,6 +374,12 @@ Item.prototype.removeTransitionStyles = function() {
 
 // ----- show/hide/remove ----- //
 
+// remove element from DOM
+Item.prototype.removeElem = function() {
+  this.element.parentNode.removeChild( this.element );
+  this.emitEvent( 'remove', [ this ] );
+};
+
 Item.prototype.remove = transitionProperty ? function() {
   // start transition
   var _this = this;
@@ -384,12 +390,6 @@ Item.prototype.remove = transitionProperty ? function() {
   this.hide();
 // if no transition just remove element
 } : Item.prototype.removeElem;
-
-// remove element from DOM
-Item.prototype.removeElem = function() {
-  this.element.parentNode.removeChild( this.element );
-  this.emitEvent( 'remove', [ this ] );
-};
 
 Item.prototype.reveal = function() {
   // remove display: none
