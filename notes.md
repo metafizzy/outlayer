@@ -10,7 +10,7 @@ layoutItems does not layout ignored items
 <!-- _find -->
 <!-- isOriginLeft -->
 <!-- isOriginTop -->
-<!-- _sizeContainerPostLayout -->
+<!-- _getContainerSize -->
 
 ## To do
 
@@ -26,7 +26,7 @@ Outlayer._resetLayout()
 
 Outlayer._postLayout()
 
-Outlayer._sizeContainerPostLayout()
+Outlayer._getContainerSize()
 
 Outlayer._create()
 

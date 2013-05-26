@@ -41,7 +41,7 @@ CellsByRow.prototype._getItemLayoutPosition = function( item ) {
   };
 };
 
-CellsByRow.prototype._sizeContainerPostLayout = function() {
+CellsByRow.prototype._getContainerSize = function() {
   return {
     height: Math.ceil( this.itemIndex / this.cols ) * this.rowHeight
   };

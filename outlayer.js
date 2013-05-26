@@ -402,7 +402,7 @@ Outlayer.prototype._positionItem = function( item, x, y, isInstant ) {
  * i.e. size the container
  */
 Outlayer.prototype._postLayout = function() {
-  var size = this._sizeContainerPostLayout();
+  var size = this._getContainerSize();
   if ( size ) {
     this._setContainerMeasure( size.width, true );
     this._setContainerMeasure( size.height, false );
@@ -414,7 +414,7 @@ Outlayer.prototype._postLayout = function() {
  *   @param {Number} width
  *   @param {Number} height
  */
-Outlayer.prototype._sizeContainerPostLayout = noop;
+Outlayer.prototype._getContainerSize = noop;
 
 /**
  * @param {Number} measure - size of width or height

@@ -8,7 +8,7 @@ test( 'container size', function() {
     height: 120
   });
 
-  Sizer.prototype._sizeContainerPostLayout = function() {
+  Sizer.prototype._getContainerSize = function() {
     return {
       width: this.options.width,
       height: this.options.height
