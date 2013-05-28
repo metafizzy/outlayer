@@ -97,7 +97,18 @@ var GUID = 0;
 // internal store of all Outlayer intances
 var instances = {};
 
+
+/**
+ * @param {Element, String} element
+ * @param {Object} options
+ * @constructor
+ */
 function Outlayer( element, options ) {
+  // use element as selector string
+  if ( typeof element === 'string' ) {
+    element = document.querySelector( element );
+  }
+
   // bail out if not proper element
   if ( !element || !isElement( element ) ) {
     if ( console ) {
