@@ -1,5 +1,14 @@
 # Outlayer
 
+``` js
+/**
+ * @param {Element, String} element
+ * @param {Object} options
+ * @constructor
+ */
+function Outlayer( element, options ) {}
+```
+
 ## Prototype methods
 
 ``` js
@@ -162,10 +171,12 @@ Outlayer.create = function( namespace ) {}
 
 ## Options
 
-+ isInitLayout
-+ stamp
-+ containerStyle
-+ isResizeBound
++ containerStyle `{ position: 'relative' }`
++ isInitLayout `true`
++ isLayoutInstant
++ isOriginLeft `true`
++ isOriginTop `true`
++ isResizeBound `true`
 + itemOptions
 + itemSelector
-+ isLayoutInstant
++ stamp
