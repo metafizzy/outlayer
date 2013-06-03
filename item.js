@@ -159,9 +159,10 @@ Item.prototype.getPosition = function() {
 // set settled position, apply padding
 Item.prototype.layoutPosition = function() {
   var layoutSize = this.layout.size;
+  var layoutOptions = this.layout.options;
   var style = {};
 
-  if ( this.layout.isOriginLeft ) {
+  if ( layoutOptions.isOriginLeft ) {
     style.left = ( this.position.x + layoutSize.paddingLeft ) + 'px';
     // reset other property
     style.right = '';
@@ -170,7 +171,7 @@ Item.prototype.layoutPosition = function() {
     style.left = '';
   }
 
-  if ( this.layout.isOriginTop ) {
+  if ( layoutOptions.isOriginTop ) {
     style.top = ( this.position.y + layoutSize.paddingTop ) + 'px';
     style.bottom = '';
   } else {

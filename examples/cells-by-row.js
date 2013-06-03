@@ -19,9 +19,6 @@ CellsByRow.prototype._resetLayout = function() {
   this._getMeasurement( 'columnWidth', 'outerWidth' );
   this._getMeasurement( 'rowHeight', 'outerHeight' );
 
-  this.isOriginLeft = this.options.isOriginLeft;
-  this.isOriginTop = this.options.isOriginTop;
-
   this.cols = Math.floor( this.size.innerWidth / this.columnWidth );
   this.cols = Math.max( this.cols, 1 );
 
