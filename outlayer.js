@@ -596,11 +596,12 @@ Outlayer.prototype._manageStamp = noop;
 Outlayer.prototype._getElementOffset = function( elem ) {
   var boundingRect = elem.getBoundingClientRect();
   var thisRect = this._boundingRect;
+  var size = getSize( elem );
   var offset = {
-    left: boundingRect.left - thisRect.left,
-    top: boundingRect.top - thisRect.top,
-    right: thisRect.right - boundingRect.right,
-    bottom: thisRect.bottom - boundingRect.bottom
+    left: boundingRect.left - thisRect.left - size.marginLeft,
+    top: boundingRect.top - thisRect.top - size.marginTop,
+    right: thisRect.right - boundingRect.right - size.marginRight,
+    bottom: thisRect.bottom - boundingRect.bottom - size.marginBottom
   };
   return offset;
 };

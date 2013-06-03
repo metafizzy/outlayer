@@ -51,11 +51,24 @@ test( 'offset', function() {
   layout._getBoundingRect();
   offset1 = layout._getElementOffset( stamp1 );
   offset2 = layout._getElementOffset( stamp2 );
-  // left/top should still be the same
+
   equal( offset1.left, 0, 'stamp1 offset with border and padding, left: 0' );
   equal( offset1.top, 10, 'stamp1 offset with border and padding, top: 10' );
   equal( offset2.right, 30, 'stamp2 offset with border and padding, right: 30' );
   equal( offset2.bottom, 0, 'stamp2 offset with border and padding, bottom: 0' );
+
+  // add margin to stamps
+  stamp1.style.margin = '5px 10px 15px 20px';
+  stamp2.style.margin = '5px 10px 15px 20px';
+  layout.getSize();
+  layout._getBoundingRect();
+  offset1 = layout._getElementOffset( stamp1 );
+  offset2 = layout._getElementOffset( stamp2 );
+
+  equal( offset1.left, 0, 'stamp1 offset with margin, left: 0' );
+  equal( offset1.top, 10, 'stamp1 offset with margin, top: 10' );
+  equal( offset2.right, 30, 'stamp2 offset with margin, right: 30' );
+  equal( offset2.bottom, 0, 'stamp2 offset with margin, bottom: 0' );
 
 });
 
