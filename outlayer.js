@@ -1,5 +1,5 @@
 /*!
- * Outlayer v0.4.3
+ * Outlayer v0.4.4
  * the brains and guts of a layout library
  */
 

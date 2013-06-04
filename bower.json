@@ -1,6 +1,6 @@
 {
   "name": "outlayer",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "the brains and guts of a layout library",
   "main": [
     "item.js",
