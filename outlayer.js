@@ -732,7 +732,10 @@ Outlayer.prototype.prepended = function( elems ) {
   this.layoutItems( previousItems );
 };
 
-// reveal a collection of items
+/**
+ * reveal a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
 Outlayer.prototype.reveal = function( items ) {
   if ( !items || !items.length ) {
     return;
@@ -740,6 +743,20 @@ Outlayer.prototype.reveal = function( items ) {
   for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
     item.reveal();
+  }
+};
+
+/**
+ * hide a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
+Outlayer.prototype.hide = function( items ) {
+  if ( !items || !items.length ) {
+    return;
+  }
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    item.hide();
   }
 };
 

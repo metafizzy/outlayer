@@ -145,6 +145,18 @@ Outlayer.prototype.getItems = function( elems ) {}
  */
 Outlayer.prototype.remove = function( elems ) {}
 
+/**
+ * reveal a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
+Outlayer.prototype.reveal = function( items ) {}
+
+/**
+ * hide a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
+Outlayer.prototype.hide = function( items ) {}
+
 // remove and disable Outlayer instance
 Outlayer.prototype.destroy = function() {}
 
