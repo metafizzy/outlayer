@@ -824,8 +824,11 @@ Outlayer.prototype.remove = function( elems ) {
 
 // remove and disable Outlayer instance
 Outlayer.prototype.destroy = function() {
-  delete this.element.outlayerGUID;
-
+  // clean up dynamic styles
+  var style = this.element.style;
+  style.height = '';
+  style.position = '';
+  style.width = '';
   // destroy items
   for ( var i=0, len = this.items.length; i < len; i++ ) {
     var item = this.items[i];
@@ -833,6 +836,8 @@ Outlayer.prototype.destroy = function() {
   }
 
   this.unbindResize();
+
+  delete this.element.outlayerGUID;
 };
 
 // -------------------------- data -------------------------- //
