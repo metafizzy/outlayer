@@ -69,7 +69,7 @@ var vendorProperties = ( function() {
 
 // -------------------------- Item -------------------------- //
 
-function Item( element, layout, options ) {
+function Item( element, layout ) {
   if ( !element ) {
     return;
   }
@@ -82,23 +82,8 @@ function Item( element, layout, options ) {
     y: 0
   };
 
-  this.options = extend( {}, this.options );
-  extend( this.options, options );
-
   this._create();
 }
-
-Item.prototype.options = {
-  transitionDuration: '0.4s',
-  hiddenStyle: {
-    opacity: 0,
-    transform: 'scale(0.001)'
-  },
-  visibleStyle: {
-    opacity: 1,
-    transform: 'scale(1)'
-  }
-};
 
 // inherit EventEmitter
 extend( Item.prototype, EventEmitter.prototype );
@@ -272,7 +257,8 @@ Item.prototype._nonTransition = function( args ) {
  */
 Item.prototype._transition = function( args ) {
   // redirect to nonTransition if no transition duration
-  if ( !parseFloat( this.options.transitionDuration ) ) {
+  var transitionDuration = this.layout.options.transitionDuration;
+  if ( !parseFloat( transitionDuration ) ) {
     this._nonTransition( args );
     return;
   }
@@ -287,7 +273,7 @@ Item.prototype._transition = function( args ) {
   // enable transition
   var transitionStyle = {};
   transitionStyle.transitionProperty = transitionValue.join(',');
-  transitionStyle.transitionDuration = this.options.transitionDuration;
+  transitionStyle.transitionDuration = transitionDuration;
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
@@ -396,9 +382,10 @@ Item.prototype.reveal = function() {
   // remove display: none
   this.css({ display: '' });
 
+  var options = this.layout.options;
   this.transition({
-    from: this.options.hiddenStyle,
-    to: this.options.visibleStyle,
+    from: options.hiddenStyle,
+    to: options.visibleStyle,
     isCleaning: true
   });
 };
@@ -407,9 +394,10 @@ Item.prototype.hide = function() {
   // remove display: none
   this.css({ display: '' });
 
+  var options = this.layout.options;
   this.transition({
-    from: this.options.visibleStyle,
-    to: this.options.hiddenStyle,
+    from: options.visibleStyle,
+    to: options.hiddenStyle,
     // keep hidden stuff hidden
     isCleaning: true,
     onTransitionEnd: function() {
