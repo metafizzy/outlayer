@@ -4,9 +4,7 @@ test( 'transition duration', function() {
 
   var elem = document.querySelector('#transition-duration');
   var layout = new window.CellsByRow( elem, {
-    itemOptions: {
-      transitionDuration: '0s'
-    }
+    transitionDuration: '0s'
   });
 
   layout.options.columnWidth = 75;
