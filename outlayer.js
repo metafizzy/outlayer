@@ -7,17 +7,6 @@
 
 'use strict';
 
-// Outlayer classes
-var _Outlayer = window.Outlayer;
-var Item = _Outlayer.Item;
-
-// dependencies
-var docReady = window.docReady;
-var EventEmitter = window.EventEmitter;
-var eventie = window.eventie;
-var getSize = window.getSize;
-var matchesSelector = window.matchesSelector;
-
 // ----- vars ----- //
 
 var document = window.document;
@@ -90,6 +79,8 @@ function toDashed( str ) {
 }
 
 
+function outlayerDefinition( classie, eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
+
 // -------------------------- Outlayer -------------------------- //
 
 // globally unique identifiers
@@ -139,7 +130,7 @@ function Outlayer( element, options ) {
 // settings are for internal use only
 Outlayer.prototype.settings = {
   namespace: 'outlayer',
-  item: _Outlayer.Item
+  item: Item
 };
 
 // default options
@@ -937,10 +928,40 @@ Outlayer.create = function( namespace, options ) {
   return Layout;
 };
 
-// -------------------------- transport -------------------------- //
+// ----- fin ----- //
 
 // back in global
 Outlayer.Item = Item;
-window.Outlayer = Outlayer;
+
+return Outlayer;
+
+}
+
+// -------------------------- transport -------------------------- //
+
+if ( typeof define === 'function' && define.amd ) {
+  // AMD
+  define( [
+      'classie',
+      'eventie',
+      'doc-ready',
+      'eventEmitter',
+      'get-size',
+      'matches-selector',
+      'outlayer-item'
+    ],
+    outlayerDefinition );
+} else {
+  // browser global
+  window.Outlayer = outlayerDefinition(
+    window.classie,
+    window.eventie,
+    window.docReady,
+    window.EventEmitter,
+    window.getSize,
+    window.matchesSelector,
+    window.Outlayer.Item
+  );
+}
 
 })( window );
