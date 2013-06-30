@@ -948,7 +948,7 @@ if ( typeof define === 'function' && define.amd ) {
       'eventEmitter',
       'get-size',
       'matches-selector',
-      'outlayer-item'
+      'outlayer/item'
     ],
     outlayerDefinition );
 } else {

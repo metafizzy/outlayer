@@ -6,12 +6,13 @@ requirejs.config({
     "eventEmitter": "../components/eventEmitter/EventEmitter",
     "get-style-property": "../components/get-style-property/get-style-property",
     "get-size": "../components/get-size/get-size",
-    "matches-selector": "../components/matches-selector/matches-selector"
+    "matches-selector": "../components/matches-selector/matches-selector",
+    "outlayer": "../"
   }
 });
 
-requirejs( ['../outlayer.js'], function( Outlayer ) {
+requirejs( [ '../outlayer' ], function( Outlayer ) {
 
-  console.log( Outlayer );
+  console.log( typeof Outlayer );
 
 });

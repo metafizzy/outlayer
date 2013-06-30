@@ -6,11 +6,6 @@
 
 'use strict';
 
-// dependencies
-var getSize = window.getSize;
-var getStyleProperty = window.getStyleProperty;
-var EventEmitter = window.EventEmitter;
-
 // ----- get style ----- //
 
 var defView = document.defaultView;
@@ -31,6 +26,8 @@ function extend( a, b ) {
   }
   return a;
 }
+
+function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty ) {
 
 // -------------------------- CSS3 support -------------------------- //
 
@@ -418,11 +415,27 @@ Item.prototype.destroy = function() {
   });
 };
 
-// --------------------------  -------------------------- //
+return Item;
 
-// publicize
-window.Outlayer = {
-  Item: Item
-};
+}
+
+// -------------------------- transport -------------------------- //
+
+if ( typeof define === 'function' && define.amd ) {
+  // AMD
+  define( [
+      'eventEmitter',
+      'get-size',
+      'get-style-property'
+    ],
+    outlayerItemDefinition );
+} else {
+  // browser global
+  window.Outlayer = outlayerItemDefinition(
+    window.EventEmitter,
+    window.getSize,
+    window.getStyleProperty
+  );
+}
 
 })( window );
