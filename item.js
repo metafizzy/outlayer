@@ -376,6 +376,7 @@ Item.prototype.remove = transitionProperty ? function() {
 } : Item.prototype.removeElem;
 
 Item.prototype.reveal = function() {
+  delete this.isHidden;
   // remove display: none
   this.css({ display: '' });
 
@@ -388,6 +389,8 @@ Item.prototype.reveal = function() {
 };
 
 Item.prototype.hide = function() {
+  // set flag
+  this.isHidden = true;
   // remove display: none
   this.css({ display: '' });
 
