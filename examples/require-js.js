@@ -11,8 +11,8 @@ requirejs.config({
   }
 });
 
-requirejs( [ '../outlayer' ], function( Outlayer ) {
+requirejs( [ '../outlayer', 'cells-by-row' ], function( Outlayer, CellsByRow ) {
 
-  console.log( typeof Outlayer );
+  new CellsByRow( document.querySelector('#basic') );
 
 });
