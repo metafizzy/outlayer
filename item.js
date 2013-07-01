@@ -434,7 +434,8 @@ if ( typeof define === 'function' && define.amd ) {
     outlayerItemDefinition );
 } else {
   // browser global
-  window.Outlayer = outlayerItemDefinition(
+  window.Outlayer = {};
+  window.Outlayer.Item = outlayerItemDefinition(
     window.EventEmitter,
     window.getSize,
     window.getStyleProperty

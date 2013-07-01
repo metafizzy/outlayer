@@ -879,7 +879,7 @@ Outlayer.create = function( namespace, options ) {
     Item.apply( this, arguments );
   };
 
-  Layout.Item.prototype = new Outlayer.Item();
+  Layout.Item.prototype = new Item();
 
   Layout.prototype.settings.item = Layout.Item;
 
