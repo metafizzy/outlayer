@@ -79,7 +79,7 @@ function toDashed( str ) {
 }
 
 
-function outlayerDefinition( classie, eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
+function outlayerDefinition( eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -942,19 +942,17 @@ return Outlayer;
 if ( typeof define === 'function' && define.amd ) {
   // AMD
   define( [
-      'classie',
-      'eventie',
-      'doc-ready',
-      'eventEmitter',
-      'get-size',
-      'matches-selector',
-      'outlayer/item'
+      'eventie/eventie',
+      'doc-ready/doc-ready',
+      'eventEmitter/EventEmitter',
+      'get-size/get-size',
+      'matches-selector/matches-selector',
+      './item'
     ],
     outlayerDefinition );
 } else {
   // browser global
   window.Outlayer = outlayerDefinition(
-    window.classie,
     window.eventie,
     window.docReady,
     window.EventEmitter,

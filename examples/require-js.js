@@ -1,17 +1,17 @@
 requirejs.config({
-  paths: {
-    "classie": "../components/classie/classie",
-    "eventie": "../components/eventie/eventie",
-    "doc-ready": "../components/doc-ready/doc-ready",
-    "eventEmitter": "../components/eventEmitter/EventEmitter",
-    "get-style-property": "../components/get-style-property/get-style-property",
-    "get-size": "../components/get-size/get-size",
-    "matches-selector": "../components/matches-selector/matches-selector",
-    "outlayer": "../"
-  }
+  baseUrl: '../bower_components'
+  // OR
+  // paths: {
+  //   eventie: 'bower_components/eventie',
+  //   'doc-ready': 'bower_components/doc-ready',
+  //   eventEmitter: 'bower_components/eventEmitter',
+  //   'get-style-property': 'bower_components/get-style-property',
+  //   'get-size': 'bower_components/get-size',
+  //   'matches-selector': 'bower_components/matches-selector'
+  // }
 });
 
-requirejs( [ '../outlayer', 'cells-by-row' ], function( Outlayer, CellsByRow ) {
+requirejs( [ '../outlayer', '../examples/cells-by-row' ], function( Outlayer, CellsByRow ) {
 
   new CellsByRow( document.querySelector('#basic') );
 

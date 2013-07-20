@@ -7,10 +7,10 @@
     "outlayer.js"
   ],
   "dependencies": {
-    "doc-ready": "desandro/doc-ready#>=0.0.3",
+    "doc-ready": "desandro/doc-ready#>=1.0.1 <2.0",
     "eventEmitter": ">=3",
-    "eventie": "desandro/eventie#>=1.0.3",
-    "get-size": "desandro/get-size#>=1.0.0",
+    "eventie": "eventie#>=1.0.3 <2.0",
+    "get-size": "get-size#>=1.1.4 <2.0",
     "get-style-property": "desandro/get-style-property",
     "jquery-bridget": "~1.0",
     "matches-selector": "desandro/matches-selector#>=0.2.0"

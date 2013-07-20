@@ -427,9 +427,9 @@ return Item;
 if ( typeof define === 'function' && define.amd ) {
   // AMD
   define( [
-      'eventEmitter',
-      'get-size',
-      'get-style-property'
+      'eventEmitter/EventEmitter',
+      'get-size/get-size',
+      'get-style-property/get-style-property'
     ],
     outlayerItemDefinition );
 } else {
