@@ -7,11 +7,11 @@ test( 'origin', function() {
   // triggering a layout call within a layout callback triggers
   // infinite loop
   function doNext( fn ) {
-    if ( supportsTransition ) {
-      fn();
-    } else {
+    // if ( supportsTransition ) {
+    //   fn();
+    // } else {
       setTimeout( fn );
-    }
+    // }
   }
 
   var elem = document.querySelector('#origin');
