@@ -364,7 +364,13 @@ Item.prototype.removeElem = function() {
   this.emitEvent( 'remove', [ this ] );
 };
 
-Item.prototype.remove = transitionProperty ? function() {
+Item.prototype.remove = function() {
+  // just remove element if no transition support or no transition
+  if ( !transitionProperty || !parseFloat( this.layout.options.transitionDuration ) ) {
+    this.removeElem();
+    return;
+  }
+
   // start transition
   var _this = this;
   this.on( 'transitionEnd', function() {
@@ -372,8 +378,7 @@ Item.prototype.remove = transitionProperty ? function() {
     return true; // bind once
   });
   this.hide();
-// if no transition just remove element
-} : Item.prototype.removeElem;
+};
 
 Item.prototype.reveal = function() {
   delete this.isHidden;

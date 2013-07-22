@@ -21,11 +21,31 @@ test( 'remove', function() {
     }
     equal( container.children.length, expectedRemovedCount, 'elements removed from DOM' );
     equal( container.querySelectorAll('.w2').length, 0, 'matched elements were removed' );
-    start();
+    setTimeout( removeNoTransition, 20 );
+    // start();
+    return true;
   });
   stop();
   olayer.remove( w2Elems );
   equal( olayer.items.length, expectedRemovedCount, 'items removed from Packery instance' );
+
+  // check items are remove with no transition
+  function removeNoTransition() {
+    // disable transition by setting transition duration to 0
+    olayer.options.transitionDuration = 0;
+    var h2Elems = container.querySelectorAll('.h2');
+    expectedRemovedCount -= h2Elems.length;
+
+    olayer.on( 'removeComplete', function( obj, removedItems ) {
+      equal( true, true, 'no transition, removeComplete event did fire' );
+      equal( removedItems.length, h2Elems.length, 'no transition, remove elems length matches 2nd argument length' );
+      equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
+      equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
+      start();
+    });
+
+    olayer.remove( h2Elems );
+  }
 
 });
 
