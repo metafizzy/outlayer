@@ -209,25 +209,28 @@ Outlayer.prototype._filterFindItemElements = function( elems ) {
   // make array of elems
   elems = makeArray( elems );
   var itemSelector = this.options.itemSelector;
-
-  if ( !itemSelector ) {
-    return elems;
-  }
-
   var itemElems = [];
 
-  // filter & find items if we have an item selector
   for ( var i=0, len = elems.length; i < len; i++ ) {
     var elem = elems[i];
-    // filter siblings
-    if ( matchesSelector( elem, itemSelector ) ) {
-      itemElems.push( elem );
+    // check that elem is an actual element
+    if ( !isElement( elem ) ) {
+      continue;
     }
-    // find children
-    var childElems = elem.querySelectorAll( itemSelector );
-    // concat childElems to filterFound array
-    for ( var j=0, jLen = childElems.length; j < jLen; j++ ) {
-      itemElems.push( childElems[j] );
+    // filter & find items if we have an item selector
+    if ( itemSelector ) {
+      // filter siblings
+      if ( matchesSelector( elem, itemSelector ) ) {
+        itemElems.push( elem );
+      }
+      // find children
+      var childElems = elem.querySelectorAll( itemSelector );
+      // concat childElems to filterFound array
+      for ( var j=0, jLen = childElems.length; j < jLen; j++ ) {
+        itemElems.push( childElems[j] );
+      }
+    } else {
+      itemElems.push( elem );
     }
   }
 
