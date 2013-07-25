@@ -800,6 +800,10 @@ Outlayer.prototype.remove = function( elems ) {
   elems = makeArray( elems );
 
   var removeItems = this.getItems( elems );
+  // bail if no items to remove
+  if ( !removeItems || !removeItems.length ) {
+    return;
+  }
 
   this._itemsOn( removeItems, 'remove', function() {
     this.emitEvent( 'removeComplete', [ this, removeItems ] );

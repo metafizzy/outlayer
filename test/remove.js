@@ -41,10 +41,18 @@ test( 'remove', function() {
       equal( removedItems.length, h2Elems.length, 'no transition, remove elems length matches 2nd argument length' );
       equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
       equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
-      start();
+      setTimeout( removeAll, 20 );
+      // start();
     });
 
     olayer.remove( h2Elems );
+  }
+
+  function removeNone() {
+    var noneItems = container.querySelector('.foo');
+    olayer.remove( noneItems );
+    ok( true, 'removing no items is cool' );
+    start();
   }
 
 });
