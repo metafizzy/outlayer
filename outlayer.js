@@ -832,6 +832,11 @@ Outlayer.prototype.destroy = function() {
   this.unbindResize();
 
   delete this.element.outlayerGUID;
+  // remove data for jQuery
+  if ( jQuery ) {
+    jQuery.removeData( this.element, this.settings.namespace );
+  }
+
 };
 
 // -------------------------- data -------------------------- //

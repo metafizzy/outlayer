@@ -13,6 +13,11 @@ test( 'jQuery plugin', function() {
   ok( layout, 'CellsByRow instance via .data()' );
   equal( layout, CellsByRow.data( $elem[0] ), 'instance matches the same one via CellsByRow.data()' );
 
+  // destroy and re-init
+  $elem.cellsByRow('destroy');
+  $elem.cellsByRow();
+  notEqual( $elem.data('cellsByRow'), layout, 'new CellsByRow instance after destroy' );
+
 });
 
 })();
