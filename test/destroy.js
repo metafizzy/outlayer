@@ -7,6 +7,8 @@ test( 'destroy', function() {
 
   layout.destroy();
 
+  ok( !CellsByRow.data( container ), '.data() returns falsey' );
+
   function checkStyle( elem, property ) {
     ok( !elem.style[ property ], elem + ' has no ' + property + ' style' );
   }

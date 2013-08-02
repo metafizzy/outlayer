@@ -2,8 +2,6 @@
 
 Check that text entity don't get added as Items
 
-masonry instance is removed from on .destroy()
-
 ignore
 unignore
 layoutItems does not layout ignored items
