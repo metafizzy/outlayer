@@ -41,7 +41,7 @@ test( 'remove', function() {
       equal( removedItems.length, h2Elems.length, 'no transition, remove elems length matches 2nd argument length' );
       equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
       equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
-      setTimeout( removeAll, 20 );
+      setTimeout( removeNone, 20 );
       // start();
     });
 
