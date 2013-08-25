@@ -112,7 +112,7 @@ function Outlayer( element, options ) {
 
   // options
   this.options = extend( {}, this.options );
-  extend( this.options, options );
+  this.option( options );
 
   // add id for Outlayer.getFromElement
   var id = ++GUID;
@@ -156,6 +156,14 @@ Outlayer.prototype.options = {
 
 // inherit EventEmitter
 extend( Outlayer.prototype, EventEmitter.prototype );
+
+/**
+ * set options
+ * @param {Object} opts
+ */
+Outlayer.prototype.option = function( opts ) {
+  extend( this.options, opts );
+};
 
 Outlayer.prototype._create = function() {
   // get items from children
