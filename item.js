@@ -276,17 +276,16 @@ Item.prototype._transition = function( args ) {
 
   // if there's stuff to do after the transition
   if ( args.isCleaning || args.onTransitionEnd ) {
-    this.on( 'transitionEnd', function( _this ) {
+    this.onTransitionEnd = function() {
       // remove transition styles after transition
       if ( args.isCleaning ) {
-        _this._removeStyles( style );
+        this._removeStyles( style );
       }
       // trigger callback now that transition has ended
       if ( args.onTransitionEnd ) {
-        args.onTransitionEnd.call( _this );
+        args.onTransitionEnd.call( this );
       }
-      return true; // bind once
-    });
+    };
   }
 
   // set from styles
@@ -329,6 +328,13 @@ Item.prototype.ontransitionend = function( event ) {
   this.element.removeEventListener( transitionEndEvent, this, false );
 
   this.isTransitioning = false;
+
+  // trigger onTransitionEnd
+  // for clean-up styles
+  if ( this.onTransitionEnd ) {
+    this.onTransitionEnd.call( this );
+    delete this.onTransitionEnd;
+  }
 
   this.emitEvent( 'transitionEnd', [ this ] );
 };
