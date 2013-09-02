@@ -660,6 +660,7 @@ Outlayer.prototype.onresize = function() {
   var _this = this;
   function delayed() {
     _this.resize();
+    delete _this.resizeTimeout;
   }
 
   this.resizeTimeout = setTimeout( delayed, 100 );
@@ -677,8 +678,6 @@ Outlayer.prototype.resize = function() {
   }
 
   this.layout();
-
-  delete this.resizeTimeout;
 };
 
 
