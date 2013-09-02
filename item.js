@@ -27,6 +27,14 @@ function extend( a, b ) {
   return a;
 }
 
+function isEmptyObj( obj ) {
+  for ( var prop in obj ) {
+    return false;
+  }
+  prop = null;
+  return true;
+}
+
 function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty ) {
 
 // -------------------------- CSS3 support -------------------------- //
@@ -86,6 +94,13 @@ function Item( element, layout ) {
 extend( Item.prototype, EventEmitter.prototype );
 
 Item.prototype._create = function() {
+  // transition objects
+  this._transition = {
+    ingProperties: {},
+    clean: {},
+    onEnd: {}
+  };
+
   this.css({
     position: 'absolute'
   });
@@ -206,7 +221,9 @@ Item.prototype._transitionTo = function( x, y ) {
 
   this.transition({
     to: transitionStyle,
-    onTransitionEnd: this.layoutPosition,
+    onTransitionEnd: {
+      transform: this.layoutPosition
+    },
     isCleaning: true
   });
 };
@@ -274,18 +291,18 @@ Item.prototype._transition = function( args ) {
 
   this.element.addEventListener( transitionEndEvent, this, false );
 
-  // if there's stuff to do after the transition
-  if ( args.isCleaning || args.onTransitionEnd ) {
-    this.onTransitionEnd = function() {
-      // remove transition styles after transition
-      if ( args.isCleaning ) {
-        this._removeStyles( style );
-      }
-      // trigger callback now that transition has ended
-      if ( args.onTransitionEnd ) {
-        args.onTransitionEnd.call( this );
-      }
-    };
+  var _transition = this._transition;
+  // keep track of onTransitionEnd callback by css property
+  for ( prop in args.onTransitionEnd ) {
+    _transition.onEnd[ prop ] = args.onTransitionEnd[ prop ];
+  }
+  // keep track of properties that are transitioning
+  for ( prop in args.to ) {
+    _transition.ingProperties[ prop ] = true;
+    // keep track of properties to clean up when transition is done
+    if ( args.isCleaning ) {
+      _transition.clean[ prop ] = true;
+    }
   }
 
   // set from styles
@@ -302,6 +319,7 @@ Item.prototype._transition = function( args ) {
   this.css( style );
 
   this.isTransitioning = true;
+
 };
 
 Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
@@ -316,24 +334,43 @@ Item.prototype.onotransitionend = function( event ) {
   this.ontransitionend( event );
 };
 
+// properties that I munge to make my life easier
+var dashedVendorProperties = {
+  '-webkit-transform': 'transform',
+  '-moz-transform': 'transform',
+  '-o-transform': 'transform'
+};
+
 Item.prototype.ontransitionend = function( event ) {
   // console.log('transition end');
   // disregard bubbled events from children
   if ( event.target !== this.element ) {
     return;
   }
+  var _transition = this._transition;
+  // get property name of transitioned property, convert to prefix-free
+  var propertyName = dashedVendorProperties[ event.propertyName ] || event.propertyName;
 
-  this.removeTransitionStyles();
-
-  this.element.removeEventListener( transitionEndEvent, this, false );
-
-  this.isTransitioning = false;
-
-  // trigger onTransitionEnd
-  // for clean-up styles
-  if ( this.onTransitionEnd ) {
-    this.onTransitionEnd.call( this );
-    delete this.onTransitionEnd;
+  // remove property that has completed transitioning
+  delete _transition.ingProperties[ propertyName ];
+  // check if any properties are still transitioning
+  if ( isEmptyObj( _transition.ingProperties ) ) {
+    // all properties have completed transitioning
+    this.removeTransitionStyles();
+    this.element.removeEventListener( transitionEndEvent, this, false );
+    this.isTransitioning = false;
+  }
+  // clean style
+  if ( propertyName in _transition.clean ) {
+    // clean up style
+    this.element.style[ event.propertyName ] = '';
+    delete _transition.clean[ propertyName ];
+  }
+  // trigger onTransitionEnd callback
+  if ( propertyName in _transition.onEnd ) {
+    var onTransitionEnd = _transition.onEnd[ propertyName ];
+    onTransitionEnd.call( this );
+    delete _transition.onEnd[ propertyName ];
   }
 
   this.emitEvent( 'transitionEnd', [ this ] );
@@ -411,8 +448,10 @@ Item.prototype.hide = function() {
     to: options.hiddenStyle,
     // keep hidden stuff hidden
     isCleaning: true,
-    onTransitionEnd: function() {
-      this.css({ display: 'none' });
+    onTransitionEnd: {
+      opacity: function() {
+        this.css({ display: 'none' });
+      }
     }
   });
 };
