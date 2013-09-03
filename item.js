@@ -256,8 +256,8 @@ Item.prototype._nonTransition = function( args ) {
   if ( args.isCleaning ) {
     this._removeStyles( args.to );
   }
-  if ( args.onTransitionEnd ) {
-    args.onTransitionEnd.call( this );
+  for ( var prop in args.onTransitionEnd ) {
+    args.onTransitionEnd[ prop ].call( this );
   }
 };
 
