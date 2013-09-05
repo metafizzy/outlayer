@@ -183,16 +183,16 @@ Outlayer.prototype._create = function() {
 // goes through all children again and gets bricks in proper order
 Outlayer.prototype.reloadItems = function() {
   // collection of item elements
-  this.items = this._getItems( this.element.children );
+  this.items = this._itemize( this.element.children );
 };
 
 
 /**
- * get item elements to be used in layout
+ * turn elements into Outlayer.Items to be used in layout
  * @param {Array or NodeList or HTMLElement} elems
  * @returns {Array} items - collection of new Outlayer Items
  */
-Outlayer.prototype._getItems = function( elems ) {
+Outlayer.prototype._itemize = function( elems ) {
 
   var itemElems = this._filterFindItemElements( elems );
   var Item = this.settings.item;
@@ -689,7 +689,7 @@ Outlayer.prototype.resize = function() {
  * @returns {Array} items - Outlayer.Items
 **/
 Outlayer.prototype.addItems = function( elems ) {
-  var items = this._getItems( elems );
+  var items = this._itemize( elems );
   if ( !items.length ) {
     return;
   }
@@ -717,7 +717,7 @@ Outlayer.prototype.appended = function( elems ) {
  * @param {Array or NodeList or Element} elems
  */
 Outlayer.prototype.prepended = function( elems ) {
-  var items = this._getItems( elems );
+  var items = this._itemize( elems );
   if ( !items.length ) {
     return;
   }
