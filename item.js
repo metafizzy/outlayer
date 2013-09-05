@@ -35,6 +35,15 @@ function isEmptyObj( obj ) {
   return true;
 }
 
+// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+function toDash( str ) {
+  return str.replace( /([A-Z])/g, function( $1 ){
+    return '-' + $1.toLowerCase();
+  });
+}
+
+// -------------------------- Outlayer definition -------------------------- //
+
 function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty ) {
 
 // -------------------------- CSS3 support -------------------------- //
@@ -271,29 +280,14 @@ Item.prototype._nonTransition = function( args ) {
  */
 Item.prototype._transition = function( args ) {
   // redirect to nonTransition if no transition duration
-  var transitionDuration = this.layout.options.transitionDuration;
-  if ( !parseFloat( transitionDuration ) ) {
+  if ( !parseFloat( this.layout.options.transitionDuration ) ) {
     this._nonTransition( args );
     return;
   }
 
-  var style = args.to;
-  // make transition: foo, bar, baz from style object
-  var transitionValue = [];
-  for ( var prop in style ) {
-    transitionValue.push( prop );
-  }
-
-  // enable transition
-  var transitionStyle = {};
-  transitionStyle.transitionProperty = transitionValue.join(',');
-  transitionStyle.transitionDuration = transitionDuration;
-
-  this.element.addEventListener( transitionEndEvent, this, false );
-
   var _transition = this._transition;
   // keep track of onTransitionEnd callback by css property
-  for ( prop in args.onTransitionEnd ) {
+  for ( var prop in args.onTransitionEnd ) {
     _transition.onEnd[ prop ] = args.onTransitionEnd[ prop ];
   }
   // keep track of properties that are transitioning
@@ -313,13 +307,41 @@ Item.prototype._transition = function( args ) {
     // hack for JSHint to hush about unused var
     h = null;
   }
-  // set transition styles, to enable transition
-  this.css( transitionStyle );
+  // enable transition
+  this.enableTransition( args.to );
   // set styles that are transitioning
-  this.css( style );
+  this.css( args.to );
 
   this.isTransitioning = true;
 
+};
+
+var itemTransitionProperties = transformProperty && ( toDash( transformProperty ) +
+  ',opacity' );
+
+Item.prototype.enableTransition = function(/* style */) {
+  // only enable if not already transitioning
+  // bug in IE10 were re-setting transition style will prevent
+  // transitionend event from triggering
+  if ( this.isTransitioning ) {
+    return;
+  }
+
+  // make transition: foo, bar, baz from style object
+  // TODO uncomment this bit when IE10 bug is resolved
+  // var transitionValue = [];
+  // for ( var prop in style ) {
+  //   // dash-ify camelCased properties like WebkitTransition
+  //   transitionValue.push( toDash( prop ) );
+  // }
+  // enable transition styles
+  // HACK always enable transform,opacity for IE10
+  this.css({
+    transitionProperty: itemTransitionProperties,
+    transitionDuration: this.layout.options.transitionDuration
+  });
+  // listen for transition end event
+  this.element.addEventListener( transitionEndEvent, this, false );
 };
 
 Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
@@ -342,7 +364,6 @@ var dashedVendorProperties = {
 };
 
 Item.prototype.ontransitionend = function( event ) {
-  // console.log('transition end');
   // disregard bubbled events from children
   if ( event.target !== this.element ) {
     return;
@@ -356,9 +377,7 @@ Item.prototype.ontransitionend = function( event ) {
   // check if any properties are still transitioning
   if ( isEmptyObj( _transition.ingProperties ) ) {
     // all properties have completed transitioning
-    this.removeTransitionStyles();
-    this.element.removeEventListener( transitionEndEvent, this, false );
-    this.isTransitioning = false;
+    this.disableTransition();
   }
   // clean style
   if ( propertyName in _transition.clean ) {
@@ -374,6 +393,12 @@ Item.prototype.ontransitionend = function( event ) {
   }
 
   this.emitEvent( 'transitionEnd', [ this ] );
+};
+
+Item.prototype.disableTransition = function() {
+  this.removeTransitionStyles();
+  this.element.removeEventListener( transitionEndEvent, this, false );
+  this.isTransitioning = false;
 };
 
 /**
