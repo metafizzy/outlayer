@@ -71,6 +71,13 @@ var indexOf = Array.prototype.indexOf ? function( ary, obj ) {
     return -1;
   };
 
+function removeFrom( obj, ary ) {
+  var index = indexOf( ary, obj );
+  if ( index !== -1 ) {
+    ary.splice( index, 1 );
+  }
+}
+
 // http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
 function toDashed( str ) {
   return str.replace( /(.)([A-Z])/g, function( match, $1, $2 ) {
@@ -542,10 +549,7 @@ Outlayer.prototype.unstamp = function( elems ) {
   for ( var i=0, len = elems.length; i < len; i++ ) {
     var elem = elems[i];
     // filter out removed stamp elements
-    var index = indexOf( this.stamps, elem );
-    if ( index !== -1 ) {
-      this.stamps.splice( index, 1 );
-    }
+    removeFrom( elem, this.stamps );
     this.unignore( elem );
   }
 
@@ -820,8 +824,7 @@ Outlayer.prototype.remove = function( elems ) {
     var item = removeItems[i];
     item.remove();
     // remove item from collection
-    var index = indexOf( this.items, item );
-    this.items.splice( index, 1 );
+    removeFrom( item, this.items );
   }
 };
 
