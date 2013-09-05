@@ -201,7 +201,7 @@ Outlayer.prototype._getItems = function( elems ) {
   var items = [];
   for ( var i=0, len = itemElems.length; i < len; i++ ) {
     var elem = itemElems[i];
-    var item = new Item( elem, this, this.options.itemOptions );
+    var item = new Item( elem, this );
     items.push( item );
   }
 
