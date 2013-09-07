@@ -1,5 +1,5 @@
 /*!
- * Outlayer v1.1.6
+ * Outlayer v1.1.7
  * the brains and guts of a layout library
  */
 
@@ -694,11 +694,10 @@ Outlayer.prototype.resize = function() {
 **/
 Outlayer.prototype.addItems = function( elems ) {
   var items = this._itemize( elems );
-  if ( !items.length ) {
-    return;
-  }
   // add items to collection
-  this.items = this.items.concat( items );
+  if ( items.length ) {
+    this.items = this.items.concat( items );
+  }
   return items;
 };
 
