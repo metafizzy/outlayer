@@ -1,5 +1,5 @@
 /*!
- * Outlayer v1.1.7
+ * Outlayer v1.1.8
  * the brains and guts of a layout library
  */
 
@@ -729,6 +729,7 @@ Outlayer.prototype.prepended = function( elems ) {
   this.items = items.concat( previousItems );
   // start new layout
   this._resetLayout();
+  this._manageStamps();
   // layout new stuff without transition
   this.layoutItems( items, true );
   this.reveal( items );
