@@ -475,7 +475,11 @@ Item.prototype.hide = function() {
     isCleaning: true,
     onTransitionEnd: {
       opacity: function() {
-        this.css({ display: 'none' });
+        // check if still hidden
+        // during transition, item may have been un-hidden
+        if ( this.isHidden ) {
+          this.css({ display: 'none' });
+        }
       }
     }
   });
