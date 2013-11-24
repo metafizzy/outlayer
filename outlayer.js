@@ -314,6 +314,7 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
     // default to 0
     this[ measurement ] = 0;
   } else {
+    // use option as an element
     if ( typeof option === 'string' ) {
       elem = this.element.querySelector( option );
     } else if ( isElement( option ) ) {
