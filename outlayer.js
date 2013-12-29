@@ -885,8 +885,13 @@ Outlayer.create = function( namespace, options ) {
   function Layout() {
     Outlayer.apply( this, arguments );
   }
+  // inherit Outlayer prototype, use Object.create if there
+  if ( Object.create ) {
+    Layout.prototype = Object.create( Outlayer.prototype );
+  } else {
+    extend( Layout.prototype, Outlayer.prototype );
+  }
 
-  extend( Layout.prototype, Outlayer.prototype );
 
   copyOutlayerProto( Layout, 'options' );
   copyOutlayerProto( Layout, 'settings' );
