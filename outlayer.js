@@ -110,7 +110,7 @@ function Outlayer( element, options ) {
   // bail out if not proper element
   if ( !element || !isElement( element ) ) {
     if ( console ) {
-      console.error( 'Bad ' + this.settings.namespace + ' element: ' + element );
+      console.error( 'Bad ' + this.constructor.namespace + ' element: ' + element );
     }
     return;
   }
@@ -135,10 +135,8 @@ function Outlayer( element, options ) {
 }
 
 // settings are for internal use only
-Outlayer.prototype.settings = {
-  namespace: 'outlayer',
-  item: Item
-};
+Outlayer.namespace = 'outlayer';
+Outlayer.Item = Item;
 
 // default options
 Outlayer.prototype.options = {
@@ -202,7 +200,7 @@ Outlayer.prototype.reloadItems = function() {
 Outlayer.prototype._itemize = function( elems ) {
 
   var itemElems = this._filterFindItemElements( elems );
-  var Item = this.settings.item;
+  var Item = this.constructor.Item;
 
   // create new Outlayer Items for collection
   var items = [];
@@ -849,7 +847,7 @@ Outlayer.prototype.destroy = function() {
   delete this.element.outlayerGUID;
   // remove data for jQuery
   if ( jQuery ) {
-    jQuery.removeData( this.element, this.settings.namespace );
+    jQuery.removeData( this.element, this.constructor.namespace );
   }
 
 };
@@ -868,8 +866,7 @@ Outlayer.data = function( elem ) {
 
 // --------------------------  -------------------------- //
 
-// copy an object on the Outlayer prototype
-// used in options and settings
+// copy an object on the Outlayer prototype to new object
 function copyOutlayerProto( obj, property ) {
   obj.prototype[ property ] = extend( {}, Outlayer.prototype[ property ] );
 }
@@ -891,14 +888,15 @@ Outlayer.create = function( namespace, options ) {
   } else {
     extend( Layout.prototype, Outlayer.prototype );
   }
+  // set contructor, used for namespace and Item
+  Layout.prototype.constructor = Layout;
 
-
+  // copy default options so Outlayer.options don't get touched
   copyOutlayerProto( Layout, 'options' );
-  copyOutlayerProto( Layout, 'settings' );
-
+  // apply new options
   extend( Layout.prototype.options, options );
 
-  Layout.prototype.settings.namespace = namespace;
+  Layout.namespace = namespace;
 
   Layout.data = Outlayer.data;
 
@@ -908,8 +906,6 @@ Outlayer.create = function( namespace, options ) {
   };
 
   Layout.Item.prototype = new Item();
-
-  Layout.prototype.settings.item = Layout.Item;
 
   // -------------------------- declarative -------------------------- //
 
