@@ -358,16 +358,19 @@ Outlayer.prototype._getItemsForLayout = function( items ) {
  * @param {Boolean} isInstant
  */
 Outlayer.prototype._layoutItems = function( items, isInstant ) {
+  var _this = this;
+  function onItemsLayout() {
+    _this.emitEvent( 'layoutComplete', [ _this, items ] );
+  }
+
   if ( !items || !items.length ) {
     // no items, emit event with empty array
-    this.emitEvent( 'layoutComplete', [ this, items ] );
+    onItemsLayout();
     return;
   }
 
   // emit layoutComplete when done
-  this._itemsOn( items, 'layout', function onItemsLayout() {
-    this.emitEvent( 'layoutComplete', [ this, items ] );
-  });
+  this._itemsOn( items, 'layout', onItemsLayout );
 
   var queue = [];
 
