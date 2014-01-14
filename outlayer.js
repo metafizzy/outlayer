@@ -377,7 +377,7 @@ Outlayer.prototype._layoutItems = function( items, isInstant ) {
     var position = this._getItemLayoutPosition( item );
     // enqueue
     position.item = item;
-    position.isInstant = isInstant;
+    position.isInstant = isInstant || item.isLayoutInstant;
     queue.push( position );
   }
 
