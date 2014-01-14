@@ -38,13 +38,6 @@ var transformProperty = getStyleProperty('transform');
 var supportsCSS3 = transitionProperty && transformProperty;
 var is3d = !!getStyleProperty('perspective');
 
-var transitionEndEvent = {
-  WebkitTransition: 'webkitTransitionEnd',
-  MozTransition: 'transitionend',
-  OTransition: 'otransitionend',
-  transition: 'transitionend'
-}[ transitionProperty ];
-
 // properties that could have vendor prefix
 var prefixableProperties = [
   'transform',
@@ -268,7 +261,7 @@ Item.prototype.onTransitionEnd = function( transition, property ) {
 
 Item.prototype.disableTransition = function() {
   this.removeTransitionStyles();
-  this.element.removeEventListener( transitionEndEvent, this, false );
+  // this.element.removeEventListener( transitionEndEvent, this, false );
   this.isTransitioning = false;
 };
 
@@ -283,16 +276,6 @@ Item.prototype._removeStyles = function( style ) {
     cleanStyle[ prop ] = '';
   }
   this.css( cleanStyle );
-};
-
-var cleanTransitionStyle = {
-  transitionProperty: '',
-  transitionDuration: ''
-};
-
-Item.prototype.removeTransitionStyles = function() {
-  // remove transition
-  this.css( cleanTransitionStyle );
 };
 
 // ----- show/hide/remove ----- //
