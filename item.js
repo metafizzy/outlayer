@@ -6,7 +6,7 @@
 
 'use strict';
 
-// ----- get style ----- //
+// ----- helpers ----- //
 
 var defView = document.defaultView;
 
@@ -25,6 +25,25 @@ function extend( a, b ) {
     a[ prop ] = b[ prop ];
   }
   return a;
+}
+
+// index of helper cause IE8
+var indexOf = Array.prototype.indexOf ? function( ary, obj ) {
+    return ary.indexOf( obj );
+  } : function( ary, obj ) {
+    for ( var i=0, len = ary.length; i < len; i++ ) {
+      if ( ary[i] === obj ) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+function removeFrom( obj, ary ) {
+  var index = indexOf( ary, obj );
+  if ( index !== -1 ) {
+    ary.splice( index, 1 );
+  }
 }
 
 // -------------------------- Outlayer definition -------------------------- //
@@ -82,6 +101,7 @@ extend( Item.prototype, EventEmitter.prototype );
 
 Item.prototype._create = function() {
   // transition objects
+  this.transitions = [];
   this.transitionEndHandlers = {};
 
   this.css({
@@ -240,14 +260,15 @@ Item.prototype.transition = function( transProps, endHandlers ) {
     _this.onTransitionEnd( _trnstn, property, event );
     return false; // bind once
   });
+  this.transitions.push( transition );
+  this.isTransitioning = true;
   // kick it off
   transition.start();
 };
 
-
-// ----- events ----- //
-
 Item.prototype.onTransitionEnd = function( transition, property ) {
+  removeFrom( transition, this.transitions );
+  this.isTransitioning = !!this.transitions.length;
   // trigger onTransitionEnd callback
   var handlers = this.transitionEndHandlers;
   if ( property in handlers ) {
@@ -258,10 +279,12 @@ Item.prototype.onTransitionEnd = function( transition, property ) {
   this.emitEvent( 'transitionEnd', [ this, property ] );
 };
 
-
 Item.prototype.disableTransition = function() {
-  this.removeTransitionStyles();
-  // this.element.removeEventListener( transitionEndEvent, this, false );
+  for ( var i=0, len = this.transitions.length; i < len; i++ ) {
+    var transition = this.transitions[i];
+    transition.disable();
+    removeFrom( transition, this.transitions );
+  }
   this.isTransitioning = false;
 };
 
