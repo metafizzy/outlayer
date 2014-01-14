@@ -27,24 +27,9 @@ function extend( a, b ) {
   return a;
 }
 
-function isEmptyObj( obj ) {
-  for ( var prop in obj ) {
-    return false;
-  }
-  prop = null;
-  return true;
-}
-
-// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
-function toDash( str ) {
-  return str.replace( /([A-Z])/g, function( $1 ){
-    return '-' + $1.toLowerCase();
-  });
-}
-
 // -------------------------- Outlayer definition -------------------------- //
 
-function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty ) {
+function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty, Transitn ) {
 
 // -------------------------- CSS3 support -------------------------- //
 
@@ -104,11 +89,7 @@ extend( Item.prototype, EventEmitter.prototype );
 
 Item.prototype._create = function() {
   // transition objects
-  this._transn = {
-    ingProperties: {},
-    clean: {},
-    onEnd: {}
-  };
+  this.transitionEndHandlers = {};
 
   this.css({
     position: 'absolute'
@@ -230,10 +211,9 @@ Item.prototype._transitionTo = function( x, y ) {
 
   this.transition({
     to: transitionStyle,
-    onTransitionEnd: {
-      transform: this.layoutPosition
-    },
     isCleaning: true
+  }, {
+    transform: this.layoutPosition
   });
 };
 
@@ -254,146 +234,37 @@ Item.prototype.setPosition = function( x, y ) {
 
 // ----- transition ----- //
 
-/**
- * @param {Object} style - CSS
- * @param {Function} onTransitionEnd
- */
-
-// non transition, just trigger callback
-Item.prototype._nonTransition = function( args ) {
-  this.css( args.to );
-  if ( args.isCleaning ) {
-    this._removeStyles( args.to );
-  }
-  for ( var prop in args.onTransitionEnd ) {
-    args.onTransitionEnd[ prop ].call( this );
-  }
-};
-
-/**
- * proper transition
- * @param {Object} args - arguments
- *   @param {Object} to - style to transition to
- *   @param {Object} from - style to start transition from
- *   @param {Boolean} isCleaning - removes transition styles after transition
- *   @param {Function} onTransitionEnd - callback
- */
-Item.prototype._transition = function( args ) {
-  // redirect to nonTransition if no transition duration
-  if ( !parseFloat( this.layout.options.transitionDuration ) ) {
-    this._nonTransition( args );
-    return;
-  }
-
-  var _transition = this._transn;
-  // keep track of onTransitionEnd callback by css property
-  for ( var prop in args.onTransitionEnd ) {
-    _transition.onEnd[ prop ] = args.onTransitionEnd[ prop ];
-  }
-  // keep track of properties that are transitioning
-  for ( prop in args.to ) {
-    _transition.ingProperties[ prop ] = true;
-    // keep track of properties to clean up when transition is done
-    if ( args.isCleaning ) {
-      _transition.clean[ prop ] = true;
-    }
-  }
-
-  // set from styles
-  if ( args.from ) {
-    this.css( args.from );
-    // force redraw. http://blog.alexmaccaw.com/css-transitions
-    var h = this.element.offsetHeight;
-    // hack for JSHint to hush about unused var
-    h = null;
-  }
-  // enable transition
-  this.enableTransition( args.to );
-  // set styles that are transitioning
-  this.css( args.to );
-
-  this.isTransitioning = true;
-
-};
-
-var itemTransitionProperties = transformProperty && ( toDash( transformProperty ) +
-  ',opacity' );
-
-Item.prototype.enableTransition = function(/* style */) {
-  // only enable if not already transitioning
-  // bug in IE10 were re-setting transition style will prevent
-  // transitionend event from triggering
-  if ( this.isTransitioning ) {
-    return;
-  }
-
-  // make transition: foo, bar, baz from style object
-  // TODO uncomment this bit when IE10 bug is resolved
-  // var transitionValue = [];
-  // for ( var prop in style ) {
-  //   // dash-ify camelCased properties like WebkitTransition
-  //   transitionValue.push( toDash( prop ) );
-  // }
-  // enable transition styles
-  // HACK always enable transform,opacity for IE10
-  this.css({
-    transitionProperty: itemTransitionProperties,
-    transitionDuration: this.layout.options.transitionDuration
+Item.prototype.transition = function( transProps, endHandlers ) {
+  // transition properties
+  transProps.element = this.element;
+  transProps.duration = this.layout.options.transitionDuration;
+  var transition = new Transitn( transProps );
+  // keep track of transition end handlers
+  extend( this.transitionEndHandlers, endHandlers );
+  // bind listener on transition end
+  var _this = this;
+  transition.on( 'transitionend', function( _trnstn, property, event ) {
+    _this.onTransitionEnd( _trnstn, property, event );
+    return false; // bind once
   });
-  // listen for transition end event
-  this.element.addEventListener( transitionEndEvent, this, false );
+  // kick it off
+  transition.start();
 };
 
-Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
 
 // ----- events ----- //
 
-Item.prototype.onwebkitTransitionEnd = function( event ) {
-  this.ontransitionend( event );
-};
-
-Item.prototype.onotransitionend = function( event ) {
-  this.ontransitionend( event );
-};
-
-// properties that I munge to make my life easier
-var dashedVendorProperties = {
-  '-webkit-transform': 'transform',
-  '-moz-transform': 'transform',
-  '-o-transform': 'transform'
-};
-
-Item.prototype.ontransitionend = function( event ) {
-  // disregard bubbled events from children
-  if ( event.target !== this.element ) {
-    return;
-  }
-  var _transition = this._transn;
-  // get property name of transitioned property, convert to prefix-free
-  var propertyName = dashedVendorProperties[ event.propertyName ] || event.propertyName;
-
-  // remove property that has completed transitioning
-  delete _transition.ingProperties[ propertyName ];
-  // check if any properties are still transitioning
-  if ( isEmptyObj( _transition.ingProperties ) ) {
-    // all properties have completed transitioning
-    this.disableTransition();
-  }
-  // clean style
-  if ( propertyName in _transition.clean ) {
-    // clean up style
-    this.element.style[ event.propertyName ] = '';
-    delete _transition.clean[ propertyName ];
-  }
+Item.prototype.onTransitionEnd = function( transition, property ) {
   // trigger onTransitionEnd callback
-  if ( propertyName in _transition.onEnd ) {
-    var onTransitionEnd = _transition.onEnd[ propertyName ];
-    onTransitionEnd.call( this );
-    delete _transition.onEnd[ propertyName ];
+  var handlers = this.transitionEndHandlers;
+  if ( property in handlers ) {
+    handlers[ property ].call( this );
+    // remove
+    delete handlers[ property ];
   }
-
-  this.emitEvent( 'transitionEnd', [ this ] );
+  this.emitEvent( 'transitionEnd', [ this, property ] );
 };
+
 
 Item.prototype.disableTransition = function() {
   this.removeTransitionStyles();
@@ -441,9 +312,11 @@ Item.prototype.remove = function() {
 
   // start transition
   var _this = this;
-  this.on( 'transitionEnd', function() {
-    _this.removeElem();
-    return true; // bind once
+  this.on( 'transitionEnd', function( transition, property ) {
+    if ( property === 'opacity' ) {
+      _this.removeElem();
+      return true; // bind once
+    }
   });
   this.hide();
 };
@@ -472,14 +345,13 @@ Item.prototype.hide = function() {
     from: options.visibleStyle,
     to: options.hiddenStyle,
     // keep hidden stuff hidden
-    isCleaning: true,
-    onTransitionEnd: {
-      opacity: function() {
-        // check if still hidden
-        // during transition, item may have been un-hidden
-        if ( this.isHidden ) {
-          this.css({ display: 'none' });
-        }
+    isCleaning: true
+  }, {
+    opacity: function() {
+      // check if still hidden
+      // during transition, item may have been un-hidden
+      if ( this.isHidden ) {
+        this.css({ display: 'none' });
       }
     }
   });
@@ -508,7 +380,8 @@ if ( typeof define === 'function' && define.amd ) {
   define( [
       'eventEmitter/EventEmitter',
       'get-size/get-size',
-      'get-style-property/get-style-property'
+      'get-style-property/get-style-property',
+      'transitn/transitn'
     ],
     outlayerItemDefinition );
 } else {
@@ -517,7 +390,8 @@ if ( typeof define === 'function' && define.amd ) {
   window.Outlayer.Item = outlayerItemDefinition(
     window.EventEmitter,
     window.getSize,
-    window.getStyleProperty
+    window.getStyleProperty,
+    window.Transitn
   );
 }
 
