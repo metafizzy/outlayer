@@ -745,10 +745,11 @@ Outlayer.prototype.prepended = function( elems ) {
  * @param {Array of Outlayer.Items} items
  */
 Outlayer.prototype.reveal = function( items ) {
-  if ( !items || !items.length ) {
+  var len = items && items.length;
+  if ( !len ) {
     return;
   }
-  for ( var i=0, len = items.length; i < len; i++ ) {
+  for ( var i=0; i < len; i++ ) {
     var item = items[i];
     item.reveal();
   }
@@ -759,10 +760,11 @@ Outlayer.prototype.reveal = function( items ) {
  * @param {Array of Outlayer.Items} items
  */
 Outlayer.prototype.hide = function( items ) {
-  if ( !items || !items.length ) {
+  var len = items && items.length;
+  if ( !len ) {
     return;
   }
-  for ( var i=0, len = items.length; i < len; i++ ) {
+  for ( var i=0; i < len; i++ ) {
     var item = items[i];
     item.hide();
   }
