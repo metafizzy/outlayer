@@ -1,5 +1,5 @@
 /*!
- * Outlayer v1.1.9
+ * Outlayer v1.1.10
  * the brains and guts of a layout library
  * MIT license
  */
