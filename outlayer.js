@@ -1,6 +1,7 @@
 /*!
  * Outlayer v1.1.9
  * the brains and guts of a layout library
+ * MIT license
  */
 
 ( function( window ) {

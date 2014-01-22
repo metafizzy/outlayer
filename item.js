@@ -1,6 +1,6 @@
 /**
  * Outlayer Item
-**/
+ */
 
 ( function( window ) {
 
