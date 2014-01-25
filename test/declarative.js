@@ -11,7 +11,7 @@ test( 'declarative', function() {
     var container = document.querySelector('#declarative');
     var cellsLayout = CellsByRow.data( container );
     ok( cellsLayout instanceof CellsByRow, '.data() works, retrieves instance' );
-    deepEqual( cellsLayout.options, CellsByRow.prototype.options, 'options match defaults' );
+    deepEqual( cellsLayout.options, CellsByRow.defaults, 'options match defaults' );
     ok( cellsLayout._isLayoutInited, 'cellsLayout._isLayoutInited' );
     var itemElem = cellsLayout.items[0].element;
     equal( itemElem.style.left, '0px', 'first item style left set' );

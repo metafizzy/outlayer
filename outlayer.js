@@ -118,7 +118,7 @@ function Outlayer( element, options ) {
   this.element = element;
 
   // options
-  this.options = extend( {}, this.options );
+  this.options = extend( {}, this.constructor.defaults );
   this.option( options );
 
   // add id for Outlayer.getFromElement
@@ -139,7 +139,7 @@ Outlayer.namespace = 'outlayer';
 Outlayer.Item = Item;
 
 // default options
-Outlayer.prototype.options = {
+Outlayer.defaults = {
   containerStyle: {
     position: 'relative'
   },
@@ -867,12 +867,6 @@ Outlayer.data = function( elem ) {
   return id && instances[ id ];
 };
 
-// --------------------------  -------------------------- //
-
-// copy an object on the Outlayer prototype to new object
-function copyOutlayerProto( obj, property ) {
-  obj.prototype[ property ] = extend( {}, Outlayer.prototype[ property ] );
-}
 
 // -------------------------- create Outlayer class -------------------------- //
 
@@ -894,10 +888,9 @@ Outlayer.create = function( namespace, options ) {
   // set contructor, used for namespace and Item
   Layout.prototype.constructor = Layout;
 
-  // copy default options so Outlayer.options don't get touched
-  copyOutlayerProto( Layout, 'options' );
+  Layout.defaults = extend( {}, Outlayer.defaults );
   // apply new options
-  extend( Layout.prototype.options, options );
+  extend( Layout.defaults, options );
 
   Layout.namespace = namespace;
 
