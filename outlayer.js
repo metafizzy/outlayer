@@ -894,6 +894,8 @@ Outlayer.create = function( namespace, options ) {
   Layout.defaults = extend( {}, Outlayer.defaults );
   // apply new options
   extend( Layout.defaults, options );
+  // keep prototype.settings for backwards compatibility (Packery v1.2.0)
+  Layout.prototype.settings = {};
 
   Layout.namespace = namespace;
 
