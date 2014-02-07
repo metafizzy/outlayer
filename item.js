@@ -45,6 +45,13 @@ function removeFrom( obj, ary ) {
   }
 }
 
+// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+function dashCase( str ) {
+  return str.replace( /([A-Z])/g, function( $1 ){
+    return '-' + $1.toLowerCase();
+  });
+}
+
 // -------------------------- Outlayer definition -------------------------- //
 
 function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty, Transitn ) {
@@ -55,6 +62,13 @@ var transitionProperty = getStyleProperty('transition');
 var transformProperty = getStyleProperty('transform');
 var supportsCSS3 = transitionProperty && transformProperty;
 var is3d = !!getStyleProperty('perspective');
+
+var transitionEndEvent = {
+  WebkitTransition: 'webkitTransitionEnd',
+  MozTransition: 'transitionend',
+  OTransition: 'otransitionend',
+  transition: 'transitionend'
+}[ transitionProperty ];
 
 // properties that could have vendor prefix
 var prefixableProperties = [
@@ -76,6 +90,34 @@ var vendorProperties = ( function() {
   }
   return cache;
 })();
+
+// -------------------------- Transitn -------------------------- //
+
+var transitionPropertyValue = vendorProperties.transform ?
+  dashCase( vendorProperties.transform ) + ', opacity' : '';
+
+// duck punch Transitn
+// HACK fix for triggering transitions mid-way thru previous transition
+Transitn.prototype.enable = function() {
+  // only enable if not already transitioning
+  // bug in IE10: re-setting transition style will prevent
+  // transitionend event from triggering
+  if ( this.isTransitioning ) {
+    return;
+  }
+
+  // enable transition styles
+  var transitionStyle = {
+    transitionProperty: transitionPropertyValue,
+    // TODO allow easy way to set default transitionDuration
+    transitionDuration: this.duration || '0.4s'
+  };
+
+  // listen for transition end event
+  this.element.addEventListener( transitionEndEvent, this, false );
+
+  this.css( transitionStyle );
+};
 
 // -------------------------- Item -------------------------- //
 
