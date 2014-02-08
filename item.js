@@ -26,32 +26,6 @@ function extend( a, b ) {
   return a;
 }
 
-// index of helper cause IE8
-var indexOf = Array.prototype.indexOf ? function( ary, obj ) {
-    return ary.indexOf( obj );
-  } : function( ary, obj ) {
-    for ( var i=0, len = ary.length; i < len; i++ ) {
-      if ( ary[i] === obj ) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-function removeFrom( obj, ary ) {
-  var index = indexOf( ary, obj );
-  if ( index !== -1 ) {
-    ary.splice( index, 1 );
-  }
-}
-
-// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
-function dashCase( str ) {
-  return str.replace( /([A-Z])/g, function( $1 ){
-    return '-' + $1.toLowerCase();
-  });
-}
-
 // -------------------------- Outlayer definition -------------------------- //
 
 function outlayerItemDefinition( EventEmitter, getSize, getStyleProperty, Transitn ) {
@@ -62,13 +36,6 @@ var transitionProperty = getStyleProperty('transition');
 var transformProperty = getStyleProperty('transform');
 var supportsCSS3 = transitionProperty && transformProperty;
 var is3d = !!getStyleProperty('perspective');
-
-var transitionEndEvent = {
-  WebkitTransition: 'webkitTransitionEnd',
-  MozTransition: 'transitionend',
-  OTransition: 'otransitionend',
-  transition: 'transitionend'
-}[ transitionProperty ];
 
 // properties that could have vendor prefix
 var prefixableProperties = [
@@ -90,34 +57,6 @@ var vendorProperties = ( function() {
   }
   return cache;
 })();
-
-// -------------------------- Transitn -------------------------- //
-
-var transitionPropertyValue = vendorProperties.transform ?
-  dashCase( vendorProperties.transform ) + ', opacity' : '';
-
-// duck punch Transitn
-// HACK fix for triggering transitions mid-way thru previous transition
-Transitn.prototype.enable = function() {
-  // only enable if not already transitioning
-  // bug in IE10: re-setting transition style will prevent
-  // transitionend event from triggering
-  if ( this.isTransitioning ) {
-    return;
-  }
-
-  // enable transition styles
-  var transitionStyle = {
-    transitionProperty: transitionPropertyValue,
-    // TODO allow easy way to set default transitionDuration
-    transitionDuration: this.duration || '0.4s'
-  };
-
-  // listen for transition end event
-  this.element.addEventListener( transitionEndEvent, this, false );
-
-  this.css( transitionStyle );
-};
 
 // -------------------------- Item -------------------------- //
 
@@ -144,6 +83,14 @@ Item.prototype._create = function() {
   // transition objects
   this.transitions = [];
   this.transitionEndHandlers = {};
+
+  this.transitn = new Transitn({
+    element: this.element
+  });
+  var _this = this;
+  this.transitn.on( 'transitionend', function( _trnstn, property, event ) {
+    _this.onTransitionEnd( _trnstn, property, event );
+  });
 
   this.css({
     position: 'absolute'
@@ -290,26 +237,17 @@ Item.prototype.setPosition = function( x, y ) {
 
 Item.prototype.transition = function( transProps, endHandlers ) {
   // transition properties
-  transProps.element = this.element;
   transProps.duration = this.layout.options.transitionDuration;
-  var transition = new Transitn( transProps );
+  this.transitn.set( transProps );
   // keep track of transition end handlers
   extend( this.transitionEndHandlers, endHandlers );
-  // bind listener on transition end
-  var _this = this;
-  transition.on( 'transitionend', function( _trnstn, property, event ) {
-    _this.onTransitionEnd( _trnstn, property, event );
-    return false; // bind once
-  });
-  this.transitions.push( transition );
   this.isTransitioning = true;
   // kick it off
-  transition.start();
+  this.transitn.start();
 };
 
 Item.prototype.onTransitionEnd = function( transition, property ) {
-  removeFrom( transition, this.transitions );
-  this.isTransitioning = !!this.transitions.length;
+  this.isTransitioning = !!this.transitn.isTransitioning;
   // trigger onTransitionEnd callback
   var handlers = this.transitionEndHandlers;
   if ( property in handlers ) {
@@ -321,11 +259,7 @@ Item.prototype.onTransitionEnd = function( transition, property ) {
 };
 
 Item.prototype.disableTransition = function() {
-  for ( var i=0, len = this.transitions.length; i < len; i++ ) {
-    var transition = this.transitions[i];
-    transition.disable();
-    removeFrom( transition, this.transitions );
-  }
+  this.transitn.disable();
   this.isTransitioning = false;
 };
 
