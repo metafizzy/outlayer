@@ -148,6 +148,7 @@ Outlayer.defaults = {
   isOriginLeft: true,
   isOriginTop: true,
   isResizeBound: true,
+  isResizingContainer: true,
   // item options
   transitionDuration: '0.4s',
   hiddenStyle: {
@@ -434,6 +435,13 @@ Outlayer.prototype._positionItem = function( item, x, y, isInstant ) {
  * i.e. size the container
  */
 Outlayer.prototype._postLayout = function() {
+  this.resizeContainer();
+};
+
+Outlayer.prototype.resizeContainer = function() {
+  if ( !this.options.isResizingContainer ) {
+    return;
+  }
   var size = this._getContainerSize();
   if ( size ) {
     this._setContainerMeasure( size.width, true );
@@ -442,6 +450,7 @@ Outlayer.prototype._postLayout = function() {
 };
 
 /**
+ * Sets width or height of container if returned
  * @returns {Object} size
  *   @param {Number} width
  *   @param {Number} height
