@@ -8,6 +8,7 @@
 
 + Use `constructor.defaults` for default options
 + add `needsResizeLayout()` for [#9](https://github.com/metafizzy/outlayer/issues/9)
++ Fix [#5](https://github.com/metafizzy/outlayer/pull/5) IE8 bug with destroy and resize
 
 ### v1.1
 
