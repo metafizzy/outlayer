@@ -7,6 +7,7 @@
 #### v1.2.0
 
 + Use `constructor.defaults` for default options
++ add `needsResizeLayout()` for [#9](https://github.com/metafizzy/outlayer/issues/9)
 
 ### v1.1
 

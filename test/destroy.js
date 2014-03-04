@@ -24,4 +24,14 @@ test( 'destroy', function() {
     checkStyle( itemElem, 'top' );
   }
 
+  // try to force a resize
+  container.style.width = '300px';
+  layout.resize();
+
+  checkStyle( container, 'height' );
+  checkStyle( container, 'position' );
+  checkStyle( items[0], 'position' );
+  checkStyle( items[0], 'left' );
+  checkStyle( items[0], 'top' );
+
 });
