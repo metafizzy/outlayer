@@ -2,7 +2,20 @@
 
 ## v1
 
+### v1.2
+
+#### v1.2.0
+
++ Use `constructor.defaults` for default options
+
 ### v1.1
+
+#### v1.1.10
+
++ Specify MIT license
++ Ignore other stuff for Bower package
++ add `Item.isLayoutInstant`
++ move `namespace` to `.constructor`
 
 #### v1.1.9
 
