@@ -51,7 +51,7 @@ function makeArray( obj ) {
 }
 
 // http://stackoverflow.com/a/384380/182183
-var isElement = ( typeof HTMLElement === 'object' ) ?
+var isElement = ( typeof HTMLElement === 'function' ) ?
   function isElementDOM2( obj ) {
     return obj instanceof HTMLElement;
   } :
