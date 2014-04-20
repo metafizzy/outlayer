@@ -1,5 +1,5 @@
 requirejs.config({
-  baseUrl: '../bower_components'
+  baseUrl: '../../bower_components'
   // OR
   // paths: {
   //   eventie: 'bower_components/eventie',

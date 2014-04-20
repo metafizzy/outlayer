@@ -54,9 +54,11 @@ return CellsByRow;
 if ( typeof define === 'function' && define.amd ) {
   // AMD
   define( [
-      '../outlayer'
+      '../../outlayer'
     ],
     cellsByRowDefinition );
+} else if (typeof module !== 'undefined') {
+  module.exports = cellsByRowDefinition(require('../'));
 } else {
   // browser global
   window.CellsByRow = cellsByRowDefinition(

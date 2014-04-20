@@ -994,6 +994,16 @@ if ( typeof define === 'function' && define.amd ) {
       './item'
     ],
     outlayerDefinition );
+} else if ( typeof exports === 'object' ) {
+  module.exports = outlayerDefinition(
+    require('eventie'),
+    require('doc-ready'),
+    require('wolfy87-eventemitter'),
+    require('get-size'),
+    require('matches-selector'),
+    require('./item.js')
+  );
+
 } else {
   // browser global
   window.Outlayer = outlayerDefinition(

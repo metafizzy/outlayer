@@ -1,0 +1,12 @@
+{
+  "name": "outlayer-browserify-example",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify -d ./toggler.js > toggler.bundle.js && browserify -d ./item-methods.js > item-methods.bundle.js && browserify -d ./cells-by-row.js > cells-by-row.bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "outlayer",
+  "version": "1.2.0",
+  "description": "the brains and guts of a layout library",
+  "main": "outlayer.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metafizzy/outlayer.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/metafizzy/outlayer/issues"
+  },
+  "homepage": "https://github.com/metafizzy/outlayer",
+  "dependencies": {
+    "doc-ready": "https://github.com/wbinnssmith/doc-ready/archive/commonjs.tar.gz",
+    "eventie": "https://github.com/wbinnssmith/eventie/archive/commonjs.tar.gz",
+    "get-size": "https://github.com/wbinnssmith/get-size/archive/packagejson.tar.gz",
+    "get-style-property": "https://github.com/wbinnssmith/get-style-property/archive/packagejson.tar.gz",
+    "matches-selector": "https://github.com/wbinnssmith/matches-selector/archive/commonjs.tar.gz",
+    "wolfy87-eventemitter": "^4.2.6"
+  }
+}
