@@ -1,0 +1,20 @@
+{
+  "name": "outlayer",
+  "repo": "desandro/outlayer",
+  "description": "JavaScript is all like _You images done yet or what?_",
+  "version": "3.1.5",
+  "scripts": [
+    "outlayer.js",
+    "item.js"
+  ],
+  "main": "outlayer.js",
+  "dependencies": {
+    "desandro/eventie": "*",
+    "desandro/get-size": "*",
+    "desandro/get-style-property": "*",
+    "desandro/matches-selector": "b1f5aa2c6878f4f0657219964891ae0ae1ed95a6",
+    "Wolfy87/EventEmitter": "*",
+    "wbinnssmith/doc-ready": "commonjs"
+  },
+  "license": "MIT"
+}
