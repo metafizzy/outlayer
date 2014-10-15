@@ -12,7 +12,6 @@
 
 var document = window.document;
 var console = window.console;
-var jQuery = window.jQuery;
 
 var noop = function() {};
 
@@ -87,7 +86,7 @@ function toDashed( str ) {
 }
 
 
-function outlayerDefinition( eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
+function outlayerDefinition( jQuery, eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -986,6 +985,7 @@ return Outlayer;
 if ( typeof define === 'function' && define.amd ) {
   // AMD
   define( [
+      'jquery',
       'eventie/eventie',
       'doc-ready/doc-ready',
       'eventEmitter/EventEmitter',
@@ -994,9 +994,21 @@ if ( typeof define === 'function' && define.amd ) {
       './item'
     ],
     outlayerDefinition );
+} else if (typeof exports === 'object') {
+  // CommonJS
+  module.exports = outlayerDefinition(
+    require('jquery'),
+    require('eventie'),
+    require('doc-ready'),
+    require('eventEmitter'),
+    require('get-size'),
+    require('matches-selector'),
+    require('./item')
+  );
 } else {
   // browser global
   window.Outlayer = outlayerDefinition(
+    window.jQuery,
     window.eventie,
     window.docReady,
     window.EventEmitter,

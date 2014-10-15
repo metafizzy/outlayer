@@ -1,0 +1,23 @@
+{
+  "name": "outlayer",
+  "version": "1.2.0",
+  "description": "the brains and guts of a layout library",
+  "main": "outlayer.js",
+  "dependencies": {
+    "jquery": ">=1.4.3 <2",
+    "doc-ready": "desandro/doc-ready",
+    "eventEmitter": "desandro/EventEmitter",
+    "eventie": "desandro/eventie",
+    "get-size": "desandro/get-size",
+    "get-style-property": "desandro/get-style-property",
+    "jquery-bridget": "braznaavtrav/jquery-bridget",
+    "matches-selector": "desandro/matches-selector"
+  },
+  "devDependencies": {
+    "qunit": "^0.7.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/braznaavtrav/outlayer.git"
+  }
+}

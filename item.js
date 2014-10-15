@@ -510,6 +510,13 @@ if ( typeof define === 'function' && define.amd ) {
       'get-style-property/get-style-property'
     ],
     outlayerItemDefinition );
+} else if (typeof exports === 'object') {
+  // CommonJS
+  module.exports = outlayerItemDefinition(
+    require('eventEmitter'),
+    require('get-size'),
+    require('get-style-property')
+  );
 } else {
   // browser global
   window.Outlayer = {};
