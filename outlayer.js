@@ -1000,7 +1000,7 @@ if ( typeof define === 'function' && define.amd ) {
     require('jquery'),
     require('eventie'),
     require('doc-ready'),
-    require('eventEmitter'),
+    require('eventemitter'),
     require('get-size'),
     require('matches-selector'),
     require('./item')
