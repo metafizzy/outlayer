@@ -993,7 +993,7 @@ if ( typeof define === 'function' && define.amd ) {
       './item'
     ],
     outlayerDefinition );
-} else if (typeof exports === 'object') {
+} else if ( typeof exports === 'object' ) {
   // CommonJS
   module.exports = outlayerDefinition(
     require('eventie'),

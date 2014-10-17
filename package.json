@@ -7,10 +7,10 @@
     "doc-ready": "desandro/doc-ready",
     "wolfy87-eventemitter": "^4.2.6",
     "eventie": "desandro/eventie",
-    "get-size": "desandro/get-size",
-    "get-style-property": "desandro/get-style-property",
+    "get-size": ">=1.1.4 <2.0",
+    "desandro-get-style-property": "^1",
     "jquery-bridget": "desandro/jquery-bridget",
-    "matches-selector": "desandro/matches-selector",
+    "matches-selector": "desandro/matches-selector"
   },
   "devDependencies": {
     "qunit": "^0.7.5",

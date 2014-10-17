@@ -515,7 +515,7 @@ if ( typeof define === 'function' && define.amd ) {
   module.exports = outlayerItemDefinition(
     require('wolfy87-eventemitter'),
     require('get-size'),
-    require('get-style-property')
+    require('desandro-get-style-property')
   );
 } else {
   // browser global
