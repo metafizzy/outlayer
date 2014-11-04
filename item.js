@@ -510,6 +510,12 @@ if ( typeof define === 'function' && define.amd ) {
       'get-style-property/get-style-property'
     ],
     outlayerItemDefinition );
+} else if ( typeof exports === 'object' ) {
+  module.exports = outlayerItemDefinition(
+    require('wolfy87-eventemitter'),
+    require('get-size'),
+    require('get-style-property')
+  );
 } else {
   // browser global
   window.Outlayer = {};
