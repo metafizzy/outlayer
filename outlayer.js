@@ -870,7 +870,7 @@ Outlayer.prototype.destroy = function() {
   this.unbindResize();
 
   var id = this.element.outlayerGUID;
-  delete this.instances[ id ]; // remove reference to instance by id
+  delete instances[ id ]; // remove reference to instance by id
   delete this.element.outlayerGUID;
   // remove data for jQuery
   if ( jQuery ) {
