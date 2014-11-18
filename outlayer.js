@@ -1000,7 +1000,7 @@ if ( typeof define === 'function' && define.amd ) {
     require('doc-ready'),
     require('wolfy87-eventemitter'),
     require('get-size'),
-    require('matches-selector'),
+    require('desandro-matches-selector'),
     require('./item')
   );
 } else {

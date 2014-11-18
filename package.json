@@ -9,7 +9,6 @@
     "eventie": "^1",
     "get-size": ">=1.1.4 <2.0",
     "desandro-get-style-property": "^1",
-    "jquery-bridget": "desandro/jquery-bridget",
     "desandro-matches-selector": ">=1 <2"
   },
   "devDependencies": {

@@ -57,6 +57,10 @@ if ( typeof define === 'function' && define.amd ) {
       '../outlayer'
     ],
     cellsByRowDefinition );
+} else if ( typeof exports === 'object' ) {
+  module.exports = cellsByRowDefinition(
+    require('../outlayer')
+  );
 } else {
   // browser global
   window.CellsByRow = cellsByRowDefinition(
