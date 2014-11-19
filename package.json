@@ -12,6 +12,7 @@
     "desandro-matches-selector": ">=1 <2"
   },
   "devDependencies": {
+    "jquery-bridget": ">=1 <2",
     "qunit": "^0.7.5",
     "jquery": ">=1.4.3 <2"
   },
