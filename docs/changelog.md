@@ -2,6 +2,9 @@
 
 ## v1
 
++ add CommonJS support for [Browserify](http://browserify.org)
++ remove [jQuery Bridget](https://github.com/desandro/jquery-bridget) as an explicit dependency
+
 ### v1.2
 
 #### v1.2.0
