@@ -2,7 +2,11 @@
 
 ## v1
 
-+ add CommonJS support for [Browserify](http://browserify.org)
+### v1.3
+
+#### v1.3.0
+
++ add CommonJS support for [Browserify](http://browserify.org) [#17](https://github.com/metafizzy/outlayer/issues/17)
 + remove [jQuery Bridget](https://github.com/desandro/jquery-bridget) as an explicit dependency
 
 ### v1.2

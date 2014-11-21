@@ -15,6 +15,12 @@ Outlayer layouts work with a container element and children item elements.
 </div>
 ```
 
+## Install
+
+Install with [Bower](http://bower.io): `bower install outlayer`
+
+[Install with npm](http://npmjs.org/package/outlayer): `npm install outlayer`
+
 ## Outlayer.create()
 
 Create a layout class with `Outlayer.create()`
