@@ -24,6 +24,25 @@
     "docs/",
     "examples",
     ".*",
-    "notes.md"
-  ]
+    "notes.md",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/metafizzy/outlayer",
+  "authors": [
+    "David DeSandro <desandrocodes@gmail.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "DOM",
+    "layout"
+  ],
+  "license": "MIT"
 }

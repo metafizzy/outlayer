@@ -19,5 +19,23 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/metafizzy/outlayer.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/metafizzy/outlayer/issues"
+  },
+  "homepage": "https://github.com/metafizzy/outlayer",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "DOM",
+    "layout"
+  ],
+  "author": "David DeSandro",
+  "license": "MIT"
 }
