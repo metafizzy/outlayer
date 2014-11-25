@@ -467,20 +467,23 @@ Item.prototype.hide = function() {
   this.css({ display: '' });
 
   var options = this.layout.options;
+
+  var propTransitionEnds = {};
+  for (var prop in options.hiddenStyle) {
+    propTransitionEnds[prop] = function() {
+      // check if still hidden
+      // during transition, item may have been un-hidden
+      if ( this.isHidden ) {
+        this.css({ display: 'none' });
+      }
+    };
+  }
   this.transition({
     from: options.visibleStyle,
     to: options.hiddenStyle,
     // keep hidden stuff hidden
     isCleaning: true,
-    onTransitionEnd: {
-      opacity: function() {
-        // check if still hidden
-        // during transition, item may have been un-hidden
-        if ( this.isHidden ) {
-          this.css({ display: 'none' });
-        }
-      }
-    }
+    onTransitionEnd: propTransitionEnds
   });
 };
 
