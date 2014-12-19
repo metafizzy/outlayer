@@ -218,10 +218,15 @@ Item.prototype._transitionTo = function( x, y ) {
     return;
   }
 
+  // if we have a custom transition function, run that
+  if( this.layout.options && this.layout.options.transitionFn ) {
+    return this.layout.options.transitionFn.call(this, x, y);
+  }
+
   var transX = x - curX;
   var transY = y - curY;
   var transitionStyle = {};
-  // flip cooridinates if origin on right or bottom
+  // flip coordinates if origin on right or bottom
   var layoutOptions = this.layout.options;
   transX = layoutOptions.isOriginLeft ? transX : -transX;
   transY = layoutOptions.isOriginTop ? transY : -transY;
