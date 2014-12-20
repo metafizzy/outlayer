@@ -220,7 +220,11 @@ Item.prototype._transitionTo = function( x, y ) {
 
   // if we have a custom transition function, run that
   if( this.layout.options && this.layout.options.transitionFn ) {
-    return this.layout.options.transitionFn.call(this, x, y);
+    return this.layout.options.transitionFn.call(this, {
+      from : { x : curX, y : curY },
+      to : { x : x, y : y },
+      callback : this.layoutPosition
+    });
   }
 
   var transX = x - curX;
