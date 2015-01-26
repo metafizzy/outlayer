@@ -223,7 +223,9 @@ Item.prototype._transitionTo = function( x, y ) {
     return this.layout.options.transitionFn.call(this, {
       from : { x : curX, y : curY },
       to : { x : x, y : y },
-      callback : this.layoutPosition
+      onTransitionEnd : {
+        transform : this.layoutPosition
+      }
     });
   }
 
@@ -321,8 +323,11 @@ Item.prototype._transition = function( args ) {
   this.css( args.to );
 
   this.isTransitioning = true;
-
 };
+
+Item.prototype._customTransition = function( args ) {
+  
+}
 
 var itemTransitionProperties = transformProperty && ( toDash( transformProperty ) +
   ',opacity' );
