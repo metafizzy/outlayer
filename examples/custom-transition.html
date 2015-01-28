@@ -48,12 +48,14 @@ function customTransition( args ) {
   // console.log(this, args);
   // console.log(regex.exec(args.to.transform));
   // var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
-  var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
   this.enableTransition( args.to );
-
-  var firstTransition = generateTransformString(toPoints[0], 0, true);
   this.css( args.to );
-  this.css( { transform : firstTransition });
+  if(args.to.transform) {
+    var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
+    var firstTransition = generateTransformString(toPoints[0], 0, true);
+    this.css( { transform : firstTransition });
+  }
+
 }
 docReady( function() {
   var basic = document.querySelector('.container');
