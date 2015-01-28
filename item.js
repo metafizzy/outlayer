@@ -228,7 +228,6 @@ Item.prototype._transitionTo = function( x, y ) {
   transitionStyle.transform = translate( transX, transY );
 
   this.transition({
-    from : { transform : translate( curX, curY ) },
     to: transitionStyle,
     onTransitionEnd: {
       transform: this.layoutPosition

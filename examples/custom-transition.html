@@ -33,7 +33,9 @@
 
 <script>
 function generateTransformString(x, y, css) {
-  return 'translate('+(x || 0)+(css ? 'px' : '')+','+(y || 0)+(css ? 'px' : '')+')';
+  return 'translate3d('+(x || 0)+(css ? 'px' : '')+','+
+    (y || 0)+(css ? 'px' : '')+','+
+    '0)';
 }
 
 var regex = /translate(3d)?\(([\w\.\-,% ]+)\)/;
@@ -45,11 +47,13 @@ function customTransition( args ) {
   // this._nonTransition(args);
   // console.log(this, args);
   // console.log(regex.exec(args.to.transform));
-  var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
+  // var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
   var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
-  console.log(fromPoints, toPoints);
   this.enableTransition( args.to );
+
+  var firstTransition = generateTransformString(toPoints[0], 0, true);
   this.css( args.to );
+  this.css( { transform : firstTransition });
 }
 docReady( function() {
   var basic = document.querySelector('.container');
