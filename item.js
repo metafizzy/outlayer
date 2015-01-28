@@ -218,19 +218,6 @@ Item.prototype._transitionTo = function( x, y ) {
     return;
   }
 
-  // if we have a custom transition function, run that
-  if( this.layout.options && this.layout.options.transitionFn ) {
-    this.isTransitioning = true;
-    
-    return this.layout.options.transitionFn.call(this, {
-      from : { x : curX, y : curY },
-      to : { x : x, y : y },
-      onTransitionEnd : {
-        transform : this.layoutPosition
-      }
-    });
-  }
-
   var transX = x - curX;
   var transY = y - curY;
   var transitionStyle = {};
@@ -241,6 +228,7 @@ Item.prototype._transitionTo = function( x, y ) {
   transitionStyle.transform = translate( transX, transY );
 
   this.transition({
+    from : { transform : translate( curX, curY ) },
     to: transitionStyle,
     onTransitionEnd: {
       transform: this.layoutPosition
@@ -296,7 +284,6 @@ Item.prototype._transition = function( args ) {
     this._nonTransition( args );
     return;
   }
-
   var _transition = this._transn;
   // keep track of onTransitionEnd callback by css property
   for ( var prop in args.onTransitionEnd ) {
@@ -319,6 +306,19 @@ Item.prototype._transition = function( args ) {
     // hack for JSHint to hush about unused var
     h = null;
   }
+
+  console.log('checking custom...');
+  // if we have a custom transition function, run that
+  if( this.layout.options && this.layout.options.transitionFn ) {    
+    return this.layout.options.transitionFn.call(this, {
+      from : args.from,
+      to : args.to,
+      onTransitionEnd : {
+        transform : this.layoutPosition
+      }
+    });
+  }
+
   // enable transition
   this.enableTransition( args.to );
   // set styles that are transitioning

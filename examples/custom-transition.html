@@ -32,15 +32,24 @@
 <script src="../outlayer.js"></script>
 
 <script>
-function getTransformString(x, y, css) {
+function generateTransformString(x, y, css) {
   return 'translate('+(x || 0)+(css ? 'px' : '')+','+(y || 0)+(css ? 'px' : '')+')';
+}
+
+var regex = /translate(3d)?\(([\w\.\-,% ]+)\)/;
+function trimUp(value) {
+  return parseFloat(value.trim());
 }
 
 function customTransition( args ) {
   // this._nonTransition(args);
-  console.log(this, args);
-  this.enableTransition();
-  this.css({ 'transform' : getTransformString(args.to.x, args.from.y, true) });
+  // console.log(this, args);
+  // console.log(regex.exec(args.to.transform));
+  var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
+  var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
+  console.log(fromPoints, toPoints);
+  this.enableTransition( args.to );
+  this.css( args.to );
 }
 docReady( function() {
   var basic = document.querySelector('.container');
