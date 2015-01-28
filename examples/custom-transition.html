@@ -32,8 +32,15 @@
 <script src="../outlayer.js"></script>
 
 <script>
+function getTransformString(x, y, css) {
+  return 'translate('+(x || 0)+(css ? 'px' : '')+','+(y || 0)+(css ? 'px' : '')+')';
+}
+
 function customTransition( args ) {
-  this._nonTransition(args);
+  // this._nonTransition(args);
+  console.log(this, args);
+  this.enableTransition();
+  this.css({ 'transform' : getTransformString(args.to.x, args.from.y, true) });
 }
 docReady( function() {
   var basic = document.querySelector('.container');
