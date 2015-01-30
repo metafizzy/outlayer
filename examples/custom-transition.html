@@ -42,6 +42,13 @@ var regex = /translate(3d)?\(([\w\.\-,% ]+)\)/;
 function trimUp(value) {
   return parseFloat(value.trim());
 }
+var transitionEndEvent = {
+  WebkitTransition: 'webkitTransitionEnd',
+  MozTransition: 'transitionend',
+  OTransition: 'otransitionend',
+  transition: 'transitionend'
+}[ getStyleProperty('transition') ];
+
 
 function customTransition( args ) {
   // this._nonTransition(args);
@@ -51,9 +58,27 @@ function customTransition( args ) {
   this.enableTransition( args.to );
   this.css( args.to );
   if(args.to.transform) {
-    var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
-    var firstTransition = generateTransformString(toPoints[0], 0, true);
-    this.css( { transform : firstTransition });
+    try {
+      var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
+      var firstTransition = generateTransformString(toPoints[0], 0, true);
+      var self = this;
+      var secondTransitionFn = function(evt) {
+        console.log('secondTransition firing');
+        evt.stopPropagation();
+        evt.preventDefault();
+        self.css( { transform : args.to.transform });
+        self.element.removeEventListener(transitionEndEvent, secondTransitionFn);
+      }
+      this.element.addEventListener(transitionEndEvent, secondTransitionFn);
+      this.css( { transform : firstTransition });
+      // this.css( { transform : args.to.transform });
+    } catch (err) {
+      // if this is a TypeError, we have a transform that contains no translate
+      // which is fine. Otherwise, we have a problem.
+      if (!(err instanceof TypeError)) {
+        throw err;
+      }
+    }
   }
 
 }

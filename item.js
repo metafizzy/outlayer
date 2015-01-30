@@ -306,7 +306,6 @@ Item.prototype._transition = function( args ) {
     h = null;
   }
 
-  console.log('checking custom...');
   // if we have a custom transition function, run that
   if( this.layout.options && this.layout.options.transitionFn ) {    
     return this.layout.options.transitionFn.call(this, {
@@ -378,7 +377,8 @@ var dashedVendorProperties = {
 };
 
 Item.prototype.ontransitionend = function( event ) {
-  // disregard bubbled events from children
+  console.log('in onTransitionEnd');
+   // disregard bubbled events from children
   if ( event.target !== this.element ) {
     return;
   }
