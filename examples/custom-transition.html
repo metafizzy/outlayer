@@ -60,6 +60,7 @@ function customTransition( args ) {
   // console.log(regex.exec(args.to.transform));
   // var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
   this.enableTransition( args.to );
+  this.css( args.to );
   // this.css( args.to );
   // if(args.to.transform) {
   //   try {
@@ -90,10 +91,24 @@ function customTransition( args ) {
   keyframes['0%'][getStyleProperty('transform')] =
     args.from && args.from.transform || blankTransform;
 
+  if(args.to && args.to.transform) {
+    var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
+    var midpoint = '50%';
+    keyframes[midpoint] = {};
+    keyframes[midpoint][getStyleProperty('transform')] =
+      generateTransformString(toPoints[0], 0, true);
+  }
+
   keyframes['100%'][getStyleProperty('transform')] =
     args.to && args.to.transform || blankTransform;
 
   var anim = CSSAnimations.create(keyframes);
+
+  // not quite...
+  var newRules = {};
+  newRules[getStyleProperty('animation-name')] = anim.name;
+  newRules[getStyleProperty('animation-duration')] = '500ms';
+
   this.css({
     '-webkit-animation-name' : anim.name,
     '-webkit-animation-duration' : '500ms'
