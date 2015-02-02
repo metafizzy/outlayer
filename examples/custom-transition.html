@@ -28,6 +28,8 @@
 <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
 <script src="../bower_components/eventie/eventie.js"></script>
 <script src="../bower_components/doc-ready/doc-ready.js"></script>
+<!-- see https://github.com/jlongster/css-animations.js -->
+<script src="./css-animations.js"></script>
 <script src="../item.js"></script>
 <script src="../outlayer.js"></script>
 
@@ -49,6 +51,8 @@ var transitionEndEvent = {
   transition: 'transitionend'
 }[ getStyleProperty('transition') ];
 
+var blankTransform = 'translate3d(0,0,0)';
+
 
 function customTransition( args ) {
   // this._nonTransition(args);
@@ -56,32 +60,47 @@ function customTransition( args ) {
   // console.log(regex.exec(args.to.transform));
   // var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
   this.enableTransition( args.to );
-  this.css( args.to );
-  if(args.to.transform) {
-    try {
-      var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
-      var firstTransition = generateTransformString(toPoints[0], 0, true);
-      var self = this;
-      var secondTransitionFn = function(evt) {
-        console.log('secondTransition firing');
-        evt.stopPropagation();
-        evt.preventDefault();
-        self.css( { transform : args.to.transform });
-        self.element.removeEventListener(transitionEndEvent, secondTransitionFn);
-      }
-      this.element.addEventListener(transitionEndEvent, secondTransitionFn);
-      this.css( { transform : firstTransition });
-      // this.css( { transform : args.to.transform });
-    } catch (err) {
-      // if this is a TypeError, we have a transform that contains no translate
-      // which is fine. Otherwise, we have a problem.
-      if (!(err instanceof TypeError)) {
-        throw err;
-      }
-    }
-  }
+  // this.css( args.to );
+  // if(args.to.transform) {
+  //   try {
+  //     var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
+  //     var firstTransition = generateTransformString(toPoints[0], 0, true);
+  //     var self = this;
+  //     var secondTransitionFn = function(evt) {
+  //       console.log('secondTransition firing');
+  //       evt.stopPropagation();
+  //       evt.preventDefault();
+  //       self.css( { transform : args.to.transform });
+  //       self.element.removeEventListener(transitionEndEvent, secondTransitionFn);
+  //     }
+  //     this.element.addEventListener(transitionEndEvent, secondTransitionFn);
+  //     this.css( { transform : firstTransition });
+  //     // this.css( { transform : args.to.transform });
+  //   } catch (err) {
+  //     // if this is a TypeError, we have a transform that contains no translate
+  //     // which is fine. Otherwise, we have a problem.
+  //     if (!(err instanceof TypeError)) {
+  //       throw err;
+  //     }
+  //   }
+  // }
 
+  // ok let's try something different
+  var keyframes = { '0%' : {}, '100%' : {} };
+  keyframes['0%'][getStyleProperty('transform')] =
+    args.from && args.from.transform || blankTransform;
+
+  keyframes['100%'][getStyleProperty('transform')] =
+    args.to && args.to.transform || blankTransform;
+
+  var anim = CSSAnimations.create(keyframes);
+  this.css({
+    '-webkit-animation-name' : anim.name,
+    '-webkit-animation-duration' : '500ms'
+  });
 }
+
+
 docReady( function() {
   var basic = document.querySelector('.container');
   var layout = new Outlayer( basic, {
