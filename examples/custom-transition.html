@@ -44,47 +44,19 @@ var regex = /translate(3d)?\(([\w\.\-,% ]+)\)/;
 function trimUp(value) {
   return parseFloat(value.trim());
 }
-var transitionEndEvent = {
-  WebkitTransition: 'webkitTransitionEnd',
-  MozTransition: 'transitionend',
-  OTransition: 'otransitionend',
-  transition: 'transitionend'
-}[ getStyleProperty('transition') ];
+var animationEndEvent = {
+  WebkitAnimation: 'webkitAnimationEnd',
+  MozAnimation: 'animationend',
+  OAnimation: 'oanimationend',
+  animation: 'animationend'
+}[ getStyleProperty('animation') ];
 
 var blankTransform = 'translate3d(0,0,0)';
 
 
 function customTransition( args ) {
-  // this._nonTransition(args);
-  // console.log(this, args);
-  // console.log(regex.exec(args.to.transform));
-  // var fromPoints = regex.exec(args.from.transform)[2].split(',').map(trimUp);
   this.enableTransition( args.to );
   this.css( args.to );
-  // this.css( args.to );
-  // if(args.to.transform) {
-  //   try {
-  //     var toPoints = regex.exec(args.to.transform)[2].split(',').map(trimUp);
-  //     var firstTransition = generateTransformString(toPoints[0], 0, true);
-  //     var self = this;
-  //     var secondTransitionFn = function(evt) {
-  //       console.log('secondTransition firing');
-  //       evt.stopPropagation();
-  //       evt.preventDefault();
-  //       self.css( { transform : args.to.transform });
-  //       self.element.removeEventListener(transitionEndEvent, secondTransitionFn);
-  //     }
-  //     this.element.addEventListener(transitionEndEvent, secondTransitionFn);
-  //     this.css( { transform : firstTransition });
-  //     // this.css( { transform : args.to.transform });
-  //   } catch (err) {
-  //     // if this is a TypeError, we have a transform that contains no translate
-  //     // which is fine. Otherwise, we have a problem.
-  //     if (!(err instanceof TypeError)) {
-  //       throw err;
-  //     }
-  //   }
-  // }
 
   // ok let's try something different
   var keyframes = { '0%' : {}, '100%' : {} };
@@ -104,15 +76,15 @@ function customTransition( args ) {
 
   var anim = CSSAnimations.create(keyframes);
 
-  // not quite...
-  var newRules = {};
-  newRules[getStyleProperty('animation-name')] = anim.name;
-  newRules[getStyleProperty('animation-duration')] = '500ms';
-
-  this.css({
-    '-webkit-animation-name' : anim.name,
-    '-webkit-animation-duration' : '500ms'
+  this.element.addEventListener(animationEndEvent, function() {
+    CSSAnimations.remove(anim.name);
   });
+
+  // not quite... working
+  var newRules = {};
+  newRules[getStyleProperty('animation')] = anim.name + ' 500ms';
+
+  this.css(newRules);
 }
 
 
