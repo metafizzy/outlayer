@@ -325,10 +325,6 @@ Item.prototype._transition = function( args ) {
   this.isTransitioning = true;
 };
 
-Item.prototype._customTransition = function( args ) {
-  
-}
-
 var itemTransitionProperties = transformProperty && ( toDash( transformProperty ) +
   ',opacity' );
 
@@ -377,8 +373,7 @@ var dashedVendorProperties = {
 };
 
 Item.prototype.ontransitionend = function( event ) {
-  console.log('in onTransitionEnd');
-   // disregard bubbled events from children
+  // disregard bubbled events from children
   if ( event.target !== this.element ) {
     return;
   }
