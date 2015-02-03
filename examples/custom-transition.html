@@ -76,9 +76,23 @@ function customTransition( args ) {
 
   var anim = CSSAnimations.create(keyframes);
 
-  this.element.addEventListener(animationEndEvent, function() {
+  var self = this;
+
+  function clearAnimation() {
     CSSAnimations.remove(anim.name);
-  });
+
+    var newRules = {};
+    newRules[getStyleProperty('animation')] = '';
+    newRules[getStyleProperty('transform')] = '';
+
+    self.layoutPosition();
+    self.css(newRules);
+
+    // console.log(self.position.x, self.position.y);
+    // console.log(regex.exec(args.to.transform)[2].split(',').map(trimUp));
+  }
+
+  this.element.addEventListener(animationEndEvent, clearAnimation);
 
   // not quite... working
   var newRules = {};
