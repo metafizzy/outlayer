@@ -2,10 +2,7 @@
   "name": "outlayer",
   "version": "1.3.0",
   "description": "the brains and guts of a layout library",
-  "main": [
-    "item.js",
-    "outlayer.js"
-  ],
+  "main": "outlayer.js",
   "dependencies": {
     "doc-ready": "1.0.x",
     "eventEmitter": ">=4.2 <5",
@@ -29,11 +26,12 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "package.json"
   ],
   "homepage": "https://github.com/metafizzy/outlayer",
   "authors": [
-    "David DeSandro <desandrocodes@gmail.com>"
+    "Metafizzy"
   ],
   "moduleType": [
     "amd",
@@ -41,8 +39,9 @@
     "node"
   ],
   "keywords": [
-    "DOM",
-    "layout"
+    "layout",
+    "masonry",
+    "isotope"
   ],
   "license": "MIT"
 }
