@@ -10,9 +10,8 @@ test( 'layout', function() {
   var items = cellsLayout.items;
   ok( cellsLayout._isLayoutInited, '_isLayoutInited' );
 
-  cellsLayout.on( 'layoutComplete', function onLayout( obj, layoutItems ) {
-    equal( true, true, 'layoutComplete event did fire' );
-    equal( obj, cellsLayout, 'event-emitted argument matches instance' );
+  cellsLayout.on( 'layoutComplete', function onLayout( layoutItems ) {
+    ok( true, 'layoutComplete event did fire' );
     equal( layoutItems.length, items.length, 'event-emitted items matches layout items length' );
     strictEqual( layoutItems[0], items[0], 'event-emitted items has same first item' );
     var len = layoutItems.length - 1;

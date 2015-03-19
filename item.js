@@ -455,11 +455,42 @@ Item.prototype.reveal = function() {
   this.css({ display: '' });
 
   var options = this.layout.options;
+
+  var onTransitionEnd = {};
+  var transitionEndProperty = this.getHideRevealTransitionEndProperty('visibleStyle');
+  onTransitionEnd[ transitionEndProperty ] = this.onRevealTransitionEnd;
+
   this.transition({
     from: options.hiddenStyle,
     to: options.visibleStyle,
-    isCleaning: true
+    isCleaning: true,
+    onTransitionEnd: onTransitionEnd
   });
+};
+
+Item.prototype.onRevealTransitionEnd = function() {
+  // check if still visible
+  // during transition, item may have been hidden
+  if ( !this.isHidden ) {
+    this.emitEvent('reveal');
+  }
+};
+
+/**
+ * get style property use for hide/reveal transition end
+ * @param {String} styleProperty - hiddenStyle/visibleStyle
+ * @returns {String}
+ */
+Item.prototype.getHideRevealTransitionEndProperty = function( styleProperty ) {
+  var optionStyle = this.layout.options[ styleProperty ];
+  // use opacity
+  if ( optionStyle.opacity ) {
+    return 'opacity';
+  }
+  // get first property
+  for ( var prop in optionStyle ) {
+    return prop;
+  }
 };
 
 Item.prototype.hide = function() {
@@ -469,21 +500,27 @@ Item.prototype.hide = function() {
   this.css({ display: '' });
 
   var options = this.layout.options;
+
+  var onTransitionEnd = {};
+  var transitionEndProperty = this.getHideRevealTransitionEndProperty('hiddenStyle');
+  onTransitionEnd[ transitionEndProperty ] = this.onHideTransitionEnd;
+
   this.transition({
     from: options.visibleStyle,
     to: options.hiddenStyle,
     // keep hidden stuff hidden
     isCleaning: true,
-    onTransitionEnd: {
-      opacity: function() {
-        // check if still hidden
-        // during transition, item may have been un-hidden
-        if ( this.isHidden ) {
-          this.css({ display: 'none' });
-        }
-      }
-    }
+    onTransitionEnd: onTransitionEnd
   });
+};
+
+Item.prototype.onHideTransitionEnd = function() {
+  // check if still hidden
+  // during transition, item may have been un-hidden
+  if ( this.isHidden ) {
+    this.css({ display: 'none' });
+    this.emitEvent('hide');
+  }
 };
 
 Item.prototype.destroy = function() {

@@ -12,9 +12,8 @@ test( 'remove', function() {
   var w2Elems = container.querySelectorAll('.w2');
   var expectedRemovedCount = olayer.items.length - w2Elems.length;
 
-  olayer.on( 'removeComplete', function( obj, removedItems ) {
-    equal( true, true, 'removeComplete event did fire' );
-    equal( obj, olayer, 'event-emitted argument matches Packery instance' );
+  olayer.once( 'removeComplete', function( removedItems ) {
+    ok( true, 'removeComplete event did fire' );
     equal( removedItems.length, w2Elems.length, 'remove elems length matches 2nd argument length' );
     for ( var i=0, len = removedItems.length; i < len; i++ ) {
       equal( removedItems[i].element, w2Elems[i], 'removedItems element matches' );
@@ -23,7 +22,6 @@ test( 'remove', function() {
     equal( container.querySelectorAll('.w2').length, 0, 'matched elements were removed' );
     setTimeout( removeNoTransition, 20 );
     // start();
-    return true;
   });
   stop();
   olayer.remove( w2Elems );
@@ -36,9 +34,9 @@ test( 'remove', function() {
     var h2Elems = container.querySelectorAll('.h2');
     expectedRemovedCount -= h2Elems.length;
 
-    olayer.on( 'removeComplete', function( obj, removedItems ) {
-      equal( true, true, 'no transition, removeComplete event did fire' );
-      equal( removedItems.length, h2Elems.length, 'no transition, remove elems length matches 2nd argument length' );
+    olayer.once( 'removeComplete', function( removedItems ) {
+      ok( true, 'no transition, removeComplete event did fire' );
+      equal( h2Elems.length, removedItems.length, 'no transition, remove elems length matches argument length' );
       equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
       equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
       setTimeout( removeNone, 20 );

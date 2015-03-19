@@ -359,19 +359,12 @@ Outlayer.prototype._getItemsForLayout = function( items ) {
  * @param {Boolean} isInstant
  */
 Outlayer.prototype._layoutItems = function( items, isInstant ) {
-  var _this = this;
-  function onItemsLayout() {
-    _this.emitEvent( 'layoutComplete', [ _this, items ] );
-  }
+  this._emitCompleteOnItems( 'layout', items );
 
   if ( !items || !items.length ) {
     // no items, emit event with empty array
-    onItemsLayout();
     return;
   }
-
-  // emit layoutComplete when done
-  this._itemsOn( items, 'layout', onItemsLayout );
 
   var queue = [];
 
@@ -479,27 +472,34 @@ Outlayer.prototype._setContainerMeasure = function( measure, isWidth ) {
 };
 
 /**
- * trigger a callback for a collection of items events
- * @param {Array} items - Outlayer.Items
+ * emit eventComplete on a collection of items events
  * @param {String} eventName
- * @param {Function} callback
+ * @param {Array} items - Outlayer.Items
  */
-Outlayer.prototype._itemsOn = function( items, eventName, callback ) {
-  var doneCount = 0;
-  var count = items.length;
-  // event callback
+Outlayer.prototype._emitCompleteOnItems = function( eventName, items ) {
   var _this = this;
+  function onComplete() {
+    _this.emitEvent( eventName + 'Complete', [ items ] );
+  }
+
+  var count = items.length;
+  if ( !items || !count ) {
+    onComplete();
+    return;
+  }
+
+  var doneCount = 0;
   function tick() {
     doneCount++;
     if ( doneCount === count ) {
-      callback.call( _this );
+      onComplete();
     }
-    return true; // bind once
   }
+
   // bind callback
   for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
-    item.on( eventName, tick );
+    item.once( eventName, tick );
   }
 };
 
@@ -763,11 +763,9 @@ Outlayer.prototype.prepended = function( elems ) {
  * @param {Array of Outlayer.Items} items
  */
 Outlayer.prototype.reveal = function( items ) {
-  var len = items && items.length;
-  if ( !len ) {
-    return;
-  }
-  for ( var i=0; i < len; i++ ) {
+  this._emitCompleteOnItems( 'reveal', items );
+
+  for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
     item.reveal();
   }
@@ -778,11 +776,9 @@ Outlayer.prototype.reveal = function( items ) {
  * @param {Array of Outlayer.Items} items
  */
 Outlayer.prototype.hide = function( items ) {
-  var len = items && items.length;
-  if ( !len ) {
-    return;
-  }
-  for ( var i=0; i < len; i++ ) {
+  this._emitCompleteOnItems( 'hide', items );
+
+  for ( var i=0, len = items.length; i < len; i++ ) {
     var item = items[i];
     item.hide();
   }
@@ -834,14 +830,13 @@ Outlayer.prototype.remove = function( elems ) {
   elems = makeArray( elems );
 
   var removeItems = this.getItems( elems );
+
+  this._emitCompleteOnItems( 'remove', removeItems );
+
   // bail if no items to remove
   if ( !removeItems || !removeItems.length ) {
     return;
   }
-
-  this._itemsOn( removeItems, 'remove', function() {
-    this.emitEvent( 'removeComplete', [ this, removeItems ] );
-  });
 
   for ( var i=0, len = removeItems.length; i < len; i++ ) {
     var item = removeItems[i];

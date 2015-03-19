@@ -1,10 +1,10 @@
 # Changelog
 
-## v1
++ Added `revealComplete` and `hideComplete` events
++ Removed `instance` argument from `layoutComplete` and `removeComplete` events
++ Changed `bower.json` `main` to just `outlayer.js`
 
-### v1.3
-
-#### v1.3.0
+### v1.3.0
 
 + add CommonJS support for [Browserify](http://browserify.org) [#17](https://github.com/metafizzy/outlayer/issues/17)
 + remove [jQuery Bridget](https://github.com/desandro/jquery-bridget) as an explicit dependency
