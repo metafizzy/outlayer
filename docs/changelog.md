@@ -1,6 +1,7 @@
 # Changelog
 
 + Added `revealComplete` and `hideComplete` events
++ Added `percentPosition` option
 + Removed `instance` argument from `layoutComplete` and `removeComplete` events
 + Changed `bower.json` `main` to just `outlayer.js`
 
