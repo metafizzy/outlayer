@@ -210,3 +210,4 @@ Outlayer.create = function( namespace ) {}
 + itemOptions
 + itemSelector
 + stamp
++ percentPosition
