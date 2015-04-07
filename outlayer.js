@@ -8,10 +8,9 @@
   'use strict';
   // universal module definition
 
-  if ( typeof define === 'function' && define.amd ) {
+  if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-        window,
         'eventie/eventie',
         'eventEmitter/EventEmitter',
         'get-size/get-size',
@@ -19,10 +18,10 @@
         './item'
       ],
       function( eventie, EventEmitter, getSize, utils, Item ) {
-        factory( window, eventie, EventEmitter, getSize, utils, Item);
+        return factory( window, eventie, EventEmitter, getSize, utils, Item);
       }
     );
-  } else if ( typeof exports === 'object' ) {
+  } else if ( typeof exports == 'object' ) {
     // CommonJS
     module.exports = factory(
       window,

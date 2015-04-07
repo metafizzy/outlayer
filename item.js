@@ -14,7 +14,7 @@
         'fizzy-ui-utils/utils'
       ],
       function( EventEmitter, getSize, getStyleProperty, utils ) {
-        factory( window, EventEmitter, getSize, getStyleProperty, utils );
+        return factory( window, EventEmitter, getSize, getStyleProperty, utils );
       }
     );
   } else if (typeof exports === 'object') {

@@ -1,5 +1,5 @@
 requirejs.config({
-  baseUrl: '../bower_components'
+  baseUrl: '../../bower_components'
   // OR
   // paths: {
   //   eventie: 'bower_components/eventie',
@@ -11,8 +11,6 @@ requirejs.config({
   // }
 });
 
-requirejs( [ '../outlayer', '../examples/cells-by-row' ], function( Outlayer, CellsByRow ) {
-
+requirejs( [ '../examples/cells-by-row' ], function( CellsByRow ) {
   new CellsByRow( document.querySelector('#basic') );
-
 });

@@ -2,11 +2,28 @@
  * CellsByRow example
  */
 
-( function( window ) {
+( function( window, factory ) {
+  'use strict';
 
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [
+        '../outlayer'
+      ],
+      factory );
+  } else if ( typeof exports === 'object' ) {
+    module.exports = factory(
+      require('../outlayer')
+    );
+  } else {
+    // browser global
+    window.CellsByRow = factory(
+      window.Outlayer
+    );
+  }
+
+}( window, function factory( Outlayer) {
 'use strict';
-
-function cellsByRowDefinition( Outlayer ) {
 
 var CellsByRow = Outlayer.create( 'cellsByRow', {
   columnWidth: 100,
@@ -63,26 +80,4 @@ CellsByRow.prototype._getContainerSize = function() {
 
 return CellsByRow;
 
-}
-
-// -------------------------- transport -------------------------- //
-
-
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( [
-      '../outlayer'
-    ],
-    cellsByRowDefinition );
-} else if ( typeof exports === 'object' ) {
-  module.exports = cellsByRowDefinition(
-    require('../outlayer')
-  );
-} else {
-  // browser global
-  window.CellsByRow = cellsByRowDefinition(
-    window.Outlayer
-  );
-}
-
-})( window );
+}));
