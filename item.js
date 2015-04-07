@@ -1,6 +1,7 @@
 /**
  * Outlayer Item
  */
+
 ( function( window, factory ) {
   'use strict';
   // universal module definition
@@ -9,10 +10,11 @@
     define( [
         'eventEmitter/EventEmitter',
         'get-size/get-size',
-        'get-style-property/get-style-property'
+        'get-style-property/get-style-property',
+        'fizzy-ui-utils/utils'
       ],
-      function( EventEmitter, getSize, getStyleProperty ) {
-        factory( window, EventEmitter, getSize, getStyleProperty );
+      function( EventEmitter, getSize, getStyleProperty, utils ) {
+        factory( window, EventEmitter, getSize, getStyleProperty, utils );
       }
     );
   } else if (typeof exports === 'object') {
@@ -21,7 +23,8 @@
       window,
       require('wolfy87-eventemitter'),
       require('get-size'),
-      require('desandro-get-style-property')
+      require('desandro-get-style-property'),
+      require('fizzy-ui-utils')
     );
   } else {
     // browser global
@@ -30,14 +33,15 @@
       window,
       window.EventEmitter,
       window.getSize,
-      window.getStyleProperty
+      window.getStyleProperty,
+      window.fizzyUIUtils
     );
   }
 
-}( window, function factory( window, EventEmitter, getSize, getStyleProperty ) {
+}( window, function factory( window, EventEmitter, getSize, getStyleProperty, utils ) {
 'use strict';
 
-// ----- get style ----- //
+// ----- helpers ----- //
 
 var getComputedStyle = window.getComputedStyle;
 var getStyle = getComputedStyle ?
@@ -49,27 +53,12 @@ var getStyle = getComputedStyle ?
   };
 
 
-// extend objects
-function extend( a, b ) {
-  for ( var prop in b ) {
-    a[ prop ] = b[ prop ];
-  }
-  return a;
-}
-
 function isEmptyObj( obj ) {
   for ( var prop in obj ) {
     return false;
   }
   prop = null;
   return true;
-}
-
-// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
-function toDash( str ) {
-  return str.replace( /([A-Z])/g, function( $1 ){
-    return '-' + $1.toLowerCase();
-  });
 }
 
 // -------------------------- CSS3 support -------------------------- //
@@ -126,7 +115,7 @@ function Item( element, layout ) {
 }
 
 // inherit EventEmitter
-extend( Item.prototype, EventEmitter.prototype );
+utils.extend( Item.prototype, EventEmitter.prototype );
 
 Item.prototype._create = function() {
   // transition objects
@@ -342,7 +331,7 @@ Item.prototype._transition = function( args ) {
 
 };
 
-var itemTransitionProperties = transformProperty && ( toDash( transformProperty ) +
+var itemTransitionProperties = transformProperty && ( utils.toDashed( transformProperty ) +
   ',opacity' );
 
 Item.prototype.enableTransition = function(/* style */) {

@@ -5,7 +5,7 @@
   "undef": true,
   "unused": true,
 
-  "predef": {
+  "globals": {
     "define": false,
     "module": false,
     "require": false
