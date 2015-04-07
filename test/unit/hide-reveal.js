@@ -109,10 +109,47 @@ test( 'hide/reveal', function() {
     layout.once( 'revealComplete', function( revealCompleteItems ) {
       ok( true, 'revealComplete event did fire with no items' );
       equal( revealCompleteItems, emptyArray, 'returns same object passed in' );
-      start();
+      setTimeout( nextHideItemElements );
+      // start();
     });
   
     layout.reveal( emptyArray );
+  }
+
+  // --------------------------  -------------------------- //
+
+  function nextHideItemElements() {
+    layout.once( 'hideComplete', function( hideCompleteItems ) {
+      ok( true, 'hideComplete event did fire after hideItemElements' );
+      equal( hideCompleteItems.length, hideItems.length, 'event-emitted items matches layout items length' );
+      strictEqual( hideCompleteItems[0], hideItems[0], 'event-emitted items has same first item' );
+      strictEqual( hideCompleteItems[ lastIndex ], hideItems[ lastIndex ], 'event-emitted items has same last item' );
+      equal( firstItemElem.style.display, 'none', 'first item hidden' );
+      equal( lastItemElem.style.display, 'none', 'last item hidden' );
+      equal( firstItemElem.style.opacity, '', 'first item opacity not set' );
+      equal( lastItemElem.style.opacity, '', 'last item opacity not set' );
+      setTimeout( nextRevealItemElements );
+      // start();
+    });
+
+    layout.hideItemElements( hideElems );
+  }
+
+  function nextRevealItemElements() {
+    layout.once( 'revealComplete', function( revealCompleteItems ) {
+      ok( true, 'revealComplete event did fire after revealItemElements' );
+      equal( revealCompleteItems.length, hideItems.length, 'event-emitted items matches layout items length' );
+      strictEqual( revealCompleteItems[0], hideItems[0], 'event-emitted items has same first item' );
+      strictEqual( revealCompleteItems[ lastIndex ], hideItems[ lastIndex ], 'event-emitted items has same last item' );
+      equal( firstItemElem.style.display, '', 'first item no display' );
+      equal( lastItemElem.style.display, '', 'last item no display' );
+      equal( firstItemElem.style.opacity, '', 'first item opacity not set' );
+      equal( lastItemElem.style.opacity, '', 'last item opacity not set' );
+      // setTimeout( nextHideNoTransition );
+      start();
+    });
+
+    layout.revealItemElements( hideElems );
   }
 
 });

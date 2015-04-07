@@ -163,6 +163,18 @@ Outlayer.prototype.reveal = function( items ) {}
  */
 Outlayer.prototype.hide = function( items ) {}
 
+/**
+ * reveal item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+Outlayer.prototype.revealItemElements = function( elems ) {}
+
+/**
+ * hide item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+Outlayer.prototype.hideItemElements = function( elems ) {}
+
 // remove and disable Outlayer instance
 Outlayer.prototype.destroy = function() {}
 

@@ -701,7 +701,8 @@ Outlayer.prototype.prepended = function( elems ) {
 Outlayer.prototype.reveal = function( items ) {
   this._emitCompleteOnItems( 'reveal', items );
 
-  for ( var i=0, len = items.length; i < len; i++ ) {
+  var len = items && items.length;
+  for ( var i=0; len && i < len; i++ ) {
     var item = items[i];
     item.reveal();
   }
@@ -714,10 +715,29 @@ Outlayer.prototype.reveal = function( items ) {
 Outlayer.prototype.hide = function( items ) {
   this._emitCompleteOnItems( 'hide', items );
 
-  for ( var i=0, len = items.length; i < len; i++ ) {
+  var len = items && items.length;
+  for ( var i=0; len && i < len; i++ ) {
     var item = items[i];
     item.hide();
   }
+};
+
+/**
+ * reveal item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+Outlayer.prototype.revealItemElements = function( elems ) {
+  var items = this.getItems( elems );
+  this.reveal( items );
+};
+
+/**
+ * hide item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+Outlayer.prototype.hideItemElements = function( elems ) {
+  var items = this.getItems( elems );
+  this.hide( items );
 };
 
 /**
@@ -743,9 +763,7 @@ Outlayer.prototype.getItem = function( elem ) {
  * @returns {Array} items - Outlayer.Items
  */
 Outlayer.prototype.getItems = function( elems ) {
-  if ( !elems || !elems.length ) {
-    return;
-  }
+  elems = utils.makeArray( elems );
   var items = [];
   for ( var i=0, len = elems.length; i < len; i++ ) {
     var elem = elems[i];
@@ -763,8 +781,6 @@ Outlayer.prototype.getItems = function( elems ) {
  * @param {Array or NodeList or Element} elems
  */
 Outlayer.prototype.remove = function( elems ) {
-  elems = utils.makeArray( elems );
-
   var removeItems = this.getItems( elems );
 
   this._emitCompleteOnItems( 'remove', removeItems );
