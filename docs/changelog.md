@@ -1,5 +1,7 @@
 # Changelog
 
+## v1.4.0
+
 + Added `revealComplete` and `hideComplete` events
 + Added `hideItemElements` and `revealItemElement` methods
 + Added `percentPosition` option
