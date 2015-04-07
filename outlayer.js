@@ -4,8 +4,51 @@
  * MIT license
  */
 
-( function( window ) {
+( function( window, factory ) {
+  'use strict';
+  // universal module definition
 
+  if ( typeof define === 'function' && define.amd ) {
+    // AMD
+    define( [
+        window,
+        'eventie/eventie',
+        'doc-ready/doc-ready',
+        'eventEmitter/EventEmitter',
+        'get-size/get-size',
+        'matches-selector/matches-selector',
+        './item'
+      ],
+      function( eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
+        factory( window, eventie, docReady, EventEmitter, getSize, matchesSelector, Item);
+      }
+    );
+  } else if ( typeof exports === 'object' ) {
+    // CommonJS
+    module.exports = factory(
+      window,
+      require('eventie'),
+      require('doc-ready'),
+      require('wolfy87-eventemitter'),
+      require('get-size'),
+      require('desandro-matches-selector'),
+      require('./item')
+    );
+  } else {
+    // browser global
+    window.Outlayer = factory(
+      window,
+      window.eventie,
+      window.docReady,
+      window.EventEmitter,
+      window.getSize,
+      window.matchesSelector,
+      window.Outlayer.Item
+    );
+  }
+
+}( window, function factory( window, eventie, docReady, EventEmitter, getSize,
+  matchesSelector, Item ) {
 'use strict';
 
 // ----- vars ----- //
@@ -84,9 +127,6 @@ function toDashed( str ) {
     return $1 + '-' + $2;
   }).toLowerCase();
 }
-
-
-function outlayerDefinition( eventie, docReady, EventEmitter, getSize, matchesSelector, Item ) {
 
 // -------------------------- Outlayer -------------------------- //
 
@@ -975,41 +1015,5 @@ Outlayer.Item = Item;
 
 return Outlayer;
 
-}
+}));
 
-// -------------------------- transport -------------------------- //
-
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( [
-      'eventie/eventie',
-      'doc-ready/doc-ready',
-      'eventEmitter/EventEmitter',
-      'get-size/get-size',
-      'matches-selector/matches-selector',
-      './item'
-    ],
-    outlayerDefinition );
-} else if ( typeof exports === 'object' ) {
-  // CommonJS
-  module.exports = outlayerDefinition(
-    require('eventie'),
-    require('doc-ready'),
-    require('wolfy87-eventemitter'),
-    require('get-size'),
-    require('desandro-matches-selector'),
-    require('./item')
-  );
-} else {
-  // browser global
-  window.Outlayer = outlayerDefinition(
-    window.eventie,
-    window.docReady,
-    window.EventEmitter,
-    window.getSize,
-    window.matchesSelector,
-    window.Outlayer.Item
-  );
-}
-
-})( window );
