@@ -10,14 +10,13 @@ test( 'layout', function() {
   var items = cellsLayout.items;
   ok( cellsLayout._isLayoutInited, '_isLayoutInited' );
 
-  cellsLayout.on( 'layoutComplete', function onLayout( layoutItems ) {
+  cellsLayout.once( 'layoutComplete', function onLayout( layoutItems ) {
     ok( true, 'layoutComplete event did fire' );
     equal( layoutItems.length, items.length, 'event-emitted items matches layout items length' );
     strictEqual( layoutItems[0], items[0], 'event-emitted items has same first item' );
     var len = layoutItems.length - 1;
     strictEqual( layoutItems[ len ], items[ len ], 'event-emitted items has same last item' );
     start();
-    return true; // bind once
   });
 
   stop();

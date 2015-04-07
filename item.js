@@ -467,9 +467,8 @@ Item.prototype.remove = function() {
 
   // start transition
   var _this = this;
-  this.on( 'transitionEnd', function() {
+  this.once( 'transitionEnd', function() {
     _this.removeElem();
-    return true; // bind once
   });
   this.hide();
 };

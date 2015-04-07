@@ -37,13 +37,12 @@ test( 'origin', function() {
 
   // top right
   layout.options.isOriginLeft = false;
-  layout.on( 'layoutComplete', function() {
+  layout.once( 'layoutComplete', function() {
     checkItemPosition( 0,   0,   0 );
     checkItemPosition( 1, 100,   0 );
     checkItemPosition( 2,   0, 100 );
     doNext( testBottomRight );
     // start();
-    return true; // bind once
   });
   stop();
   layout.layout();
@@ -51,12 +50,11 @@ test( 'origin', function() {
   // bottom right
   function testBottomRight() {
     layout.options.isOriginTop = false;
-    layout.on( 'layoutComplete', function() {
+    layout.once( 'layoutComplete', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
       checkItemPosition( 2,   0, 100 );
       doNext( testBottomLeft );
-      return true; // bind once
     });
     layout.layout();
   }
@@ -64,12 +62,11 @@ test( 'origin', function() {
   // bottom right
   function testBottomLeft() {
     layout.options.isOriginLeft = true;
-    layout.on( 'layoutComplete', function() {
+    layout.once( 'layoutComplete', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
       checkItemPosition( 2,   0, 100 );
       start();
-      return true; // bind once
     });
     layout.layout();
   }

@@ -9,10 +9,9 @@ test( 'transition duration', function() {
 
   layout.options.columnWidth = 75;
   layout.options.rowHeight = 120;
-  layout.on( 'layoutComplete', function() {
+  layout.once( 'layoutComplete', function() {
     ok( true, 'layoutComplete triggered when transition duration = 0' );
     start();
-    return true; // bind once
   });
 
   stop();
