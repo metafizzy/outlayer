@@ -1,5 +1,7 @@
 # Changelog
 
++ Fixed sizing bug with `percentPosition` and border on container element
+
 ## v1.4.0
 
 + Added `revealComplete` and `hideComplete` events

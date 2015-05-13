@@ -191,7 +191,7 @@ Item.prototype.layoutPosition = function() {
   var x = this.position.x + layoutSize[ xPadding ];
   // set in percentage
   x = layoutOptions.percentPosition && !layoutOptions.isHorizontal ?
-    ( ( x / layoutSize.width ) * 100 ) + '%' : x + 'px';
+    ( ( x / layoutSize.innerWidth ) * 100 ) + '%' : x + 'px';
   style[ xProperty ] = x;
   // reset other property
   style[ xResetProperty ] = '';
@@ -204,7 +204,7 @@ Item.prototype.layoutPosition = function() {
   var y = this.position.y + layoutSize[ yPadding ];
   // set in percentage
   y = layoutOptions.percentPosition && layoutOptions.isHorizontal ?
-    ( ( y / layoutSize.height ) * 100 ) + '%' : y + 'px';
+    ( ( y / layoutSize.innerHeight ) * 100 ) + '%' : y + 'px';
   style[ yProperty ] = y;
   // reset other property
   style[ yResetProperty ] = '';
