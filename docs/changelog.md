@@ -1,6 +1,7 @@
 # Changelog
 
 + Fixed sizing bug with `percentPosition` and border on container element
++ Trigger jQuery Events. Fixed [#6](https://github.com/metafizzy/outlayer/issues/6)
 
 ## v1.4.0
 
