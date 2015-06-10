@@ -246,7 +246,7 @@ Item.prototype._transitionTo = function( x, y ) {
   var transX = x - curX;
   var transY = y - curY;
   var transitionStyle = {};
-  // flip cooridinates if origin on right or bottom
+  // flip coordinates if origin on right or bottom
   var layoutOptions = this.layout.options;
   transX = layoutOptions.isOriginLeft ? transX : -transX;
   transY = layoutOptions.isOriginTop ? transY : -transY;
@@ -308,7 +308,6 @@ Item.prototype._transition = function( args ) {
     this._nonTransition( args );
     return;
   }
-
   var _transition = this._transn;
   // keep track of onTransitionEnd callback by css property
   for ( var prop in args.onTransitionEnd ) {
@@ -331,13 +330,24 @@ Item.prototype._transition = function( args ) {
     // hack for JSHint to hush about unused var
     h = null;
   }
+
+  // if we have a custom transition function, run that
+  if( this.layout.options && this.layout.options.transitionFn ) {    
+    return this.layout.options.transitionFn.call(this, {
+      from : args.from,
+      to : args.to,
+      onTransitionEnd : {
+        transform : this.layoutPosition
+      }
+    });
+  }
+
   // enable transition
   this.enableTransition( args.to );
   // set styles that are transitioning
   this.css( args.to );
 
   this.isTransitioning = true;
-
 };
 
 var itemTransitionProperties = transformProperty && ( utils.toDashed( transformProperty ) +
