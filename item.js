@@ -218,13 +218,13 @@ Item.prototype.getXValue = function( x ) {
   var layoutOptions = this.layout.options;
   return layoutOptions.percentPosition && !layoutOptions.isHorizontal ?
     ( ( x / this.layout.size.width ) * 100 ) + '%' : x + 'px';
-}
+};
 
 Item.prototype.getYValue = function( y ) {
   var layoutOptions = this.layout.options;
   return layoutOptions.percentPosition && layoutOptions.isHorizontal ?
     ( ( y / this.layout.size.height ) * 100 ) + '%' : y + 'px';
-}
+};
 
 
 Item.prototype._transitionTo = function( x, y ) {
@@ -354,28 +354,36 @@ Item.prototype._transition = function( args ) {
 
 };
 
-var itemTransitionProperties = transformProperty && ( utils.toDashed( transformProperty ) +
-  ',opacity' );
+// dash before all cap letters, including first for
+// WebkitTransform => -webkit-transform
+function toDashedAll( str ) {
+  return str.replace( /([A-Z])/g, function( $1 ) {
+    return '-' + $1.toLowerCase();
+  });
+}
+
+var transitionProps = 'opacity,' +
+  toDashedAll( vendorProperties.transform || 'transform' );
 
 Item.prototype.enableTransition = function(/* style */) {
-  // only enable if not already transitioning
-  // bug in IE10 were re-setting transition style will prevent
-  // transitionend event from triggering
+  // HACK changing transitionProperty during a transition
+  // will cause transition to jump
   if ( this.isTransitioning ) {
     return;
   }
 
-  // make transition: foo, bar, baz from style object
-  // TODO uncomment this bit when IE10 bug is resolved
-  // var transitionValue = [];
+  // make `transition: foo, bar, baz` from style object
+  // HACK un-comment this when enableTransition can work
+  // while a transition is happening
+  // var transitionValues = [];
   // for ( var prop in style ) {
   //   // dash-ify camelCased properties like WebkitTransition
-  //   transitionValue.push( toDash( prop ) );
+  //   prop = vendorProperties[ prop ] || prop;
+  //   transitionValues.push( toDashedAll( prop ) );
   // }
   // enable transition styles
-  // HACK always enable transform,opacity for IE10
   this.css({
-    transitionProperty: itemTransitionProperties,
+    transitionProperty: transitionProps,
     transitionDuration: this.layout.options.transitionDuration
   });
   // listen for transition end event

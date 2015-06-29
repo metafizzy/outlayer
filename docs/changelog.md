@@ -1,8 +1,10 @@
 # Changelog
 
-+ Fix Safari `percentPosition` bug by checking and using percent values. Fixed [desandro/masonry#698](https://github.com/desandro/masonry/issues/698)
-+ Fixed sizing bug with `percentPosition` and border on container element
+
 + Trigger jQuery Events. Fixed [#6](https://github.com/metafizzy/outlayer/issues/6)
++ Fix Safari `percentPosition` bug by checking and using percent values. Fixed [desandro/masonry#698](https://github.com/desandro/masonry/issues/698)
++ Fix Safari bug with appended/prepended methods. Fixed [metafizzy/isotope#945](https://github.com/metafizzy/isotope/issues/945).
++ Fixed sizing bug with `percentPosition` and border on container element
 
 ## v1.4.0
 
