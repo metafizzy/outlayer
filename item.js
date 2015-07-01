@@ -184,6 +184,10 @@ Item.prototype.getPosition = function() {
 
 // set settled position, apply padding
 Item.prototype.layoutPosition = function() {
+  if ( !this.layout.size ) {
+    this.layout.getSize()
+  }
+  
   var layoutSize = this.layout.size;
   var layoutOptions = this.layout.options;
   var style = {};
