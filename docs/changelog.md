@@ -1,5 +1,6 @@
 # Changelog
 
+### v1.4.1
 
 + Trigger jQuery Events. Fixed [#6](https://github.com/metafizzy/outlayer/issues/6)
 + Fix Safari `percentPosition` bug by checking and using percent values. Fixed [desandro/masonry#698](https://github.com/desandro/masonry/issues/698)
