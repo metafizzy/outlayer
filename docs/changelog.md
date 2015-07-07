@@ -1,5 +1,7 @@
 # Changelog
 
++ Added `parseFloat()` for percent values. Switched back to pixels for transform values. Fixed [isotope#948](https://github.com/metafizzy/isotope/issues/948)
+
 ### v1.4.1
 
 + Trigger jQuery Events. Fixed [#6](https://github.com/metafizzy/outlayer/issues/6)
