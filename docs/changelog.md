@@ -1,6 +1,8 @@
 # Changelog
 
-+ Added `parseFloat()` for percent values. Switched back to pixels for transform values. Fixed [isotope#948](https://github.com/metafizzy/isotope/issues/948)
+### v1.4.2
+
++ Added `parseFloat()` for percent values. Switched back to pixels for transform values. Fixed [#37](https://github.com/metafizzy/outlayer/issues/37), [isotope#948](https://github.com/metafizzy/isotope/issues/948)
 
 ### v1.4.1
 
