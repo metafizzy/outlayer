@@ -2,7 +2,7 @@
   "name": "outlayer",
   "version": "1.4.2",
   "description": "the brains and guts of a layout library",
-  "main": "outlayer.js",
+  "main": ["./item.js", "./outlayer.js"],
   "dependencies": {
     "doc-ready": "1.0.x",
     "eventEmitter": ">=4.2 <5",
