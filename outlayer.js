@@ -302,9 +302,19 @@ Outlayer.prototype._layoutItems = function( items, isInstant ) {
   }
 
   var queue = [];
+  var _items = items.slice(0);
 
-  for ( var i=0, len = items.length; i < len; i++ ) {
-    var item = items[i];
+  while (_items.length > 0)
+  {
+    var idx = this._getItemIndexToLayOut(_items);
+    
+    if (!idx && (idx !== 0))
+    {
+        break;
+    }
+    
+    var item = _items.splice(idx, 1)[0];
+    
     // get x/y object from method
     var position = this._getItemLayoutPosition( item );
     // enqueue
@@ -314,6 +324,15 @@ Outlayer.prototype._layoutItems = function( items, isInstant ) {
   }
 
   this._processLayoutQueue( queue );
+};
+
+/**
+ * get item to lay out in the current iteration.
+ * @param {Array} items
+ * @returns {Number} Index into items of the item to lay out
+ */
+Outlayer.prototype._getItemIndexToLayOut = function ( items ) {
+  return 0;
 };
 
 /**
