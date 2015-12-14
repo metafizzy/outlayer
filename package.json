@@ -11,6 +11,9 @@
     "fizzy-ui-utils": "~1.0.1"
   },
   "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-uglify": "~0.1.2",
+    "grunt-requirejs": "~0.4.0",
     "jquery": ">=1.4.3 <2",
     "jquery-bridget": "1.x",
     "qunitjs": "^1.12.0"
