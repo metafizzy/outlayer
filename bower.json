@@ -7,7 +7,6 @@
     "eventEmitter": ">=4.2 <5",
     "eventie": "~1.0.3",
     "get-size": "~1.2.2",
-    "get-style-property": "~1.0.4",
     "fizzy-ui-utils": "~1.0.1"
   },
   "devDependencies": {

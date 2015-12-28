@@ -10,11 +10,10 @@
     define( [
         'eventEmitter/EventEmitter',
         'get-size/get-size',
-        'get-style-property/get-style-property',
         'fizzy-ui-utils/utils'
       ],
-      function( EventEmitter, getSize, getStyleProperty, utils ) {
-        return factory( window, EventEmitter, getSize, getStyleProperty, utils );
+      function( EventEmitter, getSize, utils ) {
+        return factory( window, EventEmitter, getSize, utils );
       }
     );
   } else if (typeof exports === 'object') {
@@ -23,7 +22,6 @@
       window,
       require('wolfy87-eventemitter'),
       require('get-size'),
-      require('desandro-get-style-property'),
       require('fizzy-ui-utils')
     );
   } else {
@@ -33,12 +31,11 @@
       window,
       window.EventEmitter,
       window.getSize,
-      window.getStyleProperty,
       window.fizzyUIUtils
     );
   }
 
-}( window, function factory( window, EventEmitter, getSize, getStyleProperty, utils ) {
+}( window, function factory( window, EventEmitter, getSize, utils ) {
 'use strict';
 
 // ----- helpers ----- //
@@ -63,38 +60,26 @@ function isEmptyObj( obj ) {
 
 // -------------------------- CSS3 support -------------------------- //
 
-var transitionProperty = getStyleProperty('transition');
-var transformProperty = getStyleProperty('transform');
-var supportsCSS3 = transitionProperty && transformProperty;
-var is3d = !!getStyleProperty('perspective');
+
+var docElemStyle = document.documentElement.style;
+
+var transitionProperty = typeof docElemStyle.transition == 'string' ?
+  'transition' : 'WebkitTransition';
+var transformProperty = typeof docElemStyle.transform == 'string' ?
+  'transform' : 'WebkitTransform';
 
 var transitionEndEvent = {
   WebkitTransition: 'webkitTransitionEnd',
-  MozTransition: 'transitionend',
-  OTransition: 'otransitionend',
   transition: 'transitionend'
 }[ transitionProperty ];
 
-// properties that could have vendor prefix
-var prefixableProperties = [
-  'transform',
-  'transition',
-  'transitionDuration',
-  'transitionProperty'
-];
-
 // cache all vendor properties
-var vendorProperties = ( function() {
-  var cache = {};
-  for ( var i=0, len = prefixableProperties.length; i < len; i++ ) {
-    var prop = prefixableProperties[i];
-    var supportedProp = getStyleProperty( prop );
-    if ( supportedProp && supportedProp !== prop ) {
-      cache[ prop ] = supportedProp;
-    }
-  }
-  return cache;
-})();
+var vendorProperties = [
+  transformProperty,
+  transitionProperty,
+  transitionProperty + 'Duration',
+  transitionProperty + 'Property'
+];
 
 // -------------------------- Item -------------------------- //
 
@@ -265,12 +250,7 @@ Item.prototype.getTranslate = function( x, y ) {
   var layoutOptions = this.layout.options;
   x = layoutOptions.isOriginLeft ? x : -x;
   y = layoutOptions.isOriginTop ? y : -y;
-
-  if ( is3d ) {
-    return 'translate3d(' + x + 'px, ' + y + 'px, 0)';
-  }
-
-  return 'translate(' + x + 'px, ' + y + 'px)';
+  return 'translate3d(' + x + 'px, ' + y + 'px, 0)';
 };
 
 // non transition + transform support
@@ -279,9 +259,7 @@ Item.prototype.goTo = function( x, y ) {
   this.layoutPosition();
 };
 
-// use transition and transforms if supported
-Item.prototype.moveTo = supportsCSS3 ?
-  Item.prototype._transitionTo : Item.prototype.goTo;
+Item.prototype.moveTo = Item.prototype._transitionTo;
 
 Item.prototype.setPosition = function( x, y ) {
   this.position.x = parseInt( x, 10 );

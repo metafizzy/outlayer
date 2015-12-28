@@ -3,15 +3,11 @@ test( 'origin', function() {
   'use strict';
 
   var CellsByRow = window.CellsByRow;
-  var supportsTransition = !!window.getStyleProperty('transition');
+
   // triggering a layout call within a layout callback triggers
   // infinite loop
   function doNext( fn ) {
-    // if ( supportsTransition ) {
-    //   fn();
-    // } else {
-      setTimeout( fn );
-    // }
+    setTimeout( fn );
   }
 
   var elem = document.querySelector('#origin');
