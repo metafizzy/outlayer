@@ -3,10 +3,10 @@
  */
 
 ( function( window, factory ) {
-  'use strict';
   // universal module definition
-  if ( typeof define === 'function' && define.amd ) {
-    // AMD
+  /* jshint strict: false */ /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
     define( [
         'eventEmitter/EventEmitter',
         'get-size/get-size',
@@ -16,8 +16,8 @@
         return factory( window, EventEmitter, getSize, utils );
       }
     );
-  } else if (typeof exports === 'object') {
-    // CommonJS
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
     module.exports = factory(
       window,
       require('wolfy87-eventemitter'),

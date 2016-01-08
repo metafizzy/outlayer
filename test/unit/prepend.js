@@ -20,7 +20,7 @@ test( 'prepend', function() {
   // olayer.on( 'layoutComplete', function() {
   //   ok( true, 'layoutComplete triggered' );
   //   ticks++;
-  //   if ( ticks === 2 ) {
+  //   if ( ticks == 2 ) {
   //     ok( true, '2 layoutCompletes triggered' );
   //     start();
   //   }

@@ -7,9 +7,9 @@
 ( function( window, factory ) {
   'use strict';
   // universal module definition
-
+  /* jshint strict: false */ /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
-    // AMD
+    // AMD - RequireJS
     define( [
         'eventie/eventie',
         'eventEmitter/EventEmitter',
@@ -21,8 +21,8 @@
         return factory( window, eventie, EventEmitter, getSize, utils, Item);
       }
     );
-  } else if ( typeof exports == 'object' ) {
-    // CommonJS
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
     module.exports = factory(
       window,
       require('eventie'),
@@ -247,7 +247,7 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
     this[ measurement ] = 0;
   } else {
     // use option as an element
-    if ( typeof option === 'string' ) {
+    if ( typeof option == 'string' ) {
       elem = this.element.querySelector( option );
     } else if ( option instanceof HTMLElement ) {
       elem = option;
@@ -417,7 +417,7 @@ Outlayer.prototype._emitCompleteOnItems = function( eventName, items ) {
   var doneCount = 0;
   function tick() {
     doneCount++;
-    if ( doneCount === count ) {
+    if ( doneCount == count ) {
       onComplete();
     }
   }
@@ -522,7 +522,7 @@ Outlayer.prototype._find = function( elems ) {
     return;
   }
   // if string, use argument as selector string
-  if ( typeof elems === 'string' ) {
+  if ( typeof elems == 'string' ) {
     elems = this.element.querySelectorAll( elems );
   }
   elems = utils.makeArray( elems );
@@ -757,7 +757,7 @@ Outlayer.prototype.getItem = function( elem ) {
   // loop through items to get the one that matches
   for ( var i=0; i < this.items.length; i++ ) {
     var item = this.items[i];
-    if ( item.element === elem ) {
+    if ( item.element == elem ) {
       // return item
       return item;
     }
