@@ -601,12 +601,7 @@ proto._getElementOffset = function( elem ) {
 
 // enable event handlers for listeners
 // i.e. resize -> onresize
-proto.handleEvent = function( event ) {
-  var method = 'on' + event.type;
-  if ( this[ method ] ) {
-    this[ method ]( event );
-  }
-};
+proto.handleEvent = utils.handleEvent;
 
 /**
  * Bind layout to window resizing
