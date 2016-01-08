@@ -191,11 +191,9 @@ Outlayer.prototype._filterFindItemElements = function( elems ) {
  * @returns {Array} elems - collection of item elements
  */
 Outlayer.prototype.getItemElements = function() {
-  var elems = [];
-  for ( var i=0, len = this.items.length; i < len; i++ ) {
-    elems.push( this.items[i].element );
-  }
-  return elems;
+  return this.items.map( function( item ) {
+    return item.element;
+  });
 };
 
 // ----- init & layout ----- //
@@ -278,14 +276,9 @@ Outlayer.prototype.layoutItems = function( items, isInstant ) {
  * @returns {Array} items
  */
 Outlayer.prototype._getItemsForLayout = function( items ) {
-  var layoutItems = [];
-  for ( var i=0, len = items.length; i < len; i++ ) {
-    var item = items[i];
-    if ( !item.isIgnored ) {
-      layoutItems.push( item );
-    }
-  }
-  return layoutItems;
+  return items.filter( function( item ) {
+    return !item.isIgnored;
+  });
 };
 
 /**
@@ -303,15 +296,14 @@ Outlayer.prototype._layoutItems = function( items, isInstant ) {
 
   var queue = [];
 
-  for ( var i=0, len = items.length; i < len; i++ ) {
-    var item = items[i];
+  items.forEach( function( item ) {
     // get x/y object from method
     var position = this._getItemLayoutPosition( item );
     // enqueue
     position.item = item;
     position.isInstant = isInstant || item.isLayoutInstant;
     queue.push( position );
-  }
+  }, this );
 
   this._processLayoutQueue( queue );
 };
@@ -335,10 +327,9 @@ Outlayer.prototype._getItemLayoutPosition = function( /* item */ ) {
  * @param {Array} queue
  */
 Outlayer.prototype._processLayoutQueue = function( queue ) {
-  for ( var i=0, len = queue.length; i < len; i++ ) {
-    var obj = queue[i];
+  queue.forEach( function( obj ) {
     this._positionItem( obj.item, obj.x, obj.y, obj.isInstant );
-  }
+  }, this );
 };
 
 /**
@@ -432,10 +423,9 @@ Outlayer.prototype._emitCompleteOnItems = function( eventName, items ) {
   }
 
   // bind callback
-  for ( var i=0, len = items.length; i < len; i++ ) {
-    var item = items[i];
+  items.forEach( function( item ) {
     item.once( eventName, tick );
-  }
+  });
 };
 
 /**
@@ -502,10 +492,7 @@ Outlayer.prototype.stamp = function( elems ) {
 
   this.stamps = this.stamps.concat( elems );
   // ignore
-  for ( var i=0, len = elems.length; i < len; i++ ) {
-    var elem = elems[i];
-    this.ignore( elem );
-  }
+  elems.forEach( this.ignore, this );
 };
 
 /**
@@ -518,13 +505,11 @@ Outlayer.prototype.unstamp = function( elems ) {
     return;
   }
 
-  for ( var i=0, len = elems.length; i < len; i++ ) {
-    var elem = elems[i];
+  elems.forEach( function( elem ) {
     // filter out removed stamp elements
     utils.removeFrom( this.stamps, elem );
     this.unignore( elem );
-  }
-
+  }, this );
 };
 
 /**
@@ -551,10 +536,7 @@ Outlayer.prototype._manageStamps = function() {
 
   this._getBoundingRect();
 
-  for ( var i=0, len = this.stamps.length; i < len; i++ ) {
-    var stamp = this.stamps[i];
-    this._manageStamp( stamp );
-  }
+  this.stamps.forEach( this._manageStamp, this );
 };
 
 // update boundingLeft / Top
@@ -725,12 +707,12 @@ Outlayer.prototype.prepended = function( elems ) {
  */
 Outlayer.prototype.reveal = function( items ) {
   this._emitCompleteOnItems( 'reveal', items );
-
-  var len = items && items.length;
-  for ( var i=0; len && i < len; i++ ) {
-    var item = items[i];
-    item.reveal();
+  if ( !items || !items.length ) {
+    return;
   }
+  items.forEach( function( item ) {
+    item.reveal();
+  });
 };
 
 /**
@@ -739,12 +721,12 @@ Outlayer.prototype.reveal = function( items ) {
  */
 Outlayer.prototype.hide = function( items ) {
   this._emitCompleteOnItems( 'hide', items );
-
-  var len = items && items.length;
-  for ( var i=0; len && i < len; i++ ) {
-    var item = items[i];
-    item.hide();
+  if ( !items || !items.length ) {
+    return;
   }
+  items.forEach( function( item ) {
+    item.hide();
+  });
 };
 
 /**
@@ -773,7 +755,7 @@ Outlayer.prototype.hideItemElements = function( elems ) {
  */
 Outlayer.prototype.getItem = function( elem ) {
   // loop through items to get the one that matches
-  for ( var i=0, len = this.items.length; i < len; i++ ) {
+  for ( var i=0; i < this.items.length; i++ ) {
     var item = this.items[i];
     if ( item.element === elem ) {
       // return item
@@ -790,13 +772,12 @@ Outlayer.prototype.getItem = function( elem ) {
 Outlayer.prototype.getItems = function( elems ) {
   elems = utils.makeArray( elems );
   var items = [];
-  for ( var i=0, len = elems.length; i < len; i++ ) {
-    var elem = elems[i];
+  elems.forEach( function( elem ) {
     var item = this.getItem( elem );
     if ( item ) {
       items.push( item );
     }
-  }
+  }, this );
 
   return items;
 };
@@ -815,12 +796,11 @@ Outlayer.prototype.remove = function( elems ) {
     return;
   }
 
-  for ( var i=0, len = removeItems.length; i < len; i++ ) {
-    var item = removeItems[i];
+  removeItems.forEach( function( item ) {
     item.remove();
     // remove item from collection
     utils.removeFrom( this.items, item );
-  }
+  }, this );
 };
 
 // ----- destroy ----- //
