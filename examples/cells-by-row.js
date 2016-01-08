@@ -35,7 +35,8 @@ CellsByRow.prototype._resetLayout = function() {
   this._getMeasurement( 'columnWidth', 'outerWidth' );
   this._getMeasurement( 'rowHeight', 'outerHeight' );
 
-  if ( this.options.isHorizontal ) {
+  var isHorizontal = this._getOption('horizontal');
+  if ( isHorizontal ) {
     this.rows = Math.floor( this.size.innerHeight / this.rowHeight );
     this.rows = Math.max( this.rows, 1 );
   } else {
@@ -49,7 +50,9 @@ CellsByRow.prototype._resetLayout = function() {
 CellsByRow.prototype._getItemLayoutPosition = function( item ) {
   item.getSize();
   var column, row;
-  if ( this.options.isHorizontal ) {
+
+  var isHorizontal = this._getOption('horizontal');
+  if ( isHorizontal ) {
     row = this.itemIndex % this.rows;
     column = Math.floor( this.itemIndex / this.rows );
   } else {
@@ -66,7 +69,8 @@ CellsByRow.prototype._getItemLayoutPosition = function( item ) {
 };
 
 CellsByRow.prototype._getContainerSize = function() {
-  if ( this.options.isHorizontal ) {
+  var isHorizontal = this._getOption('horizontal');
+  if ( isHorizontal ) {
     return {
       width: Math.ceil( this.itemIndex / this.rows ) * this.columnWidth
     };

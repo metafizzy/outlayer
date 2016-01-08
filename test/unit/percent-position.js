@@ -20,7 +20,7 @@ test( 'percentPosition', function() {
 
   // set top
   gridElem.style.height = '200px';
-  layout.options.isHorizontal = true
+  layout.options.horizontal = true
   layout.layout();
 
   equal( itemElems[0].style.top, '0%', 'first item top 0%' );

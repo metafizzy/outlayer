@@ -20,8 +20,8 @@ test( 'origin', function() {
   function checkItemPosition( itemIndex, x, y ) {
     var itemElem = layout.items[ itemIndex ].element;
     var message = 'item ' + itemIndex + ' ';
-    var xProperty = layout.options.isOriginLeft ? 'left' : 'right';
-    var yProperty = layout.options.isOriginTop ? 'top' : 'bottom';
+    var xProperty = layout.options.originLeft ? 'left' : 'right';
+    var yProperty = layout.options.originTop ? 'top' : 'bottom';
     equal( itemElem.style[ xProperty ], x + 'px', message + xProperty + ' = ' + x );
     equal( itemElem.style[ yProperty ], y + 'px', message + yProperty + ' = ' + y );
   }
@@ -32,7 +32,7 @@ test( 'origin', function() {
   checkItemPosition( 2,   0, 100 );
 
   // top right
-  layout.options.isOriginLeft = false;
+  layout.options.originLeft = false;
   layout.once( 'layoutComplete', function() {
     checkItemPosition( 0,   0,   0 );
     checkItemPosition( 1, 100,   0 );
@@ -45,7 +45,7 @@ test( 'origin', function() {
 
   // bottom right
   function testBottomRight() {
-    layout.options.isOriginTop = false;
+    layout.options.originTop = false;
     layout.once( 'layoutComplete', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
@@ -57,7 +57,7 @@ test( 'origin', function() {
 
   // bottom right
   function testBottomLeft() {
-    layout.options.isOriginLeft = true;
+    layout.options.originLeft = true;
     layout.once( 'layoutComplete', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );

@@ -16,7 +16,7 @@ test( 'create Layouts', function() {
   equal( CellsByRow.namespace, 'cellsByRow', 'cellsByRow namespace' );
   equal( Outlayer.namespace, 'outlayer', 'Outlayer namespace unchanged' );
   equal( Leiout.namespace, 'leiout', 'Leiout namespace' );
-  equal( CellsByRow.defaults.isResizeBound, true, 'isResizeBound option there' );
+  equal( CellsByRow.defaults.resize, true, 'resize option there' );
   equal( CellsByRow.defaults.columnWidth, 100, 'columnWidth option set' );
   strictEqual( Outlayer.defaults.columnWidth, undefined, 'Outlayer has no default columnWidth' );
   strictEqual( Leiout.defaults.columnWidth, undefined, 'Leiout has no default columnWidth' );

@@ -202,11 +202,12 @@ Outlayer.create = function( namespace ) {}
 ## Options
 
 + containerStyle `{ position: 'relative' }`
-+ isInitLayout `true`
-+ isLayoutInstant
-+ isOriginLeft `true`
-+ isOriginTop `true`
-+ isResizeBound `true`
++ initLayout or isInitLayout `true`
++ layoutInstant or isLayoutInstant
++ originLeft or isOriginLeft `true`
++ originTop or isOriginTop `true`
++ resize or isResizeBound `true`
++ resizeContainer or isResizingContainer `true`
 + itemOptions
 + itemSelector
 + stamp

@@ -89,7 +89,8 @@ function Outlayer( element, options ) {
   // kick it off
   this._create();
 
-  if ( this.options.isInitLayout ) {
+  var isInitLayout = this._getOption('initLayout');
+  if ( isInitLayout ) {
     this.layout();
   }
 }
@@ -103,11 +104,11 @@ Outlayer.defaults = {
   containerStyle: {
     position: 'relative'
   },
-  isInitLayout: true,
-  isOriginLeft: true,
-  isOriginTop: true,
-  isResizeBound: true,
-  isResizingContainer: true,
+  initLayout: true,
+  originLeft: true,
+  originTop: true,
+  resize: true,
+  resizeContainer: true,
   // item options
   transitionDuration: '0.4s',
   hiddenStyle: {
@@ -132,6 +133,26 @@ proto.option = function( opts ) {
   utils.extend( this.options, opts );
 };
 
+/**
+ * get backwards compatible option value, check old name
+ */
+proto._getOption = function( option ) {
+  var oldOption = compatOptions[ option ];
+  return oldOption && this.options[ oldOption ] !== undefined ?
+    this.options[ oldOption ] !== undefined : this.options[ option ];
+};
+
+var compatOptions = {
+  // currentName: oldName
+  initLayout: 'isInitLayout',
+  horizontal: 'isHorizontal',
+  layoutInstant: 'isLayoutInstant',
+  originLeft: 'isOriginLeft',
+  originTop: 'isOriginTop',
+  resize: 'isResizeBound',
+  resizeContainer: 'isResizingContainer'
+};
+
 proto._create = function() {
   // get items from children
   this.reloadItems();
@@ -142,7 +163,8 @@ proto._create = function() {
   utils.extend( this.element.style, this.options.containerStyle );
 
   // bind resize method
-  if ( this.options.isResizeBound ) {
+  var canBindResize = this._getOption('resize');
+  if ( canBindResize ) {
     this.bindResize();
   }
 };
@@ -204,8 +226,9 @@ proto.layout = function() {
   this._manageStamps();
 
   // don't animate first layout
-  var isInstant = this.options.isLayoutInstant !== undefined ?
-    this.options.isLayoutInstant : !this._isLayoutInited;
+  var layoutInstant = this._getOption('layoutInstant');
+  var isInstant = layoutInstant !== undefined ?
+    layoutInstant : !this._isLayoutInited;
   this.layoutItems( this.items, isInstant );
 
   // flag for initalized
@@ -355,7 +378,8 @@ proto._postLayout = function() {
 };
 
 proto.resizeContainer = function() {
-  if ( !this.options.isResizingContainer ) {
+  var isResizingContainer = this._getOption('resizeContainer');
+  if ( !isResizingContainer ) {
     return;
   }
   var size = this._getContainerSize();

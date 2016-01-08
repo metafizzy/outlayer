@@ -25,12 +25,12 @@ test( 'container size', function() {
   checkSize( 220, 120 );
 
   // disable resizing
-  layout.options.isResizingContainer = false;
+  layout.options.resizeContainer = false;
   layout.options.width = 180;
   layout.options.height = 230;
   layout.layout();
   checkSize( 220, 120 );
-  layout.options.isResizingContainer = true;
+  layout.options.resizeContainer = true;
   layout.options.width = 220;
   layout.options.height = 120;
 

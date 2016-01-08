@@ -5,7 +5,7 @@
 test( 'options', function() {
   var container = document.querySelector('#options');
   var olayer = new Outlayer( container, {
-    isInitLayout: false,
+    initLayout: false,
     transitionDuration: '600ms'
   });
 
