@@ -7,7 +7,7 @@ Outlayer is a base layout class for layout libraries like [Isotope](http://isoto
 Outlayer layouts work with a container element and children item elements.
 
 ``` html
-<div class="container">
+<div class="grid">
   <div class="item"></div>
   <div class="item"></div>
   <div class="item"></div>
@@ -39,7 +39,7 @@ Create a new layout class. `namespace` is used for jQuery plugin, and for declar
 The `Layout` inherits from [`Outlayer.prototype`](docs/outlayer.md).
 
 ```
-var elem = document.querySelector('#selector');
+var elem = document.querySelector('.selector');
 var msnry = new Masonry( elem, {
   // set options...
   columnWidth: 200
@@ -81,11 +81,11 @@ var Masonry = Outlayer.create('masonry');
 // rock some jQuery
 $( function() {
   // .masonry() to initialize
-  var $container = $('#container').masonry({
+  var $grid = $('.grid').masonry({
     // options...
   });
   // methods are available by passing a string as first parameter
-  $container.masonry( 'reveal', elems );
+  $grid.masonry( 'reveal', elems );
 });
 ```
 
