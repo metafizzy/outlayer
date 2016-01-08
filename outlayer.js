@@ -11,20 +11,20 @@
   if ( typeof define == 'function' && define.amd ) {
     // AMD - RequireJS
     define( [
-        'eventEmitter/EventEmitter',
+        'ev-emitter/ev-emitter',
         'get-size/get-size',
         'fizzy-ui-utils/utils',
         './item'
       ],
-      function( EventEmitter, getSize, utils, Item ) {
-        return factory( window, EventEmitter, getSize, utils, Item);
+      function( EvEmitter, getSize, utils, Item ) {
+        return factory( window, EvEmitter, getSize, utils, Item);
       }
     );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
     module.exports = factory(
       window,
-      require('wolfy87-eventemitter'),
+      require('ev-emitter'),
       require('get-size'),
       require('fizzy-ui-utils'),
       require('./item')
@@ -33,14 +33,14 @@
     // browser global
     window.Outlayer = factory(
       window,
-      window.EventEmitter,
+      window.EvEmitter,
       window.getSize,
       window.fizzyUIUtils,
       window.Outlayer.Item
     );
   }
 
-}( window, function factory( window, EventEmitter, getSize, utils, Item ) {
+}( window, function factory( window, EvEmitter, getSize, utils, Item ) {
 'use strict';
 
 // ----- vars ----- //
@@ -121,8 +121,8 @@ Outlayer.defaults = {
 };
 
 var proto = Outlayer.prototype;
-// inherit EventEmitter
-utils.extend( proto, EventEmitter.prototype );
+// inherit EvEmitter
+utils.extend( proto, EvEmitter.prototype );
 
 /**
  * set options
@@ -427,7 +427,7 @@ proto._emitCompleteOnItems = function( eventName, items ) {
 };
 
 /**
- * emits events via eventEmitter and jQuery events
+ * emits events via EvEmitter and jQuery events
  * @param {String} type - name of event
  * @param {Event} event - original event
  * @param {Array} args - extra arguments

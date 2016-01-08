@@ -4,7 +4,7 @@
   "description": "the brains and guts of a layout library",
   "main": "outlayer.js",
   "dependencies": {
-    "wolfy87-eventemitter": ">=4.2 <5",
+    "ev-emitter": ">=0.1.0 <1.1",
     "get-size": "~2.0.2",
     "fizzy-ui-utils": "~2.0.0"
   },

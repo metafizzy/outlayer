@@ -2,8 +2,7 @@ requirejs.config({
   baseUrl: '../../bower_components'
   // OR
   // paths: {
-  //   eventEmitter: 'bower_components/eventEmitter',
-  //   'get-style-property': 'bower_components/get-style-property',
+  //   'ev-emitter': 'bower_components/ev-emitter',
   //   'get-size': 'bower_components/get-size',
   //   'matches-selector': 'bower_components/matches-selector'
   // }

@@ -114,7 +114,7 @@ Or set a path config for all Outlayer dependencies.
 ``` js
 requirejs.config({
   paths: {
-    eventEmitter: 'bower_components/eventEmitter',
+    'ev-emitter': 'bower_components/ev-emitter',
     'get-size': 'bower_components/get-size',
     'matches-selector': 'bower_components/matches-selector'
   }

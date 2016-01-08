@@ -8,18 +8,18 @@
   if ( typeof define == 'function' && define.amd ) {
     // AMD - RequireJS
     define( [
-        'eventEmitter/EventEmitter',
+        'ev-emitter/ev-emitter',
         'get-size/get-size'
       ],
-      function( EventEmitter, getSize ) {
-        return factory( window, EventEmitter, getSize );
+      function( EvEmitter, getSize ) {
+        return factory( window, EvEmitter, getSize );
       }
     );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
     module.exports = factory(
       window,
-      require('wolfy87-eventemitter'),
+      require('ev-emitter'),
       require('get-size')
     );
   } else {
@@ -27,12 +27,12 @@
     window.Outlayer = {};
     window.Outlayer.Item = factory(
       window,
-      window.EventEmitter,
+      window.EvEmitter,
       window.getSize
     );
   }
 
-}( window, function factory( window, EventEmitter, getSize ) {
+}( window, function factory( window, EvEmitter, getSize ) {
 'use strict';
 
 // ----- helpers ----- //
@@ -86,8 +86,8 @@ function Item( element, layout ) {
   this._create();
 }
 
-// inherit EventEmitter
-var proto = Item.prototype = Object.create( EventEmitter.prototype );
+// inherit EvEmitter
+var proto = Item.prototype = Object.create( EvEmitter.prototype );
 proto.constructor = Item;
 
 proto._create = function() {
