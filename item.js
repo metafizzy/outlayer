@@ -40,16 +40,6 @@
 
 // ----- helpers ----- //
 
-var getComputedStyle = window.getComputedStyle;
-var getStyle = getComputedStyle ?
-  function( elem ) {
-    return getComputedStyle( elem, null );
-  } :
-  function( elem ) {
-    return elem.currentStyle;
-  };
-
-
 function isEmptyObj( obj ) {
   for ( var prop in obj ) {
     return false;
@@ -143,7 +133,7 @@ Item.prototype.css = function( style ) {
 
  // measure position, and sets it
 Item.prototype.getPosition = function() {
-  var style = getStyle( this.element );
+  var style = getComputedStyle( this.element );
   var layoutOptions = this.layout.options;
   var isOriginLeft = layoutOptions.isOriginLeft;
   var isOriginTop = layoutOptions.isOriginTop;
@@ -380,9 +370,7 @@ Item.prototype.onotransitionend = function( event ) {
 
 // properties that I munge to make my life easier
 var dashedVendorProperties = {
-  '-webkit-transform': 'transform',
-  '-moz-transform': 'transform',
-  '-o-transform': 'transform'
+  '-webkit-transform': 'transform'
 };
 
 Item.prototype.ontransitionend = function( event ) {
