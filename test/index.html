@@ -226,7 +226,54 @@
 
   <h2>Declarative</h2>
 
-  <div id="declarative" class="container js-cells-by-row">
+  <div id="declarative-attr" class="container" data-cells-by-row>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <!-- wrong quote marks for JSON -->
+  <div id="declarative-attr-bad-json" class="container" data-cells-by-row="{ 'columnWidth': 30 }">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <div id="declarative-attr-good-json" class="container" data-cells-by-row='{ "columnWidth": 25, "rowHeight": 30, "isResizable": false, "foo": "bar" }'>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <div id="declarative-js-class" class="container js-cells-by-row">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <!-- wrong quote marks for JSON -->
+  <div id="declarative-js-class-bad-json" class="container js-cells-by-row" data-cells-by-row-options="{ 'columnWidth': 30 }">
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item w2"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+  <div id="declarative-js-class-good-json" class="container js-cells-by-row" data-cells-by-row-options='{ "columnWidth": 25, "rowHeight": 30, "isResizable": false, "foo": "bar" }'>
     <div class="item w2"></div>
     <div class="item h2"></div>
     <div class="item w2"></div>
@@ -238,25 +285,6 @@
   <h2>container size</h2>
 
   <div id="container-size" class="container"></div>
-
-  <!-- wrong quote marks for JSON -->
-  <div id="declarative-bad-json" class="container js-cells-by-row" data-cells-by-row-options="{ 'columnWidth': 30 }">
-    <div class="item w2"></div>
-    <div class="item h2"></div>
-    <div class="item w2"></div>
-    <div class="item h2"></div>
-    <div class="item"></div>
-    <div class="item"></div>
-  </div>
-
-  <div id="declarative-good-json" class="container js-cells-by-row" data-cells-by-row-options='{ "columnWidth": 25, "rowHeight": 30, "isResizable": false, "foo": "bar" }'>
-    <div class="item w2"></div>
-    <div class="item h2"></div>
-    <div class="item w2"></div>
-    <div class="item h2"></div>
-    <div class="item"></div>
-    <div class="item"></div>
-  </div>
 
   <h2>jQuery plugin</h2>
 

@@ -52,24 +52,23 @@ Layouts work with Items, accessible as `Layout.Item`. See [Item API](docs/item.m
 
 ## Declarative
 
-An Outlayer layout class can be initialized via HTML, by setting a class of `.js-namespace` on the element. Options can be set via a `data-namespace-options` attribution. For example:
+An Outlayer layout class can be initialized via HTML, by setting an attribute of `data-namespace` on the element. Options are set in JSON. For example:
 
 ``` html
 <!-- var Masonry = Outlayer.create('masonry') -->
-<div id="container" class="js-masonry"
-  data-masonry-options='{ "itemSelector": ".item", "columnWidth": 200 }'>
+<div class="grid" data-masonry='{ "itemSelector": ".item", "columnWidth": 200 }'>
   ...
 </div>
 ```
 
-The declarative attributes and class will be dashed. i.e. `Outlayer.create('myNiceLayout')` will use `js-my-nice-layout` the class and `data-my-nice-layout-options` as the options attribute.
+The declarative attributes and class will be dashed. i.e. `Outlayer.create('myNiceLayout')` will use `data-my-nice-layout` as the attribute.
 
 ## .data()
 
 Get a layout instance from an element.
 
 ```
-var myMasonry = Masonry.data( document.querySelector('#container') );
+var myMasonry = Masonry.data( document.querySelector('.grid') );
 ```
 
 ## jQuery plugin
