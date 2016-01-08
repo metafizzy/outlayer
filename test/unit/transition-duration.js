@@ -1,20 +1,18 @@
-test( 'transition duration', function() {
+QUnit.test( 'transition duration', function( assert ) {
 
-  'use strict';
-
-  var elem = document.querySelector('#transition-duration');
-  var layout = new window.CellsByRow( elem, {
+  var layout = new CellsByRow( '#transition-duration', {
     transitionDuration: '0s'
   });
 
+  var done = assert.async();
+  
   layout.options.columnWidth = 75;
   layout.options.rowHeight = 120;
   layout.once( 'layoutComplete', function() {
-    ok( true, 'layoutComplete triggered when transition duration = 0' );
-    start();
+    assert.ok( true, 'layoutComplete triggered when transition duration = 0' );
+    done();
   });
 
-  stop();
   layout.layout();
 
 });

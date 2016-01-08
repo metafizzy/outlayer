@@ -1,6 +1,4 @@
-test( 'item onTransitionEnd', function() {
-
-  'use strict';
+QUnit.test( 'item onTransitionEnd', function( assert ) {
 
   var container = document.querySelector('#item-on-transition-end');
   var layout = new Outlayer( container, {
@@ -13,16 +11,16 @@ test( 'item onTransitionEnd', function() {
   // item.on( 'transitionEnd', function() {
   //     console.log( item.element.style.display ); } );
   // var itemElem = layout.items[0].element;
-  stop();
+  var done = assert.async();
   // hide, then immediate reveal again, while item is still transitioning
   layout.hide( [ item ] );
   setTimeout( function() {
     item.addListener( 'transitionEnd', function() {
       console.log('second', item.element.style.display );
       // console.log( item.element.style.display );
-      ok( true, true )
-      // equal( item.element.style.display, '', 'item was not hidden');
-      start();
+      assert.ok( true, true );
+      // assert.equal( item.element.style.display, '', 'item was not hidden');
+      done();
     });
     layout.reveal( [ item ] );
   }, 500 );

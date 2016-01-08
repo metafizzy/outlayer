@@ -1,35 +1,29 @@
-( function() {
-
-'use strict';
-
-test( 'filter find item elements', function() {
+QUnit.test( 'filter find item elements', function( assert ) {
 
   ( function() {
-    var olayer = new Outlayer( document.querySelector('#children') );
-    equal( olayer.items.length, 3, 'no itemSeletor, gets all children' );
+    var olayer = new Outlayer( '#children' );
+    assert.equal( olayer.items.length, 3, 'no itemSeletor, gets all children' );
   })();
 
   ( function() {
-    var olayer = new Outlayer( document.querySelector('#filtered'), {
+    var olayer = new Outlayer( '#filtered', {
       itemSelector: '.item'
     });
-    equal( olayer.items.length, 6, 'filtered, itemSelector = .item, not all children' );
+    assert.equal( olayer.items.length, 6, 'filtered, itemSelector = .item, not all children' );
   })();
 
   ( function() {
-    var olayer = new Outlayer( document.querySelector('#found'), {
+    var olayer = new Outlayer( '#found', {
       itemSelector: '.item'
     });
-    equal( olayer.items.length, 4, 'found itemSelector = .item, querySelectoring' );
+    assert.equal( olayer.items.length, 4, 'found itemSelector = .item, querySelectoring' );
   })();
 
   ( function() {
-    var olayer = new Outlayer( document.querySelector('#filter-found'), {
+    var olayer = new Outlayer( '#filter-found', {
       itemSelector: '.item'
     });
-    equal( olayer.items.length, 5, 'filter found' );
+    assert.equal( olayer.items.length, 5, 'filter found' );
   })();
 
 });
-
-})();

@@ -1,14 +1,4 @@
-test( 'origin', function() {
-
-  'use strict';
-
-  var CellsByRow = window.CellsByRow;
-
-  // triggering a layout call within a layout callback triggers
-  // infinite loop
-  function doNext( fn ) {
-    setTimeout( fn );
-  }
+QUnit.test( 'origin', function( assert ) {
 
   var elem = document.querySelector('#origin');
   var layout = new CellsByRow( elem, {
@@ -22,8 +12,8 @@ test( 'origin', function() {
     var message = 'item ' + itemIndex + ' ';
     var xProperty = layout.options.originLeft ? 'left' : 'right';
     var yProperty = layout.options.originTop ? 'top' : 'bottom';
-    equal( itemElem.style[ xProperty ], x + 'px', message + xProperty + ' = ' + x );
-    equal( itemElem.style[ yProperty ], y + 'px', message + yProperty + ' = ' + y );
+    assert.equal( itemElem.style[ xProperty ], x + 'px', message + xProperty + ' = ' + x );
+    assert.equal( itemElem.style[ yProperty ], y + 'px', message + yProperty + ' = ' + y );
   }
 
   // top left
@@ -37,10 +27,12 @@ test( 'origin', function() {
     checkItemPosition( 0,   0,   0 );
     checkItemPosition( 1, 100,   0 );
     checkItemPosition( 2,   0, 100 );
-    doNext( testBottomRight );
+    setTimeout( testBottomRight );
     // start();
   });
-  stop();
+
+  var done = assert.async();
+
   layout.layout();
 
   // bottom right
@@ -50,7 +42,7 @@ test( 'origin', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
       checkItemPosition( 2,   0, 100 );
-      doNext( testBottomLeft );
+      setTimeout( testBottomLeft );
     });
     layout.layout();
   }
@@ -62,7 +54,7 @@ test( 'origin', function() {
       checkItemPosition( 0,   0,   0 );
       checkItemPosition( 1, 100,   0 );
       checkItemPosition( 2,   0, 100 );
-      start();
+      done();
     });
     layout.layout();
   }

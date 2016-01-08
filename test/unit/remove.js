@@ -1,8 +1,4 @@
-( function() {
-
-'use strict';
-
-test( 'remove', function() {
+QUnit.test( 'remove', function( assert ) {
   var container = document.querySelector('#remove');
   // packery starts with 4 items
   var olayer = new Outlayer( container, {
@@ -13,19 +9,21 @@ test( 'remove', function() {
   var expectedRemovedCount = olayer.items.length - w2Elems.length;
 
   olayer.once( 'removeComplete', function( removedItems ) {
-    ok( true, 'removeComplete event did fire' );
-    equal( removedItems.length, w2Elems.length, 'remove elems length matches 2nd argument length' );
+    assert.ok( true, 'removeComplete event did fire' );
+    assert.equal( removedItems.length, w2Elems.length, 'remove elems length matches 2nd argument length' );
     for ( var i=0, len = removedItems.length; i < len; i++ ) {
-      equal( removedItems[i].element, w2Elems[i], 'removedItems element matches' );
+      assert.equal( removedItems[i].element, w2Elems[i], 'removedItems element matches' );
     }
-    equal( container.children.length, expectedRemovedCount, 'elements removed from DOM' );
-    equal( container.querySelectorAll('.w2').length, 0, 'matched elements were removed' );
+    assert.equal( container.children.length, expectedRemovedCount, 'elements removed from DOM' );
+    assert.equal( container.querySelectorAll('.w2').length, 0, 'matched elements were removed' );
     setTimeout( removeNoTransition, 20 );
     // start();
   });
-  stop();
+
+  var done = assert.async();
+
   olayer.remove( w2Elems );
-  equal( olayer.items.length, expectedRemovedCount, 'items removed from Packery instance' );
+  assert.equal( olayer.items.length, expectedRemovedCount, 'items removed from Packery instance' );
 
   // check items are remove with no transition
   function removeNoTransition() {
@@ -35,10 +33,10 @@ test( 'remove', function() {
     expectedRemovedCount -= h2Elems.length;
 
     olayer.once( 'removeComplete', function( removedItems ) {
-      ok( true, 'no transition, removeComplete event did fire' );
-      equal( h2Elems.length, removedItems.length, 'no transition, remove elems length matches argument length' );
-      equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
-      equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
+      assert.ok( true, 'no transition, removeComplete event did fire' );
+      assert.equal( h2Elems.length, removedItems.length, 'no transition, remove elems length matches argument length' );
+      assert.equal( container.children.length, expectedRemovedCount, 'no transition, elements removed from DOM' );
+      assert.equal( container.querySelectorAll('.h2').length, 0, 'no transition, matched elements were removed' );
       setTimeout( removeNone, 20 );
       // start();
     });
@@ -49,10 +47,8 @@ test( 'remove', function() {
   function removeNone() {
     var noneItems = container.querySelector('.foo');
     olayer.remove( noneItems );
-    ok( true, 'removing no items is cool' );
-    start();
+    assert.ok( true, 'removing no items is cool' );
+    done();
   }
 
 });
-
-})();

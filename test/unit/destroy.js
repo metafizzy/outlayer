@@ -1,16 +1,14 @@
-test( 'destroy', function() {
-
-  'use strict';
+QUnit.test( 'destroy', function( assert ) {
 
   var container = document.querySelector('#destroy');
   var layout = new CellsByRow( container );
 
   layout.destroy();
 
-  ok( !CellsByRow.data( container ), '.data() returns falsey' );
+  assert.ok( !CellsByRow.data( container ), '.data() returns falsey' );
 
   function checkStyle( elem, property ) {
-    ok( !elem.style[ property ], elem + ' has no ' + property + ' style' );
+    assert.ok( !elem.style[ property ], elem + ' has no ' + property + ' style' );
   }
 
   checkStyle( container, 'height' );

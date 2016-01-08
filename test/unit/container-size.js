@@ -1,4 +1,4 @@
-test( 'container size', function() {
+QUnit.test( 'container size', function( assert ) {
 
   // test layout that just sets size
   var Sizer = Outlayer.create( 'sizer', {
@@ -18,8 +18,8 @@ test( 'container size', function() {
   var layout = new Sizer( elem );
 
   function checkSize( width, height ) {
-    equal( elem.style.width, width + 'px', 'width = ' + width );
-    equal( elem.style.height, height + 'px', 'height = ' + height );
+    assert.equal( elem.style.width, width + 'px', 'width = ' + width );
+    assert.equal( elem.style.height, height + 'px', 'height = ' + height );
   }
 
   checkSize( 220, 120 );
