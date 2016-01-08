@@ -1,5 +1,5 @@
 /*!
- * Outlayer v1.4.2
+ * Outlayer v2.0.0
  * the brains and guts of a layout library
  * MIT license
  */
@@ -251,7 +251,7 @@ Outlayer.prototype._getMeasurement = function( measurement, size ) {
     // use option as an element
     if ( typeof option === 'string' ) {
       elem = this.element.querySelector( option );
-    } else if ( utils.isElement( option ) ) {
+    } else if ( option instanceof HTMLElement ) {
       elem = option;
     }
     // use size of element, if element

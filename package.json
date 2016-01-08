@@ -1,18 +1,18 @@
 {
   "name": "outlayer",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "the brains and guts of a layout library",
   "main": "outlayer.js",
   "dependencies": {
     "wolfy87-eventemitter": ">=4.2 <5",
     "eventie": "~1.0.3",
-    "get-size": "~1.2.2",
-    "fizzy-ui-utils": "~1.0.1"
+    "get-size": "~2.0.2",
+    "fizzy-ui-utils": "~2.0.0"
   },
   "devDependencies": {
-    "jquery": ">=1.4.3 <2",
-    "jquery-bridget": "1.x",
-    "qunitjs": "^1.12.0"
+    "jquery": ">=1.4.3 <4",
+    "jquery-bridget": "2.x",
+    "qunitjs": "^1.17.0"
   },
   "repository": {
     "type": "git",
