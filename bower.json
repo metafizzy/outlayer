@@ -16,7 +16,7 @@
   "ignore": [
     "test/",
     "docs/",
-    "examples",
+    "sandbox/",
     ".*",
     "notes.md",
     "**/.*",

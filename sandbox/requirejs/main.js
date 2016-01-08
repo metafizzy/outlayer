@@ -8,6 +8,6 @@ requirejs.config({
   // }
 });
 
-requirejs( [ '../examples/cells-by-row' ], function( CellsByRow ) {
+requirejs( [ '../sandbox/cells-by-row' ], function( CellsByRow ) {
   new CellsByRow( document.querySelector('#basic') );
 });
