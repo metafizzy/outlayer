@@ -9,11 +9,10 @@
     // AMD - RequireJS
     define( [
         'eventEmitter/EventEmitter',
-        'get-size/get-size',
-        'fizzy-ui-utils/utils'
+        'get-size/get-size'
       ],
-      function( EventEmitter, getSize, utils ) {
-        return factory( window, EventEmitter, getSize, utils );
+      function( EventEmitter, getSize ) {
+        return factory( window, EventEmitter, getSize );
       }
     );
   } else if ( typeof module == 'object' && module.exports ) {
@@ -21,8 +20,7 @@
     module.exports = factory(
       window,
       require('wolfy87-eventemitter'),
-      require('get-size'),
-      require('fizzy-ui-utils')
+      require('get-size')
     );
   } else {
     // browser global
@@ -30,12 +28,11 @@
     window.Outlayer.Item = factory(
       window,
       window.EventEmitter,
-      window.getSize,
-      window.fizzyUIUtils
+      window.getSize
     );
   }
 
-}( window, function factory( window, EventEmitter, getSize, utils ) {
+}( window, function factory( window, EventEmitter, getSize ) {
 'use strict';
 
 // ----- helpers ----- //
@@ -90,9 +87,10 @@ function Item( element, layout ) {
 }
 
 // inherit EventEmitter
-utils.extend( Item.prototype, EventEmitter.prototype );
+var proto = Item.prototype = Object.create( EventEmitter.prototype );
+proto.constructor = Item;
 
-Item.prototype._create = function() {
+proto._create = function() {
   // transition objects
   this._transn = {
     ingProperties: {},
@@ -106,14 +104,14 @@ Item.prototype._create = function() {
 };
 
 // trigger specified handler for event type
-Item.prototype.handleEvent = function( event ) {
+proto.handleEvent = function( event ) {
   var method = 'on' + event.type;
   if ( this[ method ] ) {
     this[ method ]( event );
   }
 };
 
-Item.prototype.getSize = function() {
+proto.getSize = function() {
   this.size = getSize( this.element );
 };
 
@@ -121,7 +119,7 @@ Item.prototype.getSize = function() {
  * apply CSS styles to element
  * @param {Object} style
  */
-Item.prototype.css = function( style ) {
+proto.css = function( style ) {
   var elemStyle = this.element.style;
 
   for ( var prop in style ) {
@@ -132,7 +130,7 @@ Item.prototype.css = function( style ) {
 };
 
  // measure position, and sets it
-Item.prototype.getPosition = function() {
+proto.getPosition = function() {
   var style = getComputedStyle( this.element );
   var layoutOptions = this.layout.options;
   var isOriginLeft = layoutOptions.isOriginLeft;
@@ -158,7 +156,7 @@ Item.prototype.getPosition = function() {
 };
 
 // set settled position, apply padding
-Item.prototype.layoutPosition = function() {
+proto.layoutPosition = function() {
   var layoutSize = this.layout.size;
   var layoutOptions = this.layout.options;
   var style = {};
@@ -189,20 +187,20 @@ Item.prototype.layoutPosition = function() {
   this.emitEvent( 'layout', [ this ] );
 };
 
-Item.prototype.getXValue = function( x ) {
+proto.getXValue = function( x ) {
   var layoutOptions = this.layout.options;
   return layoutOptions.percentPosition && !layoutOptions.isHorizontal ?
     ( ( x / this.layout.size.width ) * 100 ) + '%' : x + 'px';
 };
 
-Item.prototype.getYValue = function( y ) {
+proto.getYValue = function( y ) {
   var layoutOptions = this.layout.options;
   return layoutOptions.percentPosition && layoutOptions.isHorizontal ?
     ( ( y / this.layout.size.height ) * 100 ) + '%' : y + 'px';
 };
 
 
-Item.prototype._transitionTo = function( x, y ) {
+proto._transitionTo = function( x, y ) {
   this.getPosition();
   // get current x & y from top/left
   var curX = this.position.x;
@@ -235,7 +233,7 @@ Item.prototype._transitionTo = function( x, y ) {
   });
 };
 
-Item.prototype.getTranslate = function( x, y ) {
+proto.getTranslate = function( x, y ) {
   // flip cooridinates if origin on right or bottom
   var layoutOptions = this.layout.options;
   x = layoutOptions.isOriginLeft ? x : -x;
@@ -244,14 +242,14 @@ Item.prototype.getTranslate = function( x, y ) {
 };
 
 // non transition + transform support
-Item.prototype.goTo = function( x, y ) {
+proto.goTo = function( x, y ) {
   this.setPosition( x, y );
   this.layoutPosition();
 };
 
-Item.prototype.moveTo = Item.prototype._transitionTo;
+proto.moveTo = proto._transitionTo;
 
-Item.prototype.setPosition = function( x, y ) {
+proto.setPosition = function( x, y ) {
   this.position.x = parseInt( x, 10 );
   this.position.y = parseInt( y, 10 );
 };
@@ -264,7 +262,7 @@ Item.prototype.setPosition = function( x, y ) {
  */
 
 // non transition, just trigger callback
-Item.prototype._nonTransition = function( args ) {
+proto._nonTransition = function( args ) {
   this.css( args.to );
   if ( args.isCleaning ) {
     this._removeStyles( args.to );
@@ -282,7 +280,7 @@ Item.prototype._nonTransition = function( args ) {
  *   @param {Boolean} isCleaning - removes transition styles after transition
  *   @param {Function} onTransitionEnd - callback
  */
-Item.prototype._transition = function( args ) {
+proto._transition = function( args ) {
   // redirect to nonTransition if no transition duration
   if ( !parseFloat( this.layout.options.transitionDuration ) ) {
     this._nonTransition( args );
@@ -331,7 +329,7 @@ function toDashedAll( str ) {
 var transitionProps = 'opacity,' +
   toDashedAll( vendorProperties.transform || 'transform' );
 
-Item.prototype.enableTransition = function(/* style */) {
+proto.enableTransition = function(/* style */) {
   // HACK changing transitionProperty during a transition
   // will cause transition to jump
   if ( this.isTransitioning ) {
@@ -356,15 +354,15 @@ Item.prototype.enableTransition = function(/* style */) {
   this.element.addEventListener( transitionEndEvent, this, false );
 };
 
-Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
+proto.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
 
 // ----- events ----- //
 
-Item.prototype.onwebkitTransitionEnd = function( event ) {
+proto.onwebkitTransitionEnd = function( event ) {
   this.ontransitionend( event );
 };
 
-Item.prototype.onotransitionend = function( event ) {
+proto.onotransitionend = function( event ) {
   this.ontransitionend( event );
 };
 
@@ -373,7 +371,7 @@ var dashedVendorProperties = {
   '-webkit-transform': 'transform'
 };
 
-Item.prototype.ontransitionend = function( event ) {
+proto.ontransitionend = function( event ) {
   // disregard bubbled events from children
   if ( event.target !== this.element ) {
     return;
@@ -405,7 +403,7 @@ Item.prototype.ontransitionend = function( event ) {
   this.emitEvent( 'transitionEnd', [ this ] );
 };
 
-Item.prototype.disableTransition = function() {
+proto.disableTransition = function() {
   this.removeTransitionStyles();
   this.element.removeEventListener( transitionEndEvent, this, false );
   this.isTransitioning = false;
@@ -415,7 +413,7 @@ Item.prototype.disableTransition = function() {
  * removes style property from element
  * @param {Object} style
 **/
-Item.prototype._removeStyles = function( style ) {
+proto._removeStyles = function( style ) {
   // clean up transition styles
   var cleanStyle = {};
   for ( var prop in style ) {
@@ -429,7 +427,7 @@ var cleanTransitionStyle = {
   transitionDuration: ''
 };
 
-Item.prototype.removeTransitionStyles = function() {
+proto.removeTransitionStyles = function() {
   // remove transition
   this.css( cleanTransitionStyle );
 };
@@ -437,14 +435,14 @@ Item.prototype.removeTransitionStyles = function() {
 // ----- show/hide/remove ----- //
 
 // remove element from DOM
-Item.prototype.removeElem = function() {
+proto.removeElem = function() {
   this.element.parentNode.removeChild( this.element );
   // remove display: none
   this.css({ display: '' });
   this.emitEvent( 'remove', [ this ] );
 };
 
-Item.prototype.remove = function() {
+proto.remove = function() {
   // just remove element if no transition support or no transition
   if ( !transitionProperty || !parseFloat( this.layout.options.transitionDuration ) ) {
     this.removeElem();
@@ -459,7 +457,7 @@ Item.prototype.remove = function() {
   this.hide();
 };
 
-Item.prototype.reveal = function() {
+proto.reveal = function() {
   delete this.isHidden;
   // remove display: none
   this.css({ display: '' });
@@ -478,7 +476,7 @@ Item.prototype.reveal = function() {
   });
 };
 
-Item.prototype.onRevealTransitionEnd = function() {
+proto.onRevealTransitionEnd = function() {
   // check if still visible
   // during transition, item may have been hidden
   if ( !this.isHidden ) {
@@ -491,7 +489,7 @@ Item.prototype.onRevealTransitionEnd = function() {
  * @param {String} styleProperty - hiddenStyle/visibleStyle
  * @returns {String}
  */
-Item.prototype.getHideRevealTransitionEndProperty = function( styleProperty ) {
+proto.getHideRevealTransitionEndProperty = function( styleProperty ) {
   var optionStyle = this.layout.options[ styleProperty ];
   // use opacity
   if ( optionStyle.opacity ) {
@@ -503,7 +501,7 @@ Item.prototype.getHideRevealTransitionEndProperty = function( styleProperty ) {
   }
 };
 
-Item.prototype.hide = function() {
+proto.hide = function() {
   // set flag
   this.isHidden = true;
   // remove display: none
@@ -524,7 +522,7 @@ Item.prototype.hide = function() {
   });
 };
 
-Item.prototype.onHideTransitionEnd = function() {
+proto.onHideTransitionEnd = function() {
   // check if still hidden
   // during transition, item may have been un-hidden
   if ( this.isHidden ) {
@@ -533,7 +531,7 @@ Item.prototype.onHideTransitionEnd = function() {
   }
 };
 
-Item.prototype.destroy = function() {
+proto.destroy = function() {
   this.css({
     position: '',
     left: '',
