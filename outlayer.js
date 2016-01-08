@@ -11,21 +11,19 @@
   if ( typeof define == 'function' && define.amd ) {
     // AMD - RequireJS
     define( [
-        'eventie/eventie',
         'eventEmitter/EventEmitter',
         'get-size/get-size',
         'fizzy-ui-utils/utils',
         './item'
       ],
-      function( eventie, EventEmitter, getSize, utils, Item ) {
-        return factory( window, eventie, EventEmitter, getSize, utils, Item);
+      function( EventEmitter, getSize, utils, Item ) {
+        return factory( window, EventEmitter, getSize, utils, Item);
       }
     );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
     module.exports = factory(
       window,
-      require('eventie'),
       require('wolfy87-eventemitter'),
       require('get-size'),
       require('fizzy-ui-utils'),
@@ -35,7 +33,6 @@
     // browser global
     window.Outlayer = factory(
       window,
-      window.eventie,
       window.EventEmitter,
       window.getSize,
       window.fizzyUIUtils,
@@ -43,7 +40,7 @@
     );
   }
 
-}( window, function factory( window, eventie, EventEmitter, getSize, utils, Item ) {
+}( window, function factory( window, EventEmitter, getSize, utils, Item ) {
 'use strict';
 
 // ----- vars ----- //
@@ -590,11 +587,7 @@ Outlayer.prototype.handleEvent = function( event ) {
  * Bind layout to window resizing
  */
 Outlayer.prototype.bindResize = function() {
-  // bind just one listener
-  if ( this.isResizeBound ) {
-    return;
-  }
-  eventie.bind( window, 'resize', this );
+  window.addEventListener( 'resize', this );
   this.isResizeBound = true;
 };
 
@@ -602,9 +595,7 @@ Outlayer.prototype.bindResize = function() {
  * Unbind layout to window resizing
  */
 Outlayer.prototype.unbindResize = function() {
-  if ( this.isResizeBound ) {
-    eventie.unbind( window, 'resize', this );
-  }
+  window.removeEventListener( 'resize', this );
   this.isResizeBound = false;
 };
 

@@ -25,37 +25,28 @@
 <script src="../bower_components/get-size/get-size.js"></script>
 <script src="../bower_components/matches-selector/matches-selector.js"></script>
 <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
-<script src="../bower_components/eventie/eventie.js"></script>
-<script src="../bower_components/doc-ready/doc-ready.js"></script>
 <script src="../bower_components/fizzy-ui-utils/utils.js"></script>
 <script src="../item.js"></script>
 <script src="../outlayer.js"></script>
 
 <script>
-docReady( function() {
   var basic = document.querySelector('.container');
   var layout = new Outlayer( basic );
   var item = layout.items[0];
 
-  var revealButton = document.querySelector('#reveal');
-  var hideButton = document.querySelector('#hide');
-  var moveButton = document.querySelector('#move');
-
-  eventie.bind( revealButton, 'click', function() {
+  document.querySelector('#reveal').onclick = function() {
     item.reveal();
-  });
+  };
 
-  eventie.bind( hideButton, 'click', function() {
+  document.querySelector('#hide').onclick = function() {
     item.hide();
-  });
+  };
 
-  eventie.bind( moveButton, 'click', function() {
+  document.querySelector('#move').onclick = function() {
     var x = Math.random() * 400;
     var y = Math.random() * 200;
     item.moveTo( x, y )
-  });
-
-});
+  };
 </script>
 
 </body>

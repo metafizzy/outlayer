@@ -72,8 +72,6 @@
 <script src="../bower_components/get-size/get-size.js"></script>
 <script src="../bower_components/matches-selector/matches-selector.js"></script>
 <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
-<script src="../bower_components/eventie/eventie.js"></script>
-<script src="../bower_components/doc-ready/doc-ready.js"></script>
 <script src="../bower_components/fizzy-ui-utils/utils.js"></script>
 <script src="../item.js"></script>
 <script src="../outlayer.js"></script>
@@ -81,7 +79,6 @@
 <script src="cells-by-row.js"></script>
 
 <script>
-docReady( function() {
   var basic = document.querySelector('#basic');
   var layout = new CellsByRow( basic );
   
@@ -92,7 +89,6 @@ docReady( function() {
     basic.style.width = isToggled ? '800px' : '400px';
     layout.layout();
   }
-});
 </script>
 
 </body>

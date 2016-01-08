@@ -5,7 +5,6 @@
   "main": "outlayer.js",
   "dependencies": {
     "wolfy87-eventemitter": ">=4.2 <5",
-    "eventie": "~1.0.3",
     "get-size": "~2.0.2",
     "fizzy-ui-utils": "~2.0.0"
   },
