@@ -188,7 +188,7 @@ proto._itemize = function( elems ) {
 
   // create new Outlayer Items for collection
   var items = [];
-  for ( var i=0, len = itemElems.length; i < len; i++ ) {
+  for ( var i=0; i < itemElems.length; i++ ) {
     var elem = itemElems[i];
     var item = new Item( elem, this );
     items.push( item );
@@ -811,10 +811,9 @@ proto.destroy = function() {
   style.position = '';
   style.width = '';
   // destroy items
-  for ( var i=0, len = this.items.length; i < len; i++ ) {
-    var item = this.items[i];
+  this.items.forEach( function( item ) {
     item.destroy();
-  }
+  });
 
   this.unbindResize();
 
