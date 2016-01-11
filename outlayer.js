@@ -850,30 +850,18 @@ Outlayer.data = function( elem ) {
  */
 Outlayer.create = function( namespace, options ) {
   // sub-class Outlayer
-  function Layout() {
-    Outlayer.apply( this, arguments );
-  }
-  // inherit Outlayer prototype
-  Layout.prototype = Object.create( Outlayer.prototype );
-  // set contructor, used for namespace and Item
-  Layout.prototype.constructor = Layout;
+  var Layout = subclass( Outlayer );
 
   Layout.defaults = utils.extend( {}, Outlayer.defaults );
   // apply new options
   utils.extend( Layout.defaults, options );
-  // keep prototype.settings for backwards compatibility (Packery v1.2.0)
-  Layout.prototype.settings = {};
 
   Layout.namespace = namespace;
 
   Layout.data = Outlayer.data;
 
   // sub-class Item
-  Layout.Item = function LayoutItem() {
-    Item.apply( this, arguments );
-  };
-
-  Layout.Item.prototype = new Item();
+  Layout.Item = subclass( Item );
 
   // -------------------------- declarative -------------------------- //
 
@@ -888,6 +876,17 @@ Outlayer.create = function( namespace, options ) {
 
   return Layout;
 };
+
+function subclass( Parent ) {
+  function SubClass() {
+    Parent.apply( this, arguments );
+  }
+
+  SubClass.prototype = Object.create( Parent.prototype );
+  SubClass.prototype.constructor = SubClass;
+
+  return SubClass;
+}
 
 // ----- fin ----- //
 
