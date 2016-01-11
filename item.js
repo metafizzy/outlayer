@@ -450,9 +450,8 @@ proto.remove = function() {
   }
 
   // start transition
-  var _this = this;
   this.once( 'transitionEnd', function() {
-    _this.removeElem();
+    this.removeElem();
   });
   this.hide();
 };
