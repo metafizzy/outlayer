@@ -137,12 +137,12 @@ proto.option = function( opts ) {
  * get backwards compatible option value, check old name
  */
 proto._getOption = function( option ) {
-  var oldOption = compatOptions[ option ];
+  var oldOption = this.constructor.compatOptions[ option ];
   return oldOption && this.options[ oldOption ] !== undefined ?
-    this.options[ oldOption ] !== undefined : this.options[ option ];
+    this.options[ oldOption ] : this.options[ option ];
 };
 
-var compatOptions = {
+Outlayer.compatOptions = {
   // currentName: oldName
   initLayout: 'isInitLayout',
   horizontal: 'isHorizontal',
@@ -850,10 +850,10 @@ Outlayer.data = function( elem ) {
 Outlayer.create = function( namespace, options ) {
   // sub-class Outlayer
   var Layout = subclass( Outlayer );
-
+  // apply new options and compatOptions
   Layout.defaults = utils.extend( {}, Outlayer.defaults );
-  // apply new options
   utils.extend( Layout.defaults, options );
+  Layout.compatOptions = utils.extend( {}, Outlayer.compatOptions  );
 
   Layout.namespace = namespace;
 
@@ -895,4 +895,3 @@ Outlayer.Item = Item;
 return Outlayer;
 
 }));
-
