@@ -11,14 +11,11 @@
         'ev-emitter/ev-emitter',
         'get-size/get-size'
       ],
-      function( EvEmitter, getSize ) {
-        return factory( window, EvEmitter, getSize );
-      }
+      factory
     );
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
     module.exports = factory(
-      window,
       require('ev-emitter'),
       require('get-size')
     );
@@ -26,13 +23,12 @@
     // browser global
     window.Outlayer = {};
     window.Outlayer.Item = factory(
-      window,
       window.EvEmitter,
       window.getSize
     );
   }
 
-}( window, function factory( window, EvEmitter, getSize ) {
+}( window, function factory( EvEmitter, getSize ) {
 'use strict';
 
 // ----- helpers ----- //
