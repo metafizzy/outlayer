@@ -56,13 +56,13 @@ var transitionEndEvent = {
   transition: 'transitionend'
 }[ transitionProperty ];
 
-// cache all vendor properties
-var vendorProperties = [
-  transformProperty,
-  transitionProperty,
-  transitionProperty + 'Duration',
-  transitionProperty + 'Property'
-];
+// cache all vendor properties that could have vendor prefix
+var vendorProperties = {
+  transform: transformProperty,
+  transition: transitionProperty,
+  transitionDuration: transitionProperty + 'Duration',
+  transitionProperty: transitionProperty + 'Property'
+};
 
 // -------------------------- Item -------------------------- //
 
@@ -276,7 +276,7 @@ proto._nonTransition = function( args ) {
  *   @param {Boolean} isCleaning - removes transition styles after transition
  *   @param {Function} onTransitionEnd - callback
  */
-proto._transition = function( args ) {
+proto.transition = function( args ) {
   // redirect to nonTransition if no transition duration
   if ( !parseFloat( this.layout.options.transitionDuration ) ) {
     this._nonTransition( args );
@@ -322,8 +322,7 @@ function toDashedAll( str ) {
   });
 }
 
-var transitionProps = 'opacity,' +
-  toDashedAll( vendorProperties.transform || 'transform' );
+var transitionProps = 'opacity,' + toDashedAll( transformProperty );
 
 proto.enableTransition = function(/* style */) {
   // HACK changing transitionProperty during a transition
@@ -349,8 +348,6 @@ proto.enableTransition = function(/* style */) {
   // listen for transition end event
   this.element.addEventListener( transitionEndEvent, this, false );
 };
-
-proto.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
 
 // ----- events ----- //
 
