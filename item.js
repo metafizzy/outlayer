@@ -61,12 +61,12 @@ var transitionEndEvent = {
 }[ transitionProperty ];
 
 // cache all vendor properties
-var vendorProperties = [
-  transformProperty,
-  transitionProperty,
-  transitionProperty + 'Duration',
-  transitionProperty + 'Property'
-];
+var vendorProperties = {
+  transform: transformProperty,
+  transition: transitionProperty,
+  transitionDuration: transitionProperty + 'Duration',
+  transitionPropety: transitionProperty + 'Property'
+}
 
 // -------------------------- Item -------------------------- //
 
