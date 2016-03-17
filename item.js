@@ -61,7 +61,8 @@ var vendorProperties = {
   transform: transformProperty,
   transition: transitionProperty,
   transitionDuration: transitionProperty + 'Duration',
-  transitionProperty: transitionProperty + 'Property'
+  transitionProperty: transitionProperty + 'Property',
+  transitionDelay: transitionProperty + 'Delay'
 };
 
 // -------------------------- Item -------------------------- //
@@ -417,12 +418,20 @@ proto._removeStyles = function( style ) {
 
 var cleanTransitionStyle = {
   transitionProperty: '',
-  transitionDuration: ''
+  transitionDuration: '',
+  transitionDelay: ''
 };
 
 proto.removeTransitionStyles = function() {
   // remove transition
   this.css( cleanTransitionStyle );
+};
+
+// ----- stagger ----- //
+
+proto.stagger = function( delay ) {
+  delay = isNaN( delay ) ? 0 : delay;
+  this.css({ transitionDelay: delay + 'ms' });
 };
 
 // ----- show/hide/remove ----- //

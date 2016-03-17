@@ -348,8 +348,8 @@ proto._getItemLayoutPosition = function( /* item */ ) {
  * @param {Array} queue
  */
 proto._processLayoutQueue = function( queue ) {
-  queue.forEach( function( obj ) {
-    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant );
+  queue.forEach( function( obj, i ) {
+    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant, i );
   }, this );
 };
 
@@ -360,11 +360,12 @@ proto._processLayoutQueue = function( queue ) {
  * @param {Number} y - vertical position
  * @param {Boolean} isInstant - disables transitions
  */
-proto._positionItem = function( item, x, y, isInstant ) {
+proto._positionItem = function( item, x, y, isInstant, i ) {
   if ( isInstant ) {
     // if not transition, just set CSS
     item.goTo( x, y );
   } else {
+    item.stagger( i * this.options.stagger );
     item.moveTo( x, y );
   }
 };
@@ -708,7 +709,9 @@ proto.reveal = function( items ) {
   if ( !items || !items.length ) {
     return;
   }
-  items.forEach( function( item ) {
+  var stagger = this.options.stagger;
+  items.forEach( function( item, i ) {
+    item.stagger( i * stagger );
     item.reveal();
   });
 };
@@ -722,7 +725,9 @@ proto.hide = function( items ) {
   if ( !items || !items.length ) {
     return;
   }
-  items.forEach( function( item ) {
+  var stagger = this.options.stagger;
+  items.forEach( function( item, i ) {
+    item.stagger( i * stagger );
     item.hide();
   });
 };
