@@ -341,10 +341,13 @@ proto.enableTransition = function(/* style */) {
   //   prop = vendorProperties[ prop ] || prop;
   //   transitionValues.push( toDashedAll( prop ) );
   // }
+  // munge number to millisecond, to match stagger
+  var duration = this.layout.options.transitionDuration;
+  duration = typeof duration == 'number' ? duration + 'ms' : duration;
   // enable transition styles
   this.css({
     transitionProperty: transitionProps,
-    transitionDuration: this.layout.options.transitionDuration
+    transitionDuration: duration
   });
   // listen for transition end event
   this.element.addEventListener( transitionEndEvent, this, false );
