@@ -347,7 +347,8 @@ proto.enableTransition = function(/* style */) {
   // enable transition styles
   this.css({
     transitionProperty: transitionProps,
-    transitionDuration: duration
+    transitionDuration: duration,
+    transitionDelay: this.staggerDelay || 0
   });
   // listen for transition end event
   this.element.addEventListener( transitionEndEvent, this, false );
@@ -434,7 +435,7 @@ proto.removeTransitionStyles = function() {
 
 proto.stagger = function( delay ) {
   delay = isNaN( delay ) ? 0 : delay;
-  this.css({ transitionDelay: delay + 'ms' });
+  this.staggerDelay = delay + 'ms';
 };
 
 // ----- show/hide/remove ----- //
