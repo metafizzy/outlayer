@@ -1,12 +1,12 @@
 {
   "name": "outlayer",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "the brains and guts of a layout library",
   "main": "outlayer.js",
   "dependencies": {
-    "ev-emitter": "~1.0.0",
-    "get-size": "~2.0.2",
-    "fizzy-ui-utils": "~2.0.0"
+    "ev-emitter": "^1.0.0",
+    "get-size": "^2.0.2",
+    "fizzy-ui-utils": "^2.0.0"
   },
   "devDependencies": {
     "jquery": ">=1.4.3 <4",
