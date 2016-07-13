@@ -94,10 +94,6 @@ proto._create = function() {
     clean: {},
     onEnd: {}
   };
-
-  this.css({
-    position: 'absolute'
-  });
 };
 
 // trigger specified handler for event type
@@ -154,7 +150,7 @@ proto.getPosition = function() {
 // set settled position, apply padding
 proto.layoutPosition = function() {
   var layoutSize = this.layout.size;
-  var style = {};
+  var style = {position: 'absolute'};
   var isOriginLeft = this.layout._getOption('originLeft');
   var isOriginTop = this.layout._getOption('originTop');
 
