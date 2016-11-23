@@ -1,7 +1,10 @@
 {
   "name": "outlayer",
   "description": "the brains and guts of a layout library",
-  "main": "outlayer.js",
+  "main": [
+    "item.js",
+    "outlayer.js"
+  ],
   "dependencies": {
     "ev-emitter": "^1.0.0",
     "get-size": "^2.0.2",
