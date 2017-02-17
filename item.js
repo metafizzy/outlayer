@@ -247,8 +247,8 @@ proto.goTo = function( x, y ) {
 proto.moveTo = proto._transitionTo;
 
 proto.setPosition = function( x, y ) {
-  this.position.x = parseInt( x, 10 );
-  this.position.y = parseInt( y, 10 );
+  this.position.x = parseFloat( x );
+  this.position.y = parseFloat( y );
 };
 
 // ----- transition ----- //
