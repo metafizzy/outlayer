@@ -11,7 +11,7 @@
   "devDependencies": {
     "jquery": ">=1.4.3 <4",
     "jquery-bridget": "2.x",
-    "qunitjs": "^1.17.0"
+    "qunitjs": "^2.0.0"
   },
   "repository": {
     "type": "git",

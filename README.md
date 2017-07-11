@@ -115,7 +115,7 @@ requirejs.config({
   paths: {
     'ev-emitter': 'bower_components/ev-emitter',
     'get-size': 'bower_components/get-size',
-    'matches-selector': 'bower_components/matches-selector'
+    'desandro-matches-selector': 'bower_components/desandro-matches-selector'
   }
 });
 ```
